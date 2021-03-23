@@ -15,10 +15,7 @@ class LottoNumber extends StatelessWidget {
         backgroundColor: _getColor(),
         child: Text(
           number == null ? '' : '$number',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: this.fontSize
-          ),
+          style: TextStyle(color: Colors.white, fontSize: this.fontSize),
         ),
       ),
     );
@@ -38,18 +35,17 @@ class LottoNumber extends StatelessWidget {
 
     switch ((number! - 1) ~/ 10) {
       case 0:
-        return Colors.amber;
+        return Color.fromRGBO(251, 196, 0, 1);
       case 1:
-        return Colors.cyan;
+        return Color.fromRGBO(105, 200, 242, 1);
       case 2:
-        return Colors.pinkAccent;
+        return Color.fromRGBO(255, 114, 114, 1);
       case 3:
-        return Colors.blueGrey;
+        return Color.fromRGBO(170, 170, 170, 1);
       case 4:
-        return Colors.lime;
+        return Color.fromRGBO(176, 216, 64, 1);
     }
 
-    return Colors.amber;
+    return Color.fromRGBO(251, 196, 0, 1);
   }
-
 }
