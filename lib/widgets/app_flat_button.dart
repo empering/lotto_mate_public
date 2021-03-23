@@ -10,8 +10,8 @@ class AppTextButton extends StatelessWidget {
   final bool disabled;
 
   AppTextButton(
-      {this.buttonColor = AppColors.primary,
-      this.labelColor = Colors.white,
+      {this.buttonColor = AppColors.accent,
+      this.labelColor = AppColors.primary,
       this.labelIcon,
       this.labelText,
       this.onPressed,
