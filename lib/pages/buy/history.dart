@@ -191,18 +191,12 @@ class History extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 5.0),
-      decoration: BoxDecoration(
-          // color: AppColors.primary,
-          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '💰 총 당첨금',
-            style: TextStyle(
-              fontSize: 20,
-              // color: Colors.white,
-            ),
+            style: TextStyle(fontSize: 20.0),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
@@ -212,16 +206,28 @@ class History extends StatelessWidget {
                 Text(
                   '${NumberFormat.decimalPattern().format(myHistory.winAmount)} 원',
                   style: TextStyle(
-                    fontSize: 22,
-                    // color: Colors.white,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  '(총 ${NumberFormat.decimalPattern().format(myHistory.winCount)} 회 당첨)',
-                  style: TextStyle(
-                    fontSize: 15,
-                    // color: Colors.white,
-                  ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winCount! / myHistory.buyCount!)}',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Text(
+                      '(${myHistory.winCount} 회 당첨 / ${myHistory.buyCount} 회 구매)',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -232,36 +238,49 @@ class History extends StatelessWidget {
           Text(
             '🎰 수익률',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.0,
               // color: Colors.white,
             ),
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${NumberFormat.decimalPattern().format(myHistory.winAmount! - myHistory.buyAmount!)} 원',
-                style: TextStyle(
-                  fontSize: 22,
-                  // color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${NumberFormat.decimalPattern().format(myHistory.winAmount! - myHistory.buyAmount!)} ',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.up,
+                      ),
+                    ),
+                    Text('원'),
+                    SizedBox(width: 10),
+                  ],
                 ),
-              ),
-              SizedBox(width: 10),
-              Text(
-                '(${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winAmount! / myHistory.buyAmount!)})',
-                style: TextStyle(
-                  fontSize: 22,
-                  // color: Colors.white,
+                Text(
+                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 - ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
+                  style: TextStyle(color: Colors.grey),
                 ),
-              ),
-            ],
-          ),
-          Text(
-            '(${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 원 구매)',
-            style: TextStyle(
-              fontSize: 15,
-              // color: Colors.white,
+                SizedBox(height: 10),
+                Text(
+                  '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winAmount! / myHistory.buyAmount!)}',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.up,
+                  ),
+                ),
+                Text(
+                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 / ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
           ),
         ],
@@ -275,50 +294,60 @@ class History extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      decoration: BoxDecoration(
-          // color: AppColors.primary,
-          ),
+      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 5.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '💰 1등 누적 당첨금',
-            style: TextStyle(
-              fontSize: 20,
-              // color: Colors.white,
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${NumberFormat.decimalPattern().format(drawHistory.winAmount! ~/ 100000000)} 억원',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Text(
+                  '(1게임당 평균 ${drawHistory.winAmount! / drawHistory.winCount! ~/ 100000000} 억원)',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            '${NumberFormat.decimalPattern().format(drawHistory.winAmount! ~/ 100000000)} 억원',
-            style: TextStyle(
-              fontSize: 22,
-              // color: Colors.white,
-            ),
-          ),
-          Text(
-            '(1명당 평균 ${drawHistory.winAmount! / drawHistory.winCount! ~/ 100000000} 억원)',
-            style: TextStyle(
-              fontSize: 15,
-              // color: Colors.white,
-            ),
-          ),
-          Divider(
-            color: Colors.grey,
-          ),
+          Divider(color: Colors.grey),
           Text(
             '🎰 1등 당첨 확률',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.0,
               // color: Colors.white,
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount! / drawHistory.buyCount!)}',
-            style: TextStyle(
-              fontSize: 22,
-              // color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount! / drawHistory.buyCount!)}',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '(${drawHistory.winCount} 게임 당첨 / ${NumberFormat.decimalPattern().format(drawHistory.buyCount)} 게임 구매)',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
           ),
         ],
