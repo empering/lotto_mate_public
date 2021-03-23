@@ -14,4 +14,8 @@ class AppColors {
 
   // static const accentLight = Color.fromRGBO(4, 217, 178, 1);
   static const accentLight = Colors.deepOrangeAccent;
+
+  static const up = Colors.redAccent;
+
+  static const down = Colors.blueAccent;
 }
