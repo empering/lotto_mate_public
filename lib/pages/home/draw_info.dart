@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 
@@ -26,7 +27,7 @@ class DrawInfo extends StatelessWidget {
               '${draw.id}회',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.deepOrange,
+                color: AppColors.accentLight,
                 fontSize: 40,
                 wordSpacing: 1,
               ),

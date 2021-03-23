@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/states/draw_view_state.dart';
@@ -104,7 +105,7 @@ class DrawView extends StatelessWidget {
                 _tableCell(
                   '${NumberFormat.decimalPattern('ko').format(draw.totalFirstPrizeAmount)}원',
                   style: TextStyle(
-                    color: Colors.deepOrange,
+                    color: AppColors.accentLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -119,7 +120,7 @@ class DrawView extends StatelessWidget {
                 _tableCell(
                   '${NumberFormat.decimalPattern('ko').format(draw.prizes?[1].totalAmount)}원',
                   style: TextStyle(
-                    color: Colors.deepOrange,
+                    color: AppColors.accentLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -135,7 +136,7 @@ class DrawView extends StatelessWidget {
                 _tableCell(
                   '${NumberFormat.decimalPattern('ko').format(draw.prizes?[2].totalAmount)}원',
                   style: TextStyle(
-                    color: Colors.deepOrange,
+                    color: AppColors.accentLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -151,7 +152,7 @@ class DrawView extends StatelessWidget {
                 _tableCell(
                   '${NumberFormat.decimalPattern('ko').format(draw.prizes?[3].totalAmount)}원',
                   style: TextStyle(
-                    color: Colors.deepOrange,
+                    color: AppColors.accentLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -167,7 +168,7 @@ class DrawView extends StatelessWidget {
                 _tableCell(
                   '${NumberFormat.decimalPattern('ko').format(draw.prizes?[4].totalAmount)}원',
                   style: TextStyle(
-                    color: Colors.deepOrange,
+                    color: AppColors.accentLight,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

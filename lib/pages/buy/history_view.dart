@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/states/history_view_state.dart';
@@ -81,7 +82,7 @@ class HistoryView extends StatelessWidget {
             '${buy.drawId}회',
             style: TextStyle(
               fontSize: 26,
-              color: Colors.deepOrange,
+              color: AppColors.accentLight,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -122,7 +123,7 @@ class HistoryView extends StatelessWidget {
             '${buy.drawId}회',
             style: TextStyle(
               fontSize: 26,
-              color: Colors.deepOrange,
+              color: AppColors.accentLight,
               fontWeight: FontWeight.bold,
             ),
           ),
