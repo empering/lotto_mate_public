@@ -134,7 +134,7 @@ class DrawView extends StatelessWidget {
       _tableCell(
         '${NumberFormat.decimalPattern().format(totalAmount)}원',
         style: TextStyle(
-          color: AppColors.accentLight,
+          color: AppColors.primaryLight,
           fontWeight: FontWeight.bold,
         ),
       ),

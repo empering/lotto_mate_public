@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         accentColor: AppColors.accent,
         fontFamily: 'CookieRun',
         appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.backgroundLight,
         ),
       ),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,

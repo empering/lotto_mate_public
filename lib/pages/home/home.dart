@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
             Divider(),
             Container(
               height: 150,
-              color: AppColors.accentLight,
+              color: AppColors.backgroundAccent,
             ),
           ],
         ),
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
       Container(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
-          color: AppColors.primary,
+          color: AppColors.backgroundAccent,
         ),
         child: Column(
           children: [
@@ -70,7 +70,7 @@ class Home extends StatelessWidget {
                       '1등 총 당첨금',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.white,
+                        color: AppColors.primary,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -83,7 +83,7 @@ class Home extends StatelessWidget {
                           '${draw.totalFirstPrizeAmount ~/ 100000000}억원',
                           style: TextStyle(
                             fontSize: 22,
-                            color: Colors.white,
+                            color: AppColors.primary,
                           ),
                         ),
                         SizedBox(width: 15),
@@ -91,7 +91,7 @@ class Home extends StatelessWidget {
                           '(${draw.firstPrizewinnerCount}명 / ${draw.eachFirstPrizeAmount ~/ 100000000}억)',
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.white,
+                            color: AppColors.primary,
                           ),
                         ),
                       ],
@@ -101,7 +101,7 @@ class Home extends StatelessWidget {
                       '총 판매금액 : ${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억원',
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.white,
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
@@ -119,8 +119,8 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 AppTextButton(
-                  buttonColor: Colors.white54,
-                  labelColor: AppColors.primaryDark,
+                  buttonColor: AppColors.primary,
+                  labelColor: AppColors.primaryLight,
                   labelText: '회차별 당첨결과',
                   labelIcon: Icons.fact_check_outlined,
                   onPressed: () {
@@ -128,8 +128,8 @@ class Home extends StatelessWidget {
                   },
                 ),
                 AppTextButton(
-                  buttonColor: Colors.white54,
-                  labelColor: AppColors.primaryDark,
+                  buttonColor: AppColors.primary,
+                  labelColor: AppColors.primaryLight,
                   labelText: '당첨결과 상세',
                   labelIcon: Icons.saved_search,
                   onPressed: () {

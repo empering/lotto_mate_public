@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const background = Color.fromRGBO(240, 241, 242, 1);
+  static const background = Color.fromRGBO(155, 151, 155, 1);
 
-  static const primary = Color.fromRGBO(42, 23, 115, 1);
+  static const backgroundLight = Color.fromRGBO(251, 247, 240, 1);
 
-  static const primaryDark = Color.fromRGBO(32, 31, 64, 1);
+  static const backgroundAccent = Color.fromRGBO(217, 228, 221, 1);
 
-  static const primaryLight = Color.fromRGBO(82, 89, 217, 1);
+  static const primary = Color.fromRGBO(85, 85, 85, 1);
 
-  // static const accent = Color.fromRGBO(4, 191, 173, 1);
-  static const accent = Colors.deepOrange;
+  static const primaryLight = Color.fromRGBO(251, 247, 240, 1);
 
-  // static const accentLight = Color.fromRGBO(4, 217, 178, 1);
-  static const accentLight = Colors.deepOrangeAccent;
+  static const accent = Color.fromRGBO(217, 228, 221, 1);
 
   static const up = Colors.redAccent;
 

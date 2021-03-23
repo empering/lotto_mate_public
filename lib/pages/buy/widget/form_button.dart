@@ -18,7 +18,7 @@ class FormButton extends StatelessWidget {
         AppTextButton(
           labelText: '추가',
           labelIcon: Icons.add,
-          buttonColor: AppColors.primaryLight,
+          buttonColor: AppColors.primary,
           onPressed: () {
             buyState.setPickedDefault();
             buyState.addNewPick();
@@ -39,7 +39,7 @@ class FormButton extends StatelessWidget {
         AppTextButton(
           labelText: 'QR',
           labelIcon: Icons.qr_code_scanner,
-          buttonColor: AppColors.accent,
+          buttonColor: AppColors.primary,
           onPressed: () async {
             if (!await _getQrData(context, buyState)) {
               Get.defaultDialog(
@@ -52,7 +52,7 @@ class FormButton extends StatelessWidget {
         AppTextButton(
           labelText: '삭제',
           labelIcon: Icons.remove,
-          buttonColor: AppColors.primaryLight,
+          buttonColor: AppColors.primary,
           onPressed: () {
             Get.defaultDialog(
               title: "ㅇㅇ?",

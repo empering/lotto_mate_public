@@ -82,7 +82,7 @@ class HistoryView extends StatelessWidget {
             '${buy.drawId}회',
             style: TextStyle(
               fontSize: 26,
-              color: AppColors.accentLight,
+              color: AppColors.primaryLight,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -123,7 +123,7 @@ class HistoryView extends StatelessWidget {
             '${buy.drawId}회',
             style: TextStyle(
               fontSize: 26,
-              color: AppColors.accentLight,
+              color: AppColors.primaryLight,
               fontWeight: FontWeight.bold,
             ),
           ),
