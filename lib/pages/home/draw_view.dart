@@ -99,85 +99,14 @@ class DrawView extends StatelessWidget {
                 _tableCell('게임당 당첨금'),
               ],
             ),
-            TableRow(
-              children: [
-                _tableCell('1등'),
-                _tableCell(
-                  '${NumberFormat.decimalPattern('ko').format(draw.totalFirstPrizeAmount)}원',
-                  style: TextStyle(
-                    color: AppColors.accentLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _tableCell('${draw.firstPrizewinnerCount}'),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.eachFirstPrizeAmount)}원'),
-              ],
-            ),
-            TableRow(
-              children: [
-                _tableCell('2등'),
-                _tableCell(
-                  '${NumberFormat.decimalPattern('ko').format(draw.prizes?[1].totalAmount)}원',
-                  style: TextStyle(
-                    color: AppColors.accentLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[1].winnerCount)}'),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[1].eachAmount)}원'),
-              ],
-            ),
-            TableRow(
-              children: [
-                _tableCell('3등'),
-                _tableCell(
-                  '${NumberFormat.decimalPattern('ko').format(draw.prizes?[2].totalAmount)}원',
-                  style: TextStyle(
-                    color: AppColors.accentLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[2].winnerCount)}'),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[2].eachAmount)}원'),
-              ],
-            ),
-            TableRow(
-              children: [
-                _tableCell('4등'),
-                _tableCell(
-                  '${NumberFormat.decimalPattern('ko').format(draw.prizes?[3].totalAmount)}원',
-                  style: TextStyle(
-                    color: AppColors.accentLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[3].winnerCount)}'),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[3].eachAmount)}원'),
-              ],
-            ),
-            TableRow(
-              children: [
-                _tableCell('5등'),
-                _tableCell(
-                  '${NumberFormat.decimalPattern('ko').format(draw.prizes?[4].totalAmount)}원',
-                  style: TextStyle(
-                    color: AppColors.accentLight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[4].winnerCount)}'),
-                _tableCell(
-                    '${NumberFormat.decimalPattern('ko').format(draw.prizes?[4].eachAmount)}원'),
-              ],
-            ),
+            ...?draw.prizes
+                ?.map((prize) => TableRow(
+                    children: _tableRowChildren(
+                        '${prize.rank}등',
+                        prize.totalAmount,
+                        prize.winnerCount,
+                        prize.eachAmount)))
+                .toList(),
           ],
         ),
       ],
@@ -196,5 +125,21 @@ class DrawView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _tableRowChildren(
+      String rankName, num? totalAmount, num? winCount, num? eachAmount) {
+    return <Widget>[
+      _tableCell(rankName),
+      _tableCell(
+        '${NumberFormat.decimalPattern().format(totalAmount)}원',
+        style: TextStyle(
+          color: AppColors.accentLight,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      _tableCell('$winCount'),
+      _tableCell('${NumberFormat.decimalPattern().format(eachAmount)}원'),
+    ];
   }
 }
