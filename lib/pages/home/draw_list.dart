@@ -52,9 +52,14 @@ class DrawList extends StatelessWidget {
   }
 
   _makeDrawListLeading(int? id) {
-    return Text(
-      '$id 회',
-      style: TextStyle(fontSize: 16.0, color: Colors.black),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '$id 회',
+          style: TextStyle(fontSize: 16.0, color: Colors.black),
+        ),
+      ],
     );
   }
 
@@ -87,13 +92,25 @@ class DrawList extends StatelessWidget {
         Row(
           children: [
             Text(
-              '1등 당첨금 : ${draw.totalFirstPrizeAmount! ~/ 100000000}억원',
-              style: TextStyle(fontSize: 16.0, color: Colors.black),
+              '1등 당첨금 💰',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              ' 총 ${draw.totalFirstPrizeAmount! ~/ 100000000} 억원',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(width: 10),
             Text(
               '(${draw.firstPrizewinnerCount}명 / ${draw.eachFirstPrizeAmount! ~/ 100000000}억)',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),
