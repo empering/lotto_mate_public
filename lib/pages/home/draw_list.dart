@@ -18,35 +18,47 @@ class DrawList extends StatelessWidget {
         child: Container(
           child: Consumer<DrawListState>(
             builder: (context, drawListState, child) =>
-                _makeDrawListView(drawListState.draws),
+                _makeDrawListView(drawListState),
           ),
         ),
       ),
     );
   }
 
-  _makeDrawListView(List<Draw> draws) {
-    return ListView(
+  _makeDrawListView(DrawListState drawListState) {
+    var draws = drawListState.draws;
+
+    return ListView.builder(
       padding: const EdgeInsets.all(10.0),
-      children: draws
-          .map(
-            (draw) => Column(
-              children: [
-                ListTile(
-                  leading: _makeDrawListLeading(draw.id),
-                  title: _makeDrawListViewTitle(draw),
-                  subtitle: _makeDrawListViewSubTitle(draw),
-                  dense: true,
-                  isThreeLine: true,
-                  onTap: () {
-                    Get.to(DrawView(draw.id!));
-                  },
-                ),
-                Divider(),
-              ],
-            ),
-          )
-          .toList(),
+      itemCount: draws.length + 1,
+      itemBuilder: (context, index) {
+        if (index < draws.length) {
+          return Column(
+            children: [
+              ListTile(
+                leading: _makeDrawListLeading(draws[index].id),
+                title: _makeDrawListViewTitle(draws[index]),
+                subtitle: _makeDrawListViewSubTitle(draws[index]),
+                dense: true,
+                isThreeLine: true,
+                onTap: () {
+                  Get.to(DrawView(draws[index].id!));
+                },
+              ),
+              Divider(),
+            ],
+          );
+        }
+
+        if (drawListState.hasMore) {
+          drawListState.offset = draws.length;
+          drawListState.getDraws();
+
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(child: Text('데이터가 더이상 없습니다.'));
+        }
+      },
     );
   }
 

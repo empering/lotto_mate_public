@@ -9,8 +9,20 @@ class DrawListState with ChangeNotifier {
 
   List<Draw> get draws => _draws;
 
+  final int limit = 10;
+  int offset = 0;
+  bool hasMore = false;
+
   void getDraws() async {
-    _draws = await _drawService.getDraws();
+    var draws = await _drawService.getDraws(limit: limit, offset: offset);
+
+    _draws.addAll(draws);
+
+    if (draws.length == limit) {
+      hasMore = true;
+    } else {
+      hasMore = false;
+    }
 
     notifyListeners();
   }

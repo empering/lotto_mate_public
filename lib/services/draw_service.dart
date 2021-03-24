@@ -42,8 +42,8 @@ class DrawService {
     return null;
   }
 
-  Future<List<Draw>> getDraws() async {
-    var list = await _drawRepository.getByWhere(orderBy: 'id desc', limit: 10);
+  Future<List<Draw>> getDraws({int limit = 10, int offset = 0}) async {
+    var list = await _drawRepository.getByWhere(orderBy: 'id desc', limit: limit, offset: offset);
     return list.map((drawMap) => Draw.fromDb(drawMap)).toList();
   }
 

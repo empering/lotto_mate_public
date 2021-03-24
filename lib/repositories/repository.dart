@@ -19,6 +19,7 @@ class Repository {
     List<dynamic>? whereArgs,
     String? orderBy,
     int? limit,
+    int? offset,
   }) async {
     return _db.query(
       this._tableName,
@@ -26,6 +27,7 @@ class Repository {
       whereArgs: whereArgs,
       orderBy: orderBy,
       limit: limit,
+      offset: offset,
     );
   }
 
