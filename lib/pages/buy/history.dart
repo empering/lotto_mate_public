@@ -6,7 +6,7 @@ import 'package:lotto_mate/models/draw_history.dart';
 import 'package:lotto_mate/pages/buy/history_list.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/states/history_state.dart';
-import 'package:lotto_mate/widgets/app_flat_button.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 
 class History extends StatelessWidget {
@@ -36,59 +36,55 @@ class History extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  child: Column(
                     children: [
-                      Text(
-                        '🔥 나의 로또 히스토리',
-                        style: TextStyle(fontSize: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '🔥 나의 로또 히스토리',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            AppTextButton(
+                              onPressed: () {
+                                Get.to(HistoryList());
+                              },
+                              buttonColor: Colors.transparent,
+                              labelColor: AppColors.primary,
+                              labelIcon: Icons.navigate_next,
+                            )
+                          ],
+                        ),
                       ),
-                      AppTextButton(
-                        onPressed: () {
-                          Get.to(HistoryList());
-                        },
-                        buttonColor: Colors.transparent,
-                        labelColor: AppColors.primary,
-                        labelIcon: Icons.navigate_next,
-                      )
+                      _makeMyStatInfo(historyState.myHistory),
+                      Divider(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '🔥 전체 로또 히스토리',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            AppTextButton(
+                              onPressed: () {
+                                Get.to(DrawList());
+                              },
+                              buttonColor: Colors.transparent,
+                              labelColor: AppColors.primary,
+                              labelIcon: Icons.navigate_next,
+                            )
+                          ],
+                        ),
+                      ),
+                      _makeTotalStatInfo(historyState.drawHistory),
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Container(child: _makeMyStatInfo(historyState.myHistory)),
-                  ],
-                ),
-                Divider(height: 20.0),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '🔥 전체 로또 히스토리',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                      AppTextButton(
-                        onPressed: () {
-                          Get.to(DrawList());
-                        },
-                        buttonColor: Colors.transparent,
-                        labelColor: AppColors.primary,
-                        labelIcon: Icons.navigate_next,
-                      )
-                    ],
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _makeTotalStatInfo(historyState.drawHistory)),
-                  ],
-                ),
-                Divider(height: 20.0),
               ],
             ),
           );
@@ -190,7 +186,7 @@ class History extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 5.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -203,12 +199,18 @@ class History extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${NumberFormat.decimalPattern().format(myHistory.winAmount)} 원',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${NumberFormat.decimalPattern().format(myHistory.winAmount)} ',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text('원'),
+                  ],
                 ),
                 SizedBox(height: 10),
                 Row(
@@ -225,16 +227,14 @@ class History extends StatelessWidget {
                     SizedBox(width: 10.0),
                     Text(
                       '(${myHistory.winCount} 회 당첨 / ${myHistory.buyCount} 회 구매)',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: AppColors.sub),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          Divider(
-            color: Colors.grey,
-          ),
+          Divider(),
           Text(
             '🎰 수익률',
             style: TextStyle(
@@ -265,7 +265,7 @@ class History extends StatelessWidget {
                 ),
                 Text(
                   '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 - ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: AppColors.sub),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -278,7 +278,7 @@ class History extends StatelessWidget {
                 ),
                 Text(
                   '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 / ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: AppColors.sub),
                 ),
               ],
             ),
@@ -294,7 +294,7 @@ class History extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 5.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -309,21 +309,22 @@ class History extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${NumberFormat.decimalPattern().format(drawHistory.winAmount! ~/ 100000000)} 억원',
+                  '${NumberFormat.decimalPattern().format((drawHistory.winAmount! / 100000000).round())}억 ',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                Text('원'),
                 SizedBox(width: 10.0),
                 Text(
-                  '(1게임당 평균 ${drawHistory.winAmount! / drawHistory.winCount! ~/ 100000000} 억원)',
-                  style: TextStyle(color: Colors.grey),
+                  '(1게임당 평균 ${(drawHistory.winAmount! / drawHistory.winCount! / 100000000).round()} 억원)',
+                  style: TextStyle(color: AppColors.sub),
                 ),
               ],
             ),
           ),
-          Divider(color: Colors.grey),
+          Divider(),
           Text(
             '🎰 1등 당첨 확률',
             style: TextStyle(
@@ -345,7 +346,7 @@ class History extends StatelessWidget {
                 ),
                 Text(
                   '(${drawHistory.winCount} 게임 당첨 / ${NumberFormat.decimalPattern().format(drawHistory.buyCount)} 게임 구매)',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: AppColors.sub),
                 ),
               ],
             ),

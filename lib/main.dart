@@ -79,9 +79,19 @@ class MyApp extends StatelessWidget {
         // brightness: Brightness.dark,
         primaryColor: AppColors.primary,
         accentColor: AppColors.accent,
+        backgroundColor: AppColors.backgroundLight,
+        scaffoldBackgroundColor: AppColors.backgroundLight,
+        dividerColor: AppColors.accent,
         fontFamily: 'CookieRun',
         appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: AppColors.backgroundAccent,
+        ),
+        textTheme: TextTheme(
+          bodyText1: TextStyle(),
+          bodyText2: TextStyle(color: AppColors.accent),
+        ).apply(bodyColor: AppColors.primary),
+        iconTheme: IconThemeData(
+          color: AppColors.primary,
         ),
       ),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,

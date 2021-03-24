@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/states/buy_state.dart';
-import 'package:lotto_mate/widgets/app_flat_button.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 

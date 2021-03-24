@@ -29,8 +29,8 @@ class LottoNumberForms extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(10),
               color: pick.isPicked!
-                  ? AppColors.primary.withOpacity(0.2)
-                  : AppColors.background),
+                  ? AppColors.accent
+                  : AppColors.light),
           margin: EdgeInsets.fromLTRB(15, 2, 15, 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

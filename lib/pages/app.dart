@@ -28,7 +28,6 @@ class _AppState extends State<App> {
         length: 5,
         child: Scaffold(
           appBar: AppAppBar('로또🤣💥'),
-          backgroundColor: AppColors.background,
           body: FutureBuilder<QuerySnapshot>(
               future: _firebaseFirestore
                   .collection('draws')
@@ -58,9 +57,9 @@ class _AppState extends State<App> {
             color: AppColors.primary,
             height: 60,
             child: TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white,
-              indicatorColor: Colors.white,
+              labelColor: AppColors.accent,
+              unselectedLabelColor: AppColors.sub,
+              indicatorColor: AppColors.accent,
               labelStyle: TextStyle(fontSize: 12.0, fontFamily: 'CookieRun'),
               tabs: [
                 Tab(

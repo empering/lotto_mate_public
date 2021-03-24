@@ -9,7 +9,9 @@ class AppColors {
 
   static const primary = Color.fromRGBO(85, 85, 85, 1);
 
-  static const primaryLight = Color.fromRGBO(251, 247, 240, 1);
+  static const sub = Color.fromRGBO(155, 151, 155, 1);
+
+  static const light = Color.fromRGBO(251, 247, 240, 1);
 
   static const accent = Color.fromRGBO(217, 228, 221, 1);
 

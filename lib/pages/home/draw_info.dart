@@ -27,7 +27,6 @@ class DrawInfo extends StatelessWidget {
               '${draw.id}회',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
                 fontSize: 40,
                 wordSpacing: 1,
               ),
@@ -36,7 +35,6 @@ class DrawInfo extends StatelessWidget {
               ' 당첨결과 🎉',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
                 fontSize: 40,
                 wordSpacing: 1,
               ),
@@ -48,7 +46,7 @@ class DrawInfo extends StatelessWidget {
           '${draw.getDrawDateString()} 추첨',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryLight,
+            color: AppColors.sub,
             fontSize: 24,
           ),
         ),

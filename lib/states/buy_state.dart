@@ -152,7 +152,7 @@ class BuyState with ChangeNotifier {
 
   _initBuy() {
     _buy = Buy(
-        drawId: AppConstants().getThisWeekDrawId(),
+        drawId: AppConstants().getThisWeekDrawId() + 1,
         picks: [Pick.generate(isPicked: true)]);
   }
 

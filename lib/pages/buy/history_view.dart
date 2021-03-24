@@ -77,12 +77,12 @@ class HistoryView extends StatelessWidget {
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             '${buy.drawId}회',
             style: TextStyle(
-              fontSize: 26,
-              color: AppColors.primaryLight,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -90,7 +90,8 @@ class HistoryView extends StatelessWidget {
           Text(
             '당첨결과',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -98,7 +99,7 @@ class HistoryView extends StatelessWidget {
       SizedBox(height: 10),
       Text(
         '(${draw.getDrawDateString()} 추첨)',
-        style: TextStyle(color: Colors.grey),
+        style: TextStyle(color: AppColors.sub),
       ),
       SizedBox(height: 25),
       //== 당첨번호 영역 시작 ==//
@@ -122,8 +123,7 @@ class HistoryView extends StatelessWidget {
           Text(
             '${buy.drawId}회',
             style: TextStyle(
-              fontSize: 26,
-              color: AppColors.primaryLight,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -131,7 +131,8 @@ class HistoryView extends StatelessWidget {
           Text(
             '당첨결과',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -194,7 +195,7 @@ class HistoryView extends StatelessWidget {
                 width: 40,
                 child: Center(
                   child: Text(
-                    winNumbers != null ? pick.pickResult?.rankName ?? '' : '😴',
+                    winNumbers != null ? pick.pickResult?.rankName ?? '' : '🥱',
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -221,9 +222,9 @@ class HistoryView extends StatelessWidget {
       return [
         Text('축하합니다!'),
         Text(
-          '총 ${NumberFormat.decimalPattern('ko').format(totAmount)}원 당첨',
+          '총 ${NumberFormat.decimalPattern('ko').format(totAmount)}원 당첨 🤗',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -232,9 +233,9 @@ class HistoryView extends StatelessWidget {
       return [
         Text('조금 더 기다려 주세요,'),
         Text(
-          '아직 추첨 전 입니다.',
+          '아직 추첨 전 입니다. 🥱',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -243,9 +244,9 @@ class HistoryView extends StatelessWidget {
       return [
         Text('아쉽게도,'),
         Text(
-          '낙첨되었습니다.',
+          '낙첨되었습니다. 😢',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),

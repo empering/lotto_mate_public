@@ -13,7 +13,6 @@ class DrawList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppAppBar('회차별 당첨결과'),
-      backgroundColor: AppColors.background,
       body: ChangeNotifierProvider(
         create: (_) => DrawListState()..getDraws(),
         child: Container(
@@ -57,7 +56,10 @@ class DrawList extends StatelessWidget {
       children: [
         Text(
           '$id 회',
-          style: TextStyle(fontSize: 16.0, color: Colors.black),
+          style: TextStyle(
+            color: AppColors.primary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
@@ -95,26 +97,29 @@ class DrawList extends StatelessWidget {
               '1등 당첨금 💰',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.black,
+                color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              ' 총 ${draw.totalFirstPrizeAmount! ~/ 100000000} 억원',
+              ' 총 ${(draw.totalFirstPrizeAmount! / 100000000).round()} 억원',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.black,
+                color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(width: 10),
             Text(
-              '(${draw.firstPrizewinnerCount}명 / ${draw.eachFirstPrizeAmount! ~/ 100000000}억)',
-              style: TextStyle(color: Colors.grey),
+              '(${draw.firstPrizewinnerCount}명 / ${(draw.eachFirstPrizeAmount! / 100000000).round()}억)',
+              style: TextStyle(color: AppColors.sub),
             ),
           ],
         ),
-        Text('${draw.drawDate} 추첨'),
+        Text(
+          '${draw.drawDate} 추첨',
+          style: TextStyle(color: AppColors.primary),
+        ),
       ],
     );
   }

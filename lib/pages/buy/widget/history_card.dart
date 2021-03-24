@@ -18,33 +18,29 @@ class HistoryCard extends StatelessWidget {
         child: GridTileBar(
           trailing: AppCircleIconButton(
             icon: Icon(Icons.library_books),
-            backgroundColor: Colors.transparent,
-            iconColor: Colors.white,
             onPressed: () {
               Get.to(HistoryView(buy));
             },
           ),
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.backgroundLight,
           title: Text(
             '${buy.drawId} 회차',
-            style: TextStyle(
-              fontSize: 18,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
             ),
           ),
           subtitle: Text(
             '총 ${buy.picks!.length}회 응모',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontSize: 15,
             ),
           ),
         ),
       ),
       child: Material(
-        color: Colors.white,
-        elevation: 10.0,
+        color: AppColors.backgroundAccent,
+        elevation: 15.0,
         child: Column(
           children: buy.picks != null
               ? buy.picks!.map((e) => _buildPickNumbers(e)).take(4).toList()
@@ -62,7 +58,7 @@ class HistoryCard extends StatelessWidget {
         children: pick.numbers!
             .map((e) => LottoNumber(
                   number: e,
-                  fontSize: 14,
+                  fontSize: 13,
                 ))
             .toList(),
       ),

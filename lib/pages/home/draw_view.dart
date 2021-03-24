@@ -15,9 +15,9 @@ class DrawView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar('$drawId회 당첨결과'),
+      appBar: AppAppBar('당첨결과'),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(top: 20.0),
         child: ChangeNotifierProvider(
           create: (_) => DrawViewState(drawId)..getDraw(),
           child:
@@ -29,9 +29,21 @@ class DrawView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 DrawInfo(drawViewState.draw!),
-                _firstPrizesInfo(drawViewState.draw!),
-                SizedBox(height: 20.0),
-                _detailPrizesInfo(drawViewState.draw!),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundAccent,
+                    ),
+                    child: Column(
+                      children: [
+                        _firstPrizesInfo(drawViewState.draw!),
+                        SizedBox(height: 20.0),
+                        _detailPrizesInfo(drawViewState.draw!),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             );
           }),
@@ -63,7 +75,7 @@ class DrawView extends StatelessWidget {
             SizedBox(width: 10.0),
             Text(
               '총 ${draw.firstPrizewinnerCount}게임 당첨',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppColors.sub),
             ),
           ],
         ),
@@ -91,7 +103,7 @@ class DrawView extends StatelessWidget {
           },
           children: [
             TableRow(
-              decoration: const BoxDecoration(color: Colors.black12),
+              decoration: const BoxDecoration(color: AppColors.backgroundLight),
               children: [
                 _tableCell('순위'),
                 _tableCell('총 당첨금'),
@@ -133,10 +145,7 @@ class DrawView extends StatelessWidget {
       _tableCell(rankName),
       _tableCell(
         '${NumberFormat.decimalPattern().format(totalAmount)}원',
-        style: TextStyle(
-          color: AppColors.primaryLight,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold),
       ),
       _tableCell('$winCount'),
       _tableCell('${NumberFormat.decimalPattern().format(eachAmount)}원'),

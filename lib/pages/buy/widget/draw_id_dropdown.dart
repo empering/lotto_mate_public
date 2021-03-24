@@ -17,7 +17,7 @@ class DrawIdDropdown extends StatelessWidget {
     return DropdownButtonFormField<String>(
       value: '${buyState.buy!.drawId}',
       items: List<String>.generate(
-              25, (index) => '${buyState.thisWeekDrawId - index}')
+              25, (index) => '${buyState.thisWeekDrawId + 1 - index}')
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

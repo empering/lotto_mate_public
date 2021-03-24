@@ -19,7 +19,7 @@ class LottoNumberPad extends StatelessWidget {
           width: 1,
         ),
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary.withOpacity(0.3),
+        color: AppColors.accent,
       ),
       child: GridView.count(
         mainAxisSpacing: 5,

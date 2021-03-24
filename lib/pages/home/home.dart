@@ -7,7 +7,7 @@ import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
 import 'package:lotto_mate/states/draw_state.dart';
-import 'package:lotto_mate/widgets/app_flat_button.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
@@ -67,43 +67,72 @@ class Home extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '1등 총 당첨금',
+                      '🥇 1등 당첨금',
                       style: TextStyle(
                         fontSize: 20,
-                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '${draw.totalFirstPrizeAmount ~/ 100000000}억원',
+                          '${(draw.totalFirstPrizeAmount / 100000000).round()}억 ',
                           style: TextStyle(
-                            fontSize: 22,
-                            color: AppColors.primary,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 15),
-                        Text(
-                          '(${draw.firstPrizewinnerCount}명 / ${draw.eachFirstPrizeAmount ~/ 100000000}억)',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: AppColors.primary,
-                          ),
-                        ),
+                        Text('원'),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${(draw.eachFirstPrizeAmount / 100000000).round()}억 ',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text('원 씩 총'),
+                        Text(
+                          ' ${draw.firstPrizewinnerCount}',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text('명 지급'),
+                      ],
+                    ),
+                    /*SizedBox(height: 20),
                     Text(
-                      '총 판매금액 : ${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억원',
+                      '총 판매금액',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억 ',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text('원'),
+                      ],
+                    ),*/
                   ],
                 ),
                 AppTextButton(
@@ -114,13 +143,12 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(),
+            Divider(color: AppColors.light),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 AppTextButton(
-                  buttonColor: AppColors.primary,
-                  labelColor: AppColors.primaryLight,
+                  buttonColor: AppColors.light,
                   labelText: '회차별 당첨결과',
                   labelIcon: Icons.fact_check_outlined,
                   onPressed: () {
@@ -128,8 +156,7 @@ class Home extends StatelessWidget {
                   },
                 ),
                 AppTextButton(
-                  buttonColor: AppColors.primary,
-                  labelColor: AppColors.primaryLight,
+                  buttonColor: AppColors.light,
                   labelText: '당첨결과 상세',
                   labelIcon: Icons.saved_search,
                   onPressed: () {

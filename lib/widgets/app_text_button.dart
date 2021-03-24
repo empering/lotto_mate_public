@@ -10,7 +10,7 @@ class AppTextButton extends StatelessWidget {
   final bool disabled;
 
   AppTextButton(
-      {this.buttonColor = AppColors.accent,
+      {this.buttonColor = Colors.transparent,
       this.labelColor = AppColors.primary,
       this.labelIcon,
       this.labelText,
@@ -22,8 +22,8 @@ class AppTextButton extends StatelessWidget {
     return TextButton(
       onPressed: disabled ? null : onPressed,
       style: TextButton.styleFrom(
-        primary: disabled ? Colors.grey : labelColor,
-        backgroundColor: disabled ? Colors.grey.shade300 : buttonColor,
+        primary: disabled ? Colors.white : labelColor,
+        backgroundColor: disabled ? Colors.white : buttonColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

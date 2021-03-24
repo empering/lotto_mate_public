@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 
 class AppCircleIconButton extends StatelessWidget {
   final Color backgroundColor;
@@ -7,8 +8,8 @@ class AppCircleIconButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   AppCircleIconButton(
-      {this.backgroundColor = Colors.indigoAccent,
-      this.iconColor = Colors.white,
+      {this.backgroundColor = Colors.transparent,
+      this.iconColor = AppColors.primary,
       required this.icon,
       required this.onPressed});
 

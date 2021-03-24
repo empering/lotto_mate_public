@@ -25,7 +25,6 @@ class HistoryList extends StatelessWidget {
               ),
             ),
             body: Container(
-              color: AppColors.background,
               child: buyHistoryState.buys != null
                   ? this._makeGridView(buyHistoryState.buys!)
                   : Center(child: CircularProgressIndicator()),
