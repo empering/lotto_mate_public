@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/buy/history.dart';
@@ -18,41 +17,23 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DrawState(),
+      create: (_) => DrawState()..getDrawById(),
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppAppBar('로또🤣💥'),
-          body: FutureBuilder<QuerySnapshot>(
-              future: _firebaseFirestore
-                  .collection('draws')
-                  .orderBy('id', descending: true)
-                  .limit(10)
-                  .get(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  snapshot.data!.docs.forEach((element) {
-                    Provider.of<DrawState>(context).test(element);
-                  });
-
-                  return TabBarView(
-                    children: [
-                      Home(),
-                      History(),
-                      HistoryForm(),
-                      HistoryList(),
-                      Stats(),
-                    ],
-                  );
-                }
-
-                return Center(child: CircularProgressIndicator());
-              }),
+          body: TabBarView(
+            children: [
+              Home(),
+              History(),
+              HistoryForm(),
+              HistoryList(),
+              Stats(),
+            ],
+          ),
           bottomNavigationBar: Container(
             color: AppColors.primary,
             height: 60,

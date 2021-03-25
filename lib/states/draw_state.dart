@@ -11,9 +11,15 @@ class DrawState with ChangeNotifier {
 
   final DrawService _drawService = DrawService();
 
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+
   Draw? _draw;
 
   Draw? get draw => _draw;
+
+  DrawState() {
+    _syncDbFromFirebase();
+  }
 
   void getDrawById({int? id}) async {
     if (id == null) {
@@ -32,8 +38,8 @@ class DrawState with ChangeNotifier {
 
   void getNextDraw() async {
     var nextDrawId = _draw!.id! + 1;
-    var nextDrawDateTime =
-        DateTime.parse(_draw!.drawDate!).add(Duration(days: 7, hours: 11, minutes: 45));
+    var nextDrawDateTime = DateTime.parse(_draw!.drawDate!)
+        .add(Duration(days: 7, hours: 11, minutes: 45));
 
     if (DateTime.now().isBefore(nextDrawDateTime.add(Duration(minutes: 5)))) {
       Get.snackbar('다음 회차 추첨 결과가 없습니다', '''
@@ -47,13 +53,27 @@ class DrawState with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> test(QueryDocumentSnapshot element) async {
-    Draw d = Draw.fromFirestore(element.data()!);
-    Draw? d2 = await _drawService.getDrawById(d.id);
+  Future<void> syncDb(QueryDocumentSnapshot queryDocumentSnapshot) async {
+    Draw d = Draw.fromFirestore(queryDocumentSnapshot.data()!);
+    _drawService.save(d);
+  }
 
-    if (d2 == null) {
-      _drawService.save(d);
+  Future<int> getMaxDrawIdFromDb() async {
+    var draw = await _drawService.getLast();
+    return draw == null ? 0 : draw.id ?? 0;
+  }
 
+  void _syncDbFromFirebase() async {
+    int maxDrawId = await this.getMaxDrawIdFromDb();
+    if (maxDrawId < AppConstants().getThisWeekDrawId()) {
+      QuerySnapshot snapshot = await _firebaseFirestore
+          .collection('draws')
+          .where('id', isGreaterThan: maxDrawId)
+          .get();
+
+      snapshot.docs.forEach((queryDocumentSnapshot) {
+        this.syncDb(queryDocumentSnapshot);
+      });
     }
   }
 }
