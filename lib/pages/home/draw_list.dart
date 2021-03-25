@@ -28,35 +28,29 @@ class DrawList extends StatelessWidget {
   _makeDrawListView(DrawListState drawListState) {
     var draws = drawListState.draws;
 
-    return ListView.builder(
+    return ListView.separated(
+      controller: drawListState.listViewController,
       padding: const EdgeInsets.all(10.0),
+      separatorBuilder: (context, index) => Divider(),
       itemCount: draws.length + 1,
       itemBuilder: (context, index) {
         if (index < draws.length) {
-          return Column(
-            children: [
-              ListTile(
-                leading: _makeDrawListLeading(draws[index].id),
-                title: _makeDrawListViewTitle(draws[index]),
-                subtitle: _makeDrawListViewSubTitle(draws[index]),
-                dense: true,
-                isThreeLine: true,
-                onTap: () {
-                  Get.to(DrawView(draws[index].id!));
-                },
-              ),
-              Divider(),
-            ],
+          return ListTile(
+            leading: _makeDrawListLeading(draws[index].id),
+            title: _makeDrawListViewTitle(draws[index]),
+            subtitle: _makeDrawListViewSubTitle(draws[index]),
+            dense: true,
+            isThreeLine: true,
+            onTap: () {
+              Get.to(DrawView(draws[index].id!));
+            },
           );
         }
 
         if (drawListState.hasMore) {
-          drawListState.offset = draws.length;
-          drawListState.getDraws();
-
-          return Center(child: CircularProgressIndicator());
+          return Center(child: RefreshProgressIndicator());
         } else {
-          return Center(child: Text('데이터가 더이상 없습니다.'));
+          return Center(child: Text('더 이상 데이터가 없습니다'));
         }
       },
     );
