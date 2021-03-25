@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
@@ -13,30 +12,27 @@ import 'package:provider/provider.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DrawState()..getDrawById(),
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Consumer<DrawState>(
-                builder: (context, drawState, child) => Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: _makeLottoDrawInfo(context, drawState.draw),
-                  ),
+    return Container(
+      padding: const EdgeInsets.only(bottom: 25),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Consumer<DrawState>(
+              builder: (context, drawState, child) => Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _makeLottoDrawInfo(context, drawState.draw),
                 ),
               ),
             ),
-            Divider(),
-            Container(
-              height: 150,
-              color: AppColors.backgroundAccent,
-            ),
-          ],
-        ),
+          ),
+          Divider(),
+          Container(
+            height: 150,
+            color: AppColors.backgroundAccent,
+          ),
+        ],
       ),
     );
   }
