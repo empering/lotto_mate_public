@@ -51,49 +51,7 @@ class HistoryViewState extends ChangeNotifier {
   }
 
   _setRank(Pick pick) {
-    int rank = 0;
-    int count = 0;
-
-    _draw?.numbers?.take(6).forEach((drawNumber) {
-      if (pick.numbers!.contains(drawNumber)) {
-        count++;
-      }
-    });
-
-    switch (count) {
-      case 6:
-        rank = 1;
-        break;
-
-      case 5:
-        {
-          if (pick.numbers!.contains(_draw!.numbers!.last)) {
-            rank = 2;
-          } else {
-            rank = 3;
-          }
-        }
-        break;
-
-      case 4:
-        rank = 4;
-        break;
-
-      case 3:
-        rank = 5;
-        break;
-    }
-
-    pick.pickResult!.pickId = pick.id;
-    pick.pickResult!.rank = rank;
-    pick.pickResult!.rankName = rank > 0 ? '$rank등' : '낙첨';
-    pick.pickResult!.amount = _draw?.prizes!
-        .singleWhere(
-          (p) => p.rank == rank,
-          orElse: () => Prize(eachAmount: 0),
-        )
-        .eachAmount;
-
+    pick.pickResult = _buyService.calcPickResult(pick, _draw!);
     _buyService.savePickResult(pick.pickResult!);
   }
 }

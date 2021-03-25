@@ -1,5 +1,7 @@
 import 'package:lotto_mate/models/buy.dart';
+import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/draw_history.dart';
+import 'package:lotto_mate/models/prize.dart';
 import 'package:lotto_mate/repositories/repository.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -50,6 +52,59 @@ class BuyService {
   void savePickResult(PickResult pickResult) async {
     await _pickResultRepository.insert(pickResult.toDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  PickResult calcPickResult(Pick pick, Draw draw) {
+    int rank = _getRank(pick, draw.numbers!);
+
+    var pickResult = PickResult();
+    pickResult.pickId = pick.id;
+    pickResult.rank = rank;
+    pickResult.rankName = rank > 0 ? '$rank등' : '낙첨';
+    pickResult.amount = draw.prizes!
+        .singleWhere(
+          (p) => p.rank == rank,
+          orElse: () => Prize(eachAmount: 0),
+        )
+        .eachAmount;
+
+    return pickResult;
+  }
+
+  int _getRank(Pick pick, List<int?> numbers) {
+    int rank = 0;
+    int count = 0;
+    numbers.take(6).forEach((drawNumber) {
+      if (pick.numbers!.contains(drawNumber)) {
+        count++;
+      }
+    });
+
+    switch (count) {
+      case 6:
+        rank = 1;
+        break;
+
+      case 5:
+        {
+          if (pick.numbers!.contains(numbers.last)) {
+            rank = 2;
+          } else {
+            rank = 3;
+          }
+        }
+        break;
+
+      case 4:
+        rank = 4;
+        break;
+
+      case 3:
+        rank = 5;
+        break;
+    }
+
+    return rank;
   }
 
   Future<DrawHistory> getBuySummary({int? startId, int? endId}) async {
