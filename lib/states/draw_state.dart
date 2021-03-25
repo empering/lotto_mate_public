@@ -3,13 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/api/lotto_api.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
+import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/models/draw.dart';
+import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
 class DrawState with ChangeNotifier {
   final LottoApi _lottoApi = LottoApi();
 
   final DrawService _drawService = DrawService();
+
+  final BuyService _buyService = BuyService();
 
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
@@ -55,7 +59,14 @@ class DrawState with ChangeNotifier {
 
   Future<void> syncDb(QueryDocumentSnapshot queryDocumentSnapshot) async {
     Draw d = Draw.fromFirestore(queryDocumentSnapshot.data()!);
-    _drawService.save(d);
+    await _drawService.save(d);
+
+    Buy buy = await _buyService.getByDrawId(d.id!);
+    buy.picks?.forEach((pick) {
+      if (pick.pickResult?.pickId == null) {
+        _buyService.savePickResult(_buyService.calcPickResult(pick, d));
+      }
+    });
   }
 
   Future<int> getMaxDrawIdFromDb() async {

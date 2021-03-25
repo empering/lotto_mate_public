@@ -49,6 +49,32 @@ class BuyService {
     return buys;
   }
 
+  Future<Buy> getByDrawId(int drawId) async {
+    Buy buy = await _buyRepository.getByWhere(
+        where: 'drawId = ?',
+        whereArgs: [drawId]).then((buyMap) => Buy.fromDb(buyMap.first));
+
+    _pickResultRepository.getByWhere(
+        where: 'buyId = ?', whereArgs: [buy.id]).then((picksMap) async {
+      buy.picks =
+          picksMap.map<Pick>((pickMap) => Pick.fromDb(pickMap)).toList();
+
+      if ((buy.picks ?? []).length > 0) {
+        await Future.forEach(
+          buy.picks!,
+          (Pick pick) => _pickResultRepository.getByWhere(
+              where: "pickId = ?", whereArgs: [pick.id]).then((pickResultMap) {
+            pick.pickResult = pickResultMap.length == 0
+                ? PickResult()
+                : PickResult.fromDb(pickResultMap.first);
+          }),
+        );
+      }
+    });
+
+    return buy;
+  }
+
   void savePickResult(PickResult pickResult) async {
     await _pickResultRepository.insert(pickResult.toDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
