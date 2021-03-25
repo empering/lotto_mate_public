@@ -15,7 +15,7 @@ class DrawHistory {
   factory DrawHistory.fromDb(Map<String, dynamic> map) => DrawHistory(
         drawCount: map['drawCount'] ?? 0,
         buyAmount: map['buyAmount'] ?? 0,
-        buyCount: map['buyAmount'] ?? 0 ~/ 1000,
+        buyCount: (map['buyAmount'] ?? 0) ~/ 1000,
         winAmount: map['winAmount'] ?? 0,
         winCount: map['winCount'] ?? 0,
       );

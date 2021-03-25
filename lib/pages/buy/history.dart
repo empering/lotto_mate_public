@@ -230,7 +230,7 @@ class History extends StatelessWidget {
                     ),
                     SizedBox(width: 10.0),
                     Text(
-                      '(${myHistory.winCount} 회 당첨 / ${myHistory.buyCount} 회 구매)',
+                      '(${myHistory.winCount} 게임 당첨 / ${myHistory.buyCount} 게임 구매)',
                       style: TextStyle(color: AppColors.sub),
                     ),
                   ],
@@ -268,7 +268,7 @@ class History extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 - ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
+                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 원 당첨 - ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 원 구매)',
                   style: TextStyle(color: AppColors.sub),
                 ),
                 SizedBox(height: 10),
@@ -281,7 +281,7 @@ class History extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 당첨 / ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 구매)',
+                  '(${NumberFormat.decimalPattern().format(myHistory.winAmount)} 원 당첨 / ${NumberFormat.decimalPattern().format(myHistory.buyAmount)} 원 구매)',
                   style: TextStyle(color: AppColors.sub),
                 ),
               ],
