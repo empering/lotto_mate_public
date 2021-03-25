@@ -95,7 +95,7 @@ class History extends StatelessWidget {
 
   _makeSearchTypeDropDown() {
     return Consumer<HistoryState>(builder: (_, historyState, __) {
-      return DropdownButtonFormField<String>(
+      return DropdownButton<String>(
         value: historyState.searchType,
         items: [
           DropdownMenuItem<String>(
@@ -117,10 +117,6 @@ class History extends StatelessWidget {
         ],
         onChanged: (value) {
           historyState.setSearchType(value!);
-        },
-        onSaved: (newValue) {
-          print('onSaved');
-          print(newValue);
         },
       );
     });
@@ -153,14 +149,23 @@ class History extends StatelessWidget {
     );
   }
 
+  _makeSearchValues() {
+    return ListWheelScrollView(
+      itemExtent: 42,
+      children: List.generate(950, (index) => Text('${index + 1} 회')).toList(),
+    );
+  }
+
   _makeSearchValueDropDown({bool isStart = true}) {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
-        return DropdownButtonFormField<String>(
+        return DropdownButton<String>(
           value: isStart
               ? historyState.searchStartValue
               : historyState.searchEndValue,
-          items: historyState.searchValues
+          items: (isStart
+                  ? historyState.searchValues
+                  : historyState.searchValues.reversed)
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -174,7 +179,6 @@ class History extends StatelessWidget {
 
             historyState.getHistory();
           },
-          onSaved: (String? value) {},
         );
       },
     );
@@ -318,7 +322,7 @@ class History extends StatelessWidget {
                 Text('원'),
                 SizedBox(width: 10.0),
                 Text(
-                  '(1게임당 평균 ${(drawHistory.winAmount! / drawHistory.winCount! / 100000000).round()} 억원)',
+                  '(1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount! / drawHistory.winCount! / 100000000).round()} 억원)',
                   style: TextStyle(color: AppColors.sub),
                 ),
               ],
@@ -338,7 +342,9 @@ class History extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount! / drawHistory.buyCount!)}',
+                  drawHistory.buyCount == 0
+                      ? '-'
+                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount! / drawHistory.buyCount!)}',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,

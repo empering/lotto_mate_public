@@ -13,11 +13,11 @@ class DrawHistory {
       this.winCount});
 
   factory DrawHistory.fromDb(Map<String, dynamic> map) => DrawHistory(
-        drawCount: map['drawCount'],
-        buyAmount: map['buyAmount'],
-        buyCount: map['buyAmount'] ~/ 1000,
-        winAmount: map['winAmount'],
-        winCount: map['winCount'],
+        drawCount: map['drawCount'] ?? 0,
+        buyAmount: map['buyAmount'] ?? 0,
+        buyCount: map['buyAmount'] ?? 0 ~/ 1000,
+        winAmount: map['winAmount'] ?? 0,
+        winCount: map['winCount'] ?? 0,
       );
 
   @override
