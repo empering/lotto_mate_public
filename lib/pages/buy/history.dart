@@ -160,6 +160,7 @@ class History extends StatelessWidget {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
         return DropdownButton<String>(
+          isExpanded: true,
           value: isStart
               ? historyState.searchStartValue
               : historyState.searchEndValue,
