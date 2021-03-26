@@ -149,13 +149,6 @@ class History extends StatelessWidget {
     );
   }
 
-  _makeSearchValues() {
-    return ListWheelScrollView(
-      itemExtent: 42,
-      children: List.generate(950, (index) => Text('${index + 1} 회')).toList(),
-    );
-  }
-
   _makeSearchValueDropDown({bool isStart = true}) {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
