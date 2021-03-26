@@ -149,7 +149,7 @@ class BuyService {
     ''';
     var args = [];
     if (startId != null && endId != null) {
-      sql += 'where a.id >= ? and a.id <= ?';
+      sql += 'where a.drawId >= ? and a.drawId <= ?';
       args = [startId, endId];
     }
 
