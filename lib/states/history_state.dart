@@ -1,9 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
-import 'package:lotto_mate/models/buy.dart';
-import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/draw_history.dart';
-import 'package:lotto_mate/models/prize.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
@@ -33,7 +30,7 @@ class HistoryState extends ChangeNotifier {
   setSearchDrawValues() {
     int maxDrawId = AppConstants().getThisWeekDrawId();
     _searchValues =
-        List<String>.generate(maxDrawId - 1, (index) => '${index + 1}')
+        List<String>.generate(maxDrawId, (index) => '${index + 1}')
             .toList();
   }
 
