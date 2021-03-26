@@ -14,7 +14,7 @@ class DrawIdDropdown extends StatelessWidget {
   }
 
   _makeDrawIdDropDownButton(BuyState buyState) {
-    return DropdownButtonFormField<String>(
+    return DropdownButton<String>(
       value: '${buyState.buy!.drawId}',
       items: List<String>.generate(
               25, (index) => '${buyState.thisWeekDrawId + 1 - index}')
@@ -24,9 +24,8 @@ class DrawIdDropdown extends StatelessWidget {
           child: Text('$value회'),
         );
       }).toList(),
-      onChanged: (String? newValue) {},
-      onSaved: (String? value) {
-        buyState.setDrawId = int.parse(value!);
+      onChanged: (String? newValue) {
+        buyState.setDrawId = int.parse(newValue!);
       },
     );
   }
