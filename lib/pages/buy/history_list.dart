@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/pages/buy/widget/history_card.dart';
 import 'package:lotto_mate/states/buy_history_state.dart';
+import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class HistoryList extends StatelessWidget {
@@ -13,17 +13,7 @@ class HistoryList extends StatelessWidget {
       child: Consumer<BuyHistoryState>(
         builder: (context, buyHistoryState, child) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                '구매내역 상세',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              iconTheme: IconThemeData(
-                color: Colors.black,
-              ),
-            ),
+            appBar: AppAppBar('나의 로또 히스토리'),
             body: Container(
               child: buyHistoryState.buys != null
                   ? this._makeGridView(buyHistoryState.buys!)
