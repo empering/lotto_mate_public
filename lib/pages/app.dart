@@ -1,4 +1,6 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/buy/history.dart';
 import 'package:lotto_mate/pages/buy/history_form.dart';
@@ -14,64 +16,66 @@ class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  TabController? _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 5, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => DrawState()..getDrawById(),
-      child: DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          appBar: AppAppBar('로또🤣💥'),
-          body: TabBarView(
-            children: [
-              Home(),
-              History(),
-              HistoryForm(),
-              HistoryList(),
-              Stats(),
-            ],
-          ),
-          bottomNavigationBar: Container(
-            color: AppColors.primary,
-            height: 60,
-            child: TabBar(
-              labelColor: AppColors.accent,
-              unselectedLabelColor: AppColors.sub,
-              indicatorColor: AppColors.accent,
-              labelStyle: TextStyle(fontSize: 12.0, fontFamily: 'CookieRun'),
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.home_outlined),
-                  text: '홈',
-                  iconMargin: EdgeInsets.only(bottom: 3),
-                ),
-                Tab(
-                  icon: Icon(Icons.fact_check_outlined),
-                  text: '당첨결과',
-                  iconMargin: EdgeInsets.only(bottom: 3),
-                ),
-                Tab(
-                  icon: Icon(Icons.add_circle_outline),
-                  iconMargin: EdgeInsets.only(bottom: 3),
-                ),
-                Tab(
-                  icon: Icon(Icons.insights),
-                  text: '번호생성',
-                  iconMargin: EdgeInsets.only(bottom: 3),
-                ),
-                Tab(
-                  icon: Icon(Icons.analytics_outlined),
-                  text: '통계',
-                  iconMargin: EdgeInsets.only(bottom: 3),
-                ),
-              ],
-            ),
-          ),
+      child: Scaffold(
+        appBar: AppAppBar('로또🤣💥'),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            Home(),
+            History(),
+            HistoryForm(),
+            HistoryList(),
+            Stats(),
+          ],
         ),
+        bottomNavigationBar: _makeConvexBottomNavigationBar(),
       ),
+    );
+  }
+
+  _makeConvexBottomNavigationBar() {
+    return ConvexAppBar(
+      controller: _tabController,
+      style: TabStyle.textIn,
+      backgroundColor: AppColors.primary,
+      activeColor: AppColors.light,
+      color: AppColors.sub,
+      items: [
+        TabItem(icon: Icons.home_outlined, title: '홈'),
+        TabItem(icon: Icons.fact_check_outlined, title: '당첨결과'),
+        TabItem(
+          icon: Icon(
+            Icons.add_circle_outline,
+            color: AppColors.accent,
+          ),
+          title: '등록',
+        ),
+        TabItem(icon: Icons.auto_awesome, title: '번호생성'),
+        TabItem(icon: Icons.analytics_outlined, title: '통계'),
+      ],
+      onTabNotify: (index) {
+        var intercept = index == 2;
+        if (intercept) {
+          Get.to(HistoryForm());
+        }
+
+        return !intercept;
+      },
     );
   }
 }
