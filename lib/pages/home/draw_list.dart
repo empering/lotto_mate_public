@@ -94,39 +94,57 @@ class DrawList extends StatelessWidget {
   }
 
   _makeDrawListViewSubTitle(Draw draw) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              '1등 당첨금 💰',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '1등 당첨금',
+            style: TextStyle(
+              fontSize: 16.0,
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          VerticalDivider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                children: [
+                  Text('총'),
+                  Text(
+                    ' ${(draw.totalFirstPrizeAmount! / 100000000).round()}억 ',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '원',
+                    style: TextStyle(color: AppColors.primary),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    '(${draw.firstPrizewinnerCount}명 / ${(draw.eachFirstPrizeAmount! / 100000000).round()}억)',
+                    style: TextStyle(color: AppColors.sub),
+                  ),
+                ],
               ),
-            ),
-            Text(
-              ' 총 ${(draw.totalFirstPrizeAmount! / 100000000).round()} 억원',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
+              Text(
+                '${draw.drawDate} 추첨',
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(width: 10),
-            Text(
-              '(${draw.firstPrizewinnerCount}명 / ${(draw.eachFirstPrizeAmount! / 100000000).round()}억)',
-              style: TextStyle(color: AppColors.sub),
-            ),
-          ],
-        ),
-        Text(
-          '${draw.drawDate} 추첨',
-          style: TextStyle(color: AppColors.primary),
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
