@@ -35,6 +35,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         appBar: AppAppBar('로또🤣💥'),
         body: TabBarView(
           controller: _tabController,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Home(),
             History(),
