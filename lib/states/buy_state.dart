@@ -36,7 +36,6 @@ class BuyState with ChangeNotifier {
       if (notEmptyNumberCount < 6) {
         _canSave = false;
       }
-
     });
   }
 
@@ -113,15 +112,17 @@ class BuyState with ChangeNotifier {
     notifyListeners();
   }
 
-  popNumber(int? number) {
-    Pick pick = this.getPicked();
+  popNumber(Pick pick, int? number) {
+    this.setPickedThis(pick);
+    if (number != null) {
+      var numberIndex = pick.numbers!.indexOf(number);
+      pick.numbers![numberIndex] = null;
 
-    var numberIndex = pick.numbers!.indexOf(number);
-    pick.numbers![numberIndex] = null;
+      _sortNumbers(pick.numbers!);
 
-    _sortNumbers(pick.numbers!);
+      _setCanSave();
+    }
 
-    _setCanSave();
     notifyListeners();
   }
 
@@ -167,5 +168,4 @@ class BuyState with ChangeNotifier {
       }
     });
   }
-
 }

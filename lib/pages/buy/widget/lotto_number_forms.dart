@@ -60,7 +60,7 @@ class LottoNumberForms extends StatelessWidget {
                         padding: const EdgeInsets.all(4.0),
                         child: GestureDetector(
                           onTap: () {
-                            buyState.popNumber(value);
+                            buyState.popNumber(pick, value);
                           },
                           child: LottoNumber(number: value),
                         ),
