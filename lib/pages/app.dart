@@ -6,6 +6,7 @@ import 'package:lotto_mate/pages/buy/history.dart';
 import 'package:lotto_mate/pages/buy/history_form.dart';
 import 'package:lotto_mate/pages/buy/history_list.dart';
 import 'package:lotto_mate/pages/home/home.dart';
+import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
 import 'package:lotto_mate/states/draw_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
@@ -40,7 +41,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             Home(),
             History(),
             HistoryForm(),
-            HistoryList(),
+            Recommend(),
             Stats(),
           ],
         ),
