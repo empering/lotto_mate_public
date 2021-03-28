@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lotto_mate/pages/buy/widget/draw_id_dropdown.dart';
 import 'package:lotto_mate/pages/buy/widget/form_button.dart';
 import 'package:lotto_mate/pages/buy/widget/lotto_number_forms.dart';
-import 'package:lotto_mate/pages/buy/widget/lotto_number_pad.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/lotto_number_pad.dart';
 import 'package:provider/provider.dart';
 
 class HistoryForm extends StatelessWidget {
@@ -33,7 +33,11 @@ class HistoryForm extends StatelessWidget {
                       ],
                     ),
                   ),
-                  LottoNumberPad(),
+                  LottoNumberPad(numberPicked: (value) {
+                    if (value != null) {
+                      buyHistoryState.pickNumber(value);
+                    }
+                  }),
                   FormButton(),
                   SizedBox(
                     height: 20,
