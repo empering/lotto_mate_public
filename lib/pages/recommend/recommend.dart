@@ -11,25 +11,22 @@ import 'package:provider/provider.dart';
 class Recommend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RecommendState(),
-      child: Scaffold(
-        body: Consumer<RecommendState>(
-          builder: (_, recommendState, __) => Container(
-            child: ListView(
-              children: [..._makeOption(recommendState)],
-            ),
-          ),
+    RecommendState recommendState = context.watch<RecommendState>();
+
+    return Scaffold(
+      body: Container(
+        child: ListView(
+          children: [..._makeOption(recommendState)],
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.accent,
-          splashColor: AppColors.accent,
-          onPressed: () {
-            Get.to(RecommendResult());
-          },
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.check),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.accent,
+        splashColor: AppColors.accent,
+        onPressed: () {
+          Get.to(RecommendResult());
+        },
       ),
     );
   }

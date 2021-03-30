@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
+import 'package:lotto_mate/states/recommend_state.dart';
+import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -73,30 +75,35 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Lotto Mate',
-      theme: ThemeData(
-        // brightness: Brightness.dark,
-        primaryColor: AppColors.primary,
-        accentColor: AppColors.accent,
-        backgroundColor: AppColors.backgroundLight,
-        scaffoldBackgroundColor: AppColors.backgroundLight,
-        dividerColor: AppColors.accent,
-        fontFamily: 'CookieRun',
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.backgroundAccent,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<RecommendState>(create: (_) => RecommendState()),
+      ],
+      child: GetMaterialApp(
+        title: 'Lotto Mate',
+        theme: ThemeData(
+          // brightness: Brightness.dark,
+          primaryColor: AppColors.primary,
+          accentColor: AppColors.accent,
+          backgroundColor: AppColors.backgroundLight,
+          scaffoldBackgroundColor: AppColors.backgroundLight,
+          dividerColor: AppColors.accent,
+          fontFamily: 'CookieRun',
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.backgroundAccent,
+          ),
+          textTheme: TextTheme(
+            bodyText1: TextStyle(),
+            bodyText2: TextStyle(color: AppColors.accent),
+          ).apply(bodyColor: AppColors.primary),
+          iconTheme: IconThemeData(
+            color: AppColors.primary,
+          ),
         ),
-        textTheme: TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(color: AppColors.accent),
-        ).apply(bodyColor: AppColors.primary),
-        iconTheme: IconThemeData(
-          color: AppColors.primary,
-        ),
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        supportedLocales: [const Locale('ko', 'KR')],
+        home: AppInit(),
       ),
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: [const Locale('ko', 'KR')],
-      home: AppInit(),
     );
   }
 }
