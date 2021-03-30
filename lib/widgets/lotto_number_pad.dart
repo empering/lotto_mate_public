@@ -4,26 +4,29 @@ import 'package:lotto_mate/widgets/lotto_number.dart';
 
 class LottoNumberPad extends StatelessWidget {
   final ValueSetter<int>? numberPicked;
+  final double fontSize;
 
-  LottoNumberPad({required ValueChanged<int?>? this.numberPicked});
+  LottoNumberPad({
+    required ValueChanged<int?>? this.numberPicked,
+    this.fontSize = 17.0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: (this.fontSize + 20) * 6,
       padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       decoration: BoxDecoration(
         border: Border.all(
           color: AppColors.primary,
-          width: 1,
         ),
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.accent,
+        color: AppColors.accent.withOpacity(0.3),
       ),
       child: GridView.count(
         mainAxisSpacing: 5,
-        crossAxisSpacing: 10,
+        crossAxisSpacing: 5,
         crossAxisCount: 10,
         children: _makeLottoNumbers(),
       ),
@@ -39,7 +42,7 @@ class LottoNumberPad extends StatelessWidget {
         },
         child: LottoNumber(
           number: index + 1,
-          fontSize: 17,
+          fontSize: fontSize,
         ),
       ),
     );
