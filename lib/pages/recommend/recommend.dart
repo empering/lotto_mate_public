@@ -56,8 +56,9 @@ class Recommend extends StatelessWidget {
               onPressed: () {},
             )),
       ),
-      Container(
-        child: LottoNumberPad(
+      ListTile(
+        title: LottoNumberPad(
+          fontSize: 14.0,
           numberPicked: (number) {
             if (number == null) return;
 
