@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/states/history_view_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class HistoryView extends StatelessWidget {
   final Buy buy;
@@ -25,7 +26,7 @@ class HistoryView extends StatelessWidget {
             builder: (context, historyViewState, child) {
               if (historyViewState.loading) {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: AppIndicator(),
                 );
               }
 
@@ -177,7 +178,7 @@ class HistoryView extends StatelessWidget {
     var result = [];
 
     if (picks == null) {
-      result.add(Center(child: CircularProgressIndicator()));
+      result.add(Center(child: AppIndicator()));
     } else {
       picks.forEach((pick) {
         result.add(SizedBox(height: 10));

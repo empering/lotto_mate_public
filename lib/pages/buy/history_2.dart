@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/models/draw.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 
 import 'history_form.dart';
@@ -34,12 +35,12 @@ class History2 extends StatelessWidget {
               );
             }
 
-            return Center(child: CircularProgressIndicator());
+            return Center(child: AppIndicator());
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HistoryForm()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HistoryForm()));
         },
         child: Icon(Icons.add),
       ),
@@ -94,14 +95,13 @@ class History2 extends StatelessWidget {
               contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               trailing: IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () {
-                },
+                onPressed: () {},
               ),
             ),
           );
         }
 
-        return Center(child: CircularProgressIndicator());
+        return Center(child: AppIndicator());
       },
     );
   }

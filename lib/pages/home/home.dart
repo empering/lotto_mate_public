@@ -5,6 +5,7 @@ import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
 import 'package:lotto_mate/states/draw_state.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,7 @@ class Home extends StatelessWidget {
 
   _makeLottoDrawInfo(BuildContext context, draw) {
     if (draw == null) {
-      return [CircularProgressIndicator()];
+      return [AppIndicator()];
     }
 
     return <Widget>[

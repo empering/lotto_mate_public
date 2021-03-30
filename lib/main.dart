@@ -133,7 +133,7 @@ class _AppInitState extends State<AppInit> {
     //       return App();
     //     }
     //
-    //     return Center(child: CircularProgressIndicator());
+    //     return Center(child: AppIndicator());
     //   },
     // );
   }

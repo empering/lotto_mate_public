@@ -5,6 +5,7 @@ import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/states/draw_view_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:provider/provider.dart';
 
 class DrawView extends StatelessWidget {
@@ -23,7 +24,7 @@ class DrawView extends StatelessWidget {
           child:
               Consumer<DrawViewState>(builder: (context, drawViewState, child) {
             if (drawViewState.draw == null) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: AppIndicator());
             }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,

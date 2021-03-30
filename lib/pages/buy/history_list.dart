@@ -3,6 +3,7 @@ import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/pages/buy/widget/history_card.dart';
 import 'package:lotto_mate/states/buy_history_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:provider/provider.dart';
 
 class HistoryList extends StatelessWidget {
@@ -17,7 +18,7 @@ class HistoryList extends StatelessWidget {
             body: Container(
               child: buyHistoryState.buys != null
                   ? this._makeGridView(buyHistoryState.buys!)
-                  : Center(child: CircularProgressIndicator()),
+                  : Center(child: AppIndicator()),
             ),
           );
         },

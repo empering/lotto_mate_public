@@ -6,6 +6,7 @@ import 'package:lotto_mate/models/draw_history.dart';
 import 'package:lotto_mate/pages/buy/history_list.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/states/history_state.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 
@@ -180,7 +181,7 @@ class History extends StatelessWidget {
 
   _makeMyStatInfo(DrawHistory? myHistory) {
     if (myHistory == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: AppIndicator());
     }
 
     return Container(
@@ -288,7 +289,7 @@ class History extends StatelessWidget {
 
   _makeTotalStatInfo(DrawHistory? drawHistory) {
     if (drawHistory == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: AppIndicator());
     }
 
     return Container(

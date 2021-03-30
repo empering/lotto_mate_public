@@ -5,6 +5,7 @@ import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,7 @@ class DrawList extends StatelessWidget {
         }
 
         if (drawListState.hasMore) {
-          return Center(child: RefreshProgressIndicator());
+          return Center(child: AppIndicator());
         } else {
           return Center(child: Text('더 이상 데이터가 없습니다'));
         }
