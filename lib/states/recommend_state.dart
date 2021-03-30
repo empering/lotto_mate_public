@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 enum LottoColors {
@@ -8,10 +10,7 @@ enum LottoColors {
   green,
 }
 
-enum LottoEvenOdd {
-  even,
-  odd
-}
+enum LottoEvenOdd { even, odd }
 
 class RecommendState with ChangeNotifier {
   Set<int> _numbers = {};
@@ -81,5 +80,26 @@ class RecommendState with ChangeNotifier {
     _evenOdd[evenOdd] = count;
 
     notifyListeners();
+  }
+
+  Future<List<List<int>>> getRecommends({int loopCount = 5}) async {
+    await Future.delayed(Duration(seconds: 2));
+
+    List<List<int>> recommends = [];
+    for (var i = 0; i < loopCount; i++) {
+      recommends.add(_generateNumbers());
+    }
+
+    return recommends;
+  }
+
+  _generateNumbers() {
+    var random = Random();
+    Set<int> generateNumbers = {};
+    while (generateNumbers.length < 6) {
+      generateNumbers.add(random.nextInt(45) + 1);
+    }
+
+    return generateNumbers.toList()..sort();
   }
 }
