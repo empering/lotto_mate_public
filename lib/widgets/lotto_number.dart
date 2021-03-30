@@ -22,7 +22,7 @@ class LottoNumber extends StatelessWidget {
           ),
         ),
       ),
-      elevation: this.fontSize / 2,
+      elevation: number != null ? this.fontSize / 2 : 0.0,
       shape: CircleBorder(),
       clipBehavior: Clip.antiAlias,
     );
