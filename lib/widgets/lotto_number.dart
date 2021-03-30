@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 
 class LottoNumber extends StatelessWidget {
   final int? number;
@@ -9,15 +10,21 @@ class LottoNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: this.fontSize * 2,
-      child: CircleAvatar(
-        backgroundColor: _getColor(),
-        child: Text(
-          number == null ? '' : '$number',
-          style: TextStyle(color: Colors.white, fontSize: this.fontSize),
+    return Material(
+      color: _getColor(),
+      child: Container(
+        width: this.fontSize * 2,
+        padding: EdgeInsets.all(this.fontSize / 5),
+        child: Center(
+          child: Text(
+            number == null ? '' : '$number',
+            style: TextStyle(color: AppColors.light, fontSize: this.fontSize),
+          ),
         ),
       ),
+      elevation: this.fontSize / 2,
+      shape: CircleBorder(),
+      clipBehavior: Clip.antiAlias,
     );
   }
 
