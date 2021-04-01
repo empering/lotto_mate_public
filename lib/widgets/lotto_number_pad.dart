@@ -36,14 +36,12 @@ class LottoNumberPad extends StatelessWidget {
   _makeLottoNumbers() {
     return List<Widget>.generate(
       45,
-      (index) => GestureDetector(
-        onTap: () {
-          this.numberPicked!(index + 1);
+      (index) => LottoNumber(
+        number: index + 1,
+        fontSize: fontSize,
+        numberPicked: (int number) {
+          this.numberPicked!(number);
         },
-        child: LottoNumber(
-          number: index + 1,
-          fontSize: fontSize,
-        ),
       ),
     );
   }

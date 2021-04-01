@@ -5,26 +5,33 @@ class LottoNumber extends StatelessWidget {
   final int? number;
   final double fontSize;
   final List<int?>? winNumbers;
+  final ValueSetter<int>? numberPicked;
 
-  LottoNumber({this.number, this.winNumbers, this.fontSize = 20});
+  LottoNumber(
+      {this.number, this.winNumbers, this.fontSize = 20, this.numberPicked});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: _getColor(),
-      child: Container(
-        width: this.fontSize * 2,
-        padding: EdgeInsets.all(this.fontSize / 5),
-        child: Center(
-          child: Text(
-            number == null ? '' : '$number',
-            style: TextStyle(color: AppColors.light, fontSize: this.fontSize),
+    return GestureDetector(
+      onTap: () {
+        this.numberPicked!(this.number!);
+      },
+      child: Material(
+        color: _getColor(),
+        child: Container(
+          width: this.fontSize * 2,
+          padding: EdgeInsets.all(this.fontSize / 5),
+          child: Center(
+            child: Text(
+              number == null ? '' : '$number',
+              style: TextStyle(color: AppColors.light, fontSize: this.fontSize),
+            ),
           ),
         ),
+        elevation: number != null ? this.fontSize / 2 : 0.0,
+        shape: CircleBorder(),
+        clipBehavior: Clip.antiAlias,
       ),
-      elevation: number != null ? this.fontSize / 2 : 0.0,
-      shape: CircleBorder(),
-      clipBehavior: Clip.antiAlias,
     );
   }
 
