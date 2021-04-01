@@ -56,6 +56,9 @@ class Recommend extends StatelessWidget {
                           child: LottoNumber(
                             number: number,
                             fontSize: 14,
+                            numberPicked: (int number) {
+                              recommendState.removeNumber(number);
+                            },
                           ),
                         ))
                     .toList(),
@@ -75,7 +78,7 @@ class Recommend extends StatelessWidget {
                   middleText: '번호는 최대 6개 까지만 설정 가능 해요.',
                 );
               } else {
-                recommendState.addOrRemoveNumbers(number);
+                recommendState.addNumber(number);
               }
             }
           },

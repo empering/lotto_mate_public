@@ -39,7 +39,7 @@ class RecommendState with ChangeNotifier {
     return _numbers.contains(number);
   }
 
-  addOrRemoveNumbers(int number) {
+  addNumber(int number) {
     _numbers.add(number);
 
     _numbers = (_numbers.toList()..sort()).toSet();
