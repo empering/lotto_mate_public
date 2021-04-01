@@ -34,30 +34,34 @@ class Recommend extends StatelessWidget {
   _makeOption(RecommendState recommendState) {
     return [
       ListTile(
-        title: Row(
-          children: [
-            Text('번호'),
-            SizedBox(width: 20),
-            ...recommendState.numbers
-                .map((number) => Container(
-                      padding: const EdgeInsets.all(4.0),
-                      child: LottoNumber(
-                        number: number,
-                        fontSize: 14,
-                      ),
-                    ))
-                .toList()
-          ],
-        ),
+        title: Text('번호'),
         trailing: SizedBox(
             width: 50,
             child: AppTextButton(
               labelIcon: Icons.close,
-              onPressed: () {},
+              onPressed: () {
+                recommendState.clearNumbers();
+              },
             )),
       ),
       ListTile(
-        title: LottoNumberPad(
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 0, 5),
+          child: Row(
+            children: recommendState.numbers.length == 0
+                ? [Text('선택된 번호가 없어요.')]
+                : recommendState.numbers
+                    .map((number) => Container(
+                          padding: const EdgeInsets.all(2.0),
+                          child: LottoNumber(
+                            number: number,
+                            fontSize: 14,
+                          ),
+                        ))
+                    .toList(),
+          ),
+        ),
+        subtitle: LottoNumberPad(
           fontSize: 14.0,
           numberPicked: (number) {
             if (number == null) return;
@@ -77,7 +81,6 @@ class Recommend extends StatelessWidget {
           },
         ),
       ),
-      Divider(),
       ListTile(title: Text('색상')),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -91,7 +94,6 @@ class Recommend extends StatelessWidget {
           ],
         ),
       ),
-      Divider(),
       ListTile(title: Text('홀짝')),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -108,8 +110,8 @@ class Recommend extends StatelessWidget {
   _makeColorCountSlider(RecommendState recommendState, LottoColors color) {
     String colorName = recommendState.getColorName(color);
     return ListTile(
-      leading: Text('$colorName : ${recommendState.colors[color]} 개 이상'),
-      title: Slider(
+      title: Text('$colorName : ${recommendState.colors[color]} 개 이상'),
+      subtitle: Slider(
         value: recommendState.colors[color]! * 1.0,
         min: 0,
         max: 6,
@@ -127,8 +129,8 @@ class Recommend extends StatelessWidget {
   _makeEvenOddCountSlider(RecommendState recommendState, LottoEvenOdd evenOdd) {
     String evenOddName = LottoEvenOdd.odd == evenOdd ? '홀' : '짝';
     return ListTile(
-      leading: Text('$evenOddName수 : ${recommendState.evenOdd[evenOdd]} 개 이상'),
-      title: Slider(
+      title: Text('$evenOddName수 : ${recommendState.evenOdd[evenOdd]} 개 이상'),
+      subtitle: Slider(
         value: recommendState.evenOdd[evenOdd]! * 1.0,
         min: 0,
         max: 6,

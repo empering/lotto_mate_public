@@ -42,6 +42,8 @@ class RecommendState with ChangeNotifier {
   addOrRemoveNumbers(int number) {
     _numbers.add(number);
 
+    _numbers = (_numbers.toList()..sort()).toSet();
+
     numberAddable = _numbers.length < 6;
 
     notifyListeners();
@@ -51,6 +53,14 @@ class RecommendState with ChangeNotifier {
     _numbers.remove(number);
 
     numberAddable = _numbers.length < 6;
+
+    notifyListeners();
+  }
+
+  clearNumbers() {
+    _numbers.clear();
+
+    numberAddable = true;
 
     notifyListeners();
   }
