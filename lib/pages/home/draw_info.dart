@@ -16,28 +16,22 @@ class DrawInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '🎉',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-                wordSpacing: 1,
-              ),
+              '✨',
+              style:
+                  Theme.of(context).textTheme.headline1!.copyWith(shadows: []),
             ),
             Text(
               '${draw.id}회',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-                wordSpacing: 1,
-              ),
+              style: Theme.of(context).textTheme.headline1,
             ),
             Text(
-              ' 당첨결과 🎉',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-                wordSpacing: 1,
-              ),
+              ' 당첨결과',
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            Text(
+              '✨',
+              style:
+                  Theme.of(context).textTheme.headline1!.copyWith(shadows: []),
             ),
           ],
         ),

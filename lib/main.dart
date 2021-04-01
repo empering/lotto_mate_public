@@ -93,6 +93,18 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColors.backgroundAccent,
           ),
           textTheme: TextTheme(
+            headline1: TextStyle(
+              color: AppColors.primary,
+              fontSize: 40.0,
+              fontWeight: FontWeight.bold,
+              wordSpacing: 1,
+              shadows: [
+                Shadow(
+                  offset: Offset(5.0, 5.0),
+                  color: AppColors.accent,
+                ),
+              ],
+            ),
             bodyText1: TextStyle(),
             bodyText2: TextStyle(color: AppColors.accent),
           ).apply(bodyColor: AppColors.primary),

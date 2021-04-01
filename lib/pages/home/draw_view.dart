@@ -35,6 +35,7 @@ class DrawView extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                     decoration: BoxDecoration(
                       color: AppColors.backgroundAccent,
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     child: Column(
                       children: [
