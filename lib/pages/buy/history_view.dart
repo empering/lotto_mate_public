@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
-import 'package:lotto_mate/models/draw.dart';
+import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/states/history_view_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -17,9 +17,9 @@ class HistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar('구매내역 상세'),
+      appBar: AppAppBar('나의 로또 히스토리'),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+        padding: const EdgeInsets.only(top: 20),
         child: ChangeNotifierProvider(
           create: (_) => HistoryViewState(this.buy)..getPickResult(),
           child: Consumer<HistoryViewState>(
@@ -30,42 +30,32 @@ class HistoryView extends StatelessWidget {
                 );
               }
 
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    //== 추첨기본정보 영역 ==//
-                    ...historyViewState.draw != null
-                        ? _makeDrawInfo(historyViewState.draw!)
-                        : _makeBeforeDrawInfo(),
-                    SizedBox(height: 30),
-                    //== 당첨결과 합계 영역 시작 ==//
-                    Container(
-                      child: Column(
-                        children: _makeTotPrize(historyViewState.totAmount,
-                            historyViewState.draw != null),
-                      ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  historyViewState.draw != null
+                      ? DrawInfo(historyViewState.draw!)
+                      : _makeBeforeDrawInfo(),
+                  Column(
+                    children: _makeTotPrize(historyViewState.totAmount,
+                        historyViewState.draw != null),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                    child: Column(
+                      children: [
+                        Text('나의 선택 번호'),
+                        SizedBox(height: 5),
+                        ..._makeMyPicks(
+                          historyViewState.buy.picks,
+                          historyViewState.draw != null
+                              ? historyViewState.draw!.numbers
+                              : null,
+                        ),
+                      ],
                     ),
-                    //== 당첨결과 합계 영역 끝 ==//
-                    SizedBox(height: 30),
-                    //== 구매정보 영역 시작 ==//
-                    Container(
-                      child: Column(
-                        children: [
-                          Text('나의 선택 번호'),
-                          SizedBox(height: 5),
-                          ..._makeMyPicks(
-                            historyViewState.buy.picks,
-                            historyViewState.draw != null
-                                ? historyViewState.draw!.numbers
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                    //== 구매정보 영역 시작 ==//
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           ),
@@ -74,102 +64,51 @@ class HistoryView extends StatelessWidget {
     );
   }
 
-  _makeDrawInfo(Draw draw) {
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            '${buy.drawId}회',
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(width: 15),
-          Text(
-            '당첨결과',
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-      SizedBox(height: 10),
-      Text(
-        '(${draw.getDrawDateString()} 추첨)',
-        style: TextStyle(color: AppColors.sub),
-      ),
-      SizedBox(height: 25),
-      //== 당첨번호 영역 시작 ==//
-      Container(
-        child: Column(
-          children: [
-            Text('당첨 번호'),
-            SizedBox(height: 10),
-            _makeDraw(draw.numbers!),
-          ],
-        ),
-      ),
-    ];
-  }
-
   _makeBeforeDrawInfo() {
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            '${buy.drawId}회',
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
+    return Builder(
+      builder: (context) {
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '✨',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline1!
+                      .copyWith(shadows: []),
+                ),
+                Text(
+                  '${buy.drawId}회',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                Text(
+                  '당첨결과',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                Text(
+                  '✨',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline1!
+                      .copyWith(shadows: []),
+                ),
+              ],
             ),
-          ),
-          SizedBox(width: 15),
-          Text(
-            '당첨결과',
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
+            SizedBox(height: 10),
+            Text(
+              '아직 추첨 전 입니다',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.sub,
+                fontSize: 24,
+              ),
             ),
-          ),
-        ],
-      ),
-      SizedBox(height: 10),
-      Text(
-        '(아직 추첨 전 입니다)',
-        style: TextStyle(color: Colors.grey),
-      ),
-      SizedBox(height: 25),
-    ];
-  }
-
-  _makeDraw(List<int?> numbers) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              LottoNumber(number: numbers[0]),
-              LottoNumber(number: numbers[1]),
-              LottoNumber(number: numbers[2]),
-              LottoNumber(number: numbers[3]),
-              LottoNumber(number: numbers[4]),
-              LottoNumber(number: numbers[5]),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: 40,
-          child: Icon(Icons.add),
-        ),
-        LottoNumber(number: numbers[6]),
-      ],
+            SizedBox(height: 70),
+          ],
+        );
+      },
     );
   }
 
