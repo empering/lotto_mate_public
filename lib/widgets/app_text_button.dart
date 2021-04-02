@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/project/flutter/lotto_mate/lib/commons/app_colors.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 
 class AppTextButton extends StatelessWidget {
   final Color buttonColor;
