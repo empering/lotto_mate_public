@@ -12,10 +12,9 @@ import 'package:provider/provider.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 25),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
             child: Consumer<DrawState>(
