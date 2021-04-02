@@ -23,7 +23,7 @@ class History extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -37,53 +37,58 @@ class History extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '🔥 나의 로또 히스토리',
-                              style: TextStyle(fontSize: 20.0),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '🔥 나의 로또 히스토리',
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
+                                AppTextButton(
+                                  onPressed: () {
+                                    Get.to(HistoryList());
+                                  },
+                                  buttonColor: Colors.transparent,
+                                  labelColor: AppColors.primary,
+                                  labelIcon: Icons.navigate_next,
+                                )
+                              ],
                             ),
-                            AppTextButton(
-                              onPressed: () {
-                                Get.to(HistoryList());
-                              },
-                              buttonColor: Colors.transparent,
-                              labelColor: AppColors.primary,
-                              labelIcon: Icons.navigate_next,
-                            )
-                          ],
-                        ),
-                      ),
-                      _makeMyStatInfo(historyState.myHistory),
-                      Divider(height: 20.0),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '🔥 전체 로또 히스토리',
-                              style: TextStyle(fontSize: 20.0),
+                          ),
+                          _makeMyStatInfo(historyState.myHistory),
+                          Divider(height: 20.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '🔥 전체 로또 히스토리',
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
+                                AppTextButton(
+                                  onPressed: () {
+                                    Get.to(DrawList());
+                                  },
+                                  buttonColor: Colors.transparent,
+                                  labelColor: AppColors.primary,
+                                  labelIcon: Icons.navigate_next,
+                                )
+                              ],
                             ),
-                            AppTextButton(
-                              onPressed: () {
-                                Get.to(DrawList());
-                              },
-                              buttonColor: Colors.transparent,
-                              labelColor: AppColors.primary,
-                              labelIcon: Icons.navigate_next,
-                            )
-                          ],
-                        ),
+                          ),
+                          _makeTotalStatInfo(historyState.drawHistory),
+                        ],
                       ),
-                      _makeTotalStatInfo(historyState.drawHistory),
-                    ],
+                    ),
                   ),
                 ),
               ],
