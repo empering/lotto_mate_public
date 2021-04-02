@@ -23,7 +23,8 @@ class History extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -44,7 +45,8 @@ class History extends StatelessWidget {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -66,7 +68,8 @@ class History extends StatelessWidget {
                           _makeMyStatInfo(historyState.myHistory),
                           Divider(height: 20.0),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -222,7 +225,9 @@ class History extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winCount! / myHistory.buyCount!)}',
+                      myHistory.buyCount == 0
+                          ? '-'
+                          : '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winRate)}',
                       style: TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.bold,
@@ -256,11 +261,12 @@ class History extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${NumberFormat.decimalPattern().format(myHistory.winAmount! - myHistory.buyAmount!)} ',
+                      '${NumberFormat.decimalPattern().format(myHistory.profitAmount)} ',
                       style: TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.up,
+                        color:
+                            myHistory.isProfit ? AppColors.up : AppColors.down,
                       ),
                     ),
                     Text('원'),
@@ -273,11 +279,13 @@ class History extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winAmount! / myHistory.buyAmount!)}',
+                  myHistory.buyAmount == 0
+                      ? '-'
+                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.profitRate)}',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.up,
+                    color: myHistory.isProfit ? AppColors.up : AppColors.down,
                   ),
                 ),
                 Text(
@@ -313,7 +321,7 @@ class History extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${NumberFormat.decimalPattern().format((drawHistory.winAmount! / 100000000).round())}억 ',
+                  '${NumberFormat.decimalPattern().format((drawHistory.winAmount / 100000000).round())}억 ',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
@@ -322,7 +330,7 @@ class History extends StatelessWidget {
                 Text('원'),
                 SizedBox(width: 10.0),
                 Text(
-                  '(1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount! / drawHistory.winCount! / 100000000).round()} 억원)',
+                  '(1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount / drawHistory.winCount / 100000000).round()} 억원)',
                   style: TextStyle(color: AppColors.sub),
                 ),
               ],
@@ -344,7 +352,7 @@ class History extends StatelessWidget {
                 Text(
                   drawHistory.buyCount == 0
                       ? '-'
-                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount! / drawHistory.buyCount!)}',
+                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount / drawHistory.buyCount)}',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
