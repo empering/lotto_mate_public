@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/pages/recommend/recommend_result.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';

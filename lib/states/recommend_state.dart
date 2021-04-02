@@ -1,14 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-
-enum LottoColors {
-  yellow,
-  blue,
-  red,
-  gray,
-  green,
-}
+import 'package:lotto_mate/commons/lotto_color.dart';
 
 enum LottoEvenOdd { even, odd }
 
@@ -66,18 +59,7 @@ class RecommendState with ChangeNotifier {
   }
 
   getColorName(LottoColors color) {
-    switch (color) {
-      case LottoColors.yellow:
-        return '노랑';
-      case LottoColors.blue:
-        return '파랑';
-      case LottoColors.red:
-        return '빨강';
-      case LottoColors.gray:
-        return '회색';
-      case LottoColors.green:
-        return '초록';
-    }
+    return LottoColor.getLottoColorName(color);
   }
 
   setEvenOddCount(LottoEvenOdd evenOdd, int count) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/commons/lotto_color.dart';
 
 class LottoNumber extends StatelessWidget {
   final int? number;
@@ -30,30 +31,17 @@ class LottoNumber extends StatelessWidget {
 
   Color _getColor() {
     if (number == null) {
-      return Colors.white24;
+      return LottoColor.none;
     }
 
     if (winNumbers != null && winNumbers!.length == 7) {
       var indexOfNumber = winNumbers!.indexOf(number);
       if (indexOfNumber < 0 || indexOfNumber == 6) {
-        return Colors.grey.withOpacity(0.35);
+        return LottoColor.notMatched;
       }
     }
 
-    switch ((number! - 1) ~/ 10) {
-      case 0:
-        return Color.fromRGBO(251, 196, 0, 1);
-      case 1:
-        return Color.fromRGBO(105, 200, 242, 1);
-      case 2:
-        return Color.fromRGBO(255, 114, 114, 1);
-      case 3:
-        return Color.fromRGBO(170, 170, 170, 1);
-      case 4:
-        return Color.fromRGBO(176, 216, 64, 1);
-    }
-
-    return Color.fromRGBO(251, 196, 0, 1);
+    return LottoColor.getLottoNumberColor(number!);
   }
 
   _makeNumber() {
