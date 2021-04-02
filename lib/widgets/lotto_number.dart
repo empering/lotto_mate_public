@@ -4,11 +4,17 @@ import 'package:lotto_mate/commons/app_colors.dart';
 class LottoNumber extends StatelessWidget {
   final int? number;
   final double fontSize;
+  final bool isFixedNumber;
   final List<int?>? winNumbers;
   final ValueSetter<int>? numberPicked;
 
-  LottoNumber(
-      {this.number, this.winNumbers, this.fontSize = 20, this.numberPicked});
+  LottoNumber({
+    this.number,
+    this.winNumbers,
+    this.isFixedNumber = false,
+    this.fontSize = 20,
+    this.numberPicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +24,7 @@ class LottoNumber extends StatelessWidget {
           this.numberPicked!(this.number!);
         }
       },
-      child: Material(
-        color: _getColor(),
-        child: Container(
-          width: this.fontSize * 2,
-          padding: EdgeInsets.all(this.fontSize / 5),
-          child: Center(
-            child: Text(
-              number == null ? '' : '$number',
-              style: TextStyle(color: AppColors.light, fontSize: this.fontSize),
-            ),
-          ),
-        ),
-        elevation: number != null ? this.fontSize / 2 : 0.0,
-        shape: CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-      ),
+      child: _makeNumber(),
     );
   }
 
@@ -63,5 +54,47 @@ class LottoNumber extends StatelessWidget {
     }
 
     return Color.fromRGBO(251, 196, 0, 1);
+  }
+
+  _makeNumber() {
+    return this.isFixedNumber ? _makeStackNumberWidget() : _makeNumberWidget();
+  }
+
+  _makeStackNumberWidget() {
+    return Stack(
+      alignment: Alignment.bottomRight,
+      clipBehavior: Clip.none,
+      children: [
+        _makeNumberWidget(),
+        Text(
+          'Fix',
+          style: TextStyle(
+            color: AppColors.up,
+            fontWeight: FontWeight.bold,
+            fontSize: this.fontSize * 0.6,
+            backgroundColor: Colors.white38,
+          ),
+        ),
+      ],
+    );
+  }
+
+  _makeNumberWidget() {
+    return Material(
+      color: _getColor(),
+      child: Container(
+        width: this.fontSize * 2,
+        padding: EdgeInsets.all(this.fontSize / 5),
+        child: Center(
+          child: Text(
+            number == null ? '' : '$number',
+            style: TextStyle(color: AppColors.light, fontSize: this.fontSize),
+          ),
+        ),
+      ),
+      elevation: number != null ? this.fontSize / 2 : 0.0,
+      shape: CircleBorder(),
+      clipBehavior: Clip.antiAlias,
+    );
   }
 }
