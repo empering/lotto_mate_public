@@ -75,7 +75,8 @@ class Recommend extends StatelessWidget {
               if (!recommendState.numberAddable) {
                 Get.defaultDialog(
                   title: '이런...',
-                  middleText: '번호는 최대 6개 까지만 설정 가능 해요.',
+                  middleText:
+                      '번호는 최대 ${recommendState.numbersLimitSize}개 까지만 설정 가능 해요.',
                 );
               } else {
                 recommendState.addNumber(number);

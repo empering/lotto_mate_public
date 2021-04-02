@@ -6,14 +6,16 @@ import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
 class RecommendResult extends StatelessWidget {
+  late final RecommendState _recommendState;
+
   @override
   Widget build(BuildContext context) {
-    RecommendState recommendState = context.watch<RecommendState>();
+    _recommendState = context.watch<RecommendState>();
 
     return Scaffold(
       appBar: AppAppBar('번호생성 결과'),
       body: FutureBuilder(
-        future: recommendState.getRecommends(),
+        future: _recommendState.getRecommends(),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: AppIndicator());
@@ -49,7 +51,7 @@ class RecommendResult extends StatelessWidget {
       children: numbers
           .map((n) => LottoNumber(
                 number: n,
-                fontSize: 16,
+                isFixedNumber: _recommendState.numbers.contains(n),
               ))
           .toList(),
     );

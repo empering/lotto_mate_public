@@ -13,6 +13,8 @@ enum LottoColors {
 enum LottoEvenOdd { even, odd }
 
 class RecommendState with ChangeNotifier {
+  final int numbersLimitSize = 5;
+
   Set<int> _numbers = {};
   Map<LottoColors, int> _colors = {
     LottoColors.yellow: 0,
@@ -27,13 +29,13 @@ class RecommendState with ChangeNotifier {
     LottoEvenOdd.even: 0,
   };
 
-  bool numberAddable = true;
-
-  Set<int> get numbers => _numbers;
+  List<int> get numbers => _numbers.toList()..sort();
 
   Map<LottoColors, int> get colors => _colors;
 
   Map<LottoEvenOdd, int> get evenOdd => _evenOdd;
+
+  bool get numberAddable => _numbers.length < numbersLimitSize;
 
   bool isContains(int number) {
     return _numbers.contains(number);
@@ -42,25 +44,17 @@ class RecommendState with ChangeNotifier {
   addNumber(int number) {
     _numbers.add(number);
 
-    _numbers = (_numbers.toList()..sort()).toSet();
-
-    numberAddable = _numbers.length < 6;
-
     notifyListeners();
   }
 
   removeNumber(int number) {
     _numbers.remove(number);
 
-    numberAddable = _numbers.length < 6;
-
     notifyListeners();
   }
 
   clearNumbers() {
     _numbers.clear();
-
-    numberAddable = true;
 
     notifyListeners();
   }
@@ -105,7 +99,7 @@ class RecommendState with ChangeNotifier {
 
   _generateNumbers() {
     var random = Random();
-    Set<int> generateNumbers = {};
+    Set<int> generateNumbers = _numbers.toSet();
     while (generateNumbers.length < 6) {
       generateNumbers.add(random.nextInt(45) + 1);
     }
