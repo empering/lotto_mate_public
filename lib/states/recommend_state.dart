@@ -52,8 +52,33 @@ class RecommendState with ChangeNotifier {
     notifyListeners();
   }
 
+  minusColorCount(LottoColors color) {
+    int targetCount = _colors[color] ?? 0;
+    if (targetCount > 0) {
+      this.setColorCount(color, --targetCount);
+    }
+  }
+
+  addColorCount(LottoColors color) {
+    int targetCount = _colors[color] ?? 0;
+    if (targetCount < 6) {
+      this.setColorCount(color, ++targetCount);
+    }
+  }
+
   setColorCount(LottoColors color, int count) {
-    _colors[color] = count;
+    var totalColorCount = count;
+    _colors.forEach((key, value) {
+      if (key != color) {
+        totalColorCount += value;
+      }
+    });
+
+    if (totalColorCount >= 6) {
+      _colors[color] = count - (totalColorCount - 6);
+    } else {
+      _colors[color] = count;
+    }
 
     notifyListeners();
   }

@@ -4,6 +4,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/pages/recommend/recommend_result.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
+import 'package:lotto_mate/widgets/app_circle_icon_button.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:lotto_mate/widgets/lotto_number_pad.dart';
@@ -115,18 +116,26 @@ class Recommend extends StatelessWidget {
   _makeColorCountSlider(RecommendState recommendState, LottoColors color) {
     String colorName = recommendState.getColorName(color);
     return ListTile(
-      title: Text('$colorName : ${recommendState.colors[color]} 개 이상'),
-      subtitle: Slider(
-        value: recommendState.colors[color]! * 1.0,
-        min: 0,
-        max: 6,
-        divisions: 6,
-        label: recommendState.colors[color]!.toString(),
-        onChanged: (double count) {
-          recommendState.setColorCount(color, count.floor());
+      leading: AppCircleIconButton(
+        icon: Icon(Icons.exposure_minus_1),
+        iconColor: AppColors.primary,
+        splashColor: AppColors.accent,
+        splashRadius: 24.0,
+        onPressed: () {
+          recommendState.minusColorCount(color);
         },
-        inactiveColor: AppColors.light,
-        activeColor: AppColors.primary,
+      ),
+      trailing: AppCircleIconButton(
+        icon: Icon(Icons.exposure_plus_1),
+        iconColor: AppColors.primary,
+        splashColor: AppColors.accent,
+        splashRadius: 24.0,
+        onPressed: () {
+          recommendState.addColorCount(color);
+        },
+      ),
+      title: Center(
+        child: Text('$colorName : ${recommendState.colors[color]} 개 이상'),
       ),
     );
   }
