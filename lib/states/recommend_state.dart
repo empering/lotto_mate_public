@@ -141,12 +141,67 @@ class RecommendState with ChangeNotifier {
   }
 
   _generateNumbers() {
-    var random = Random();
     Set<int> generateNumbers = _numbers.toSet();
+
+    Map<LottoColors, int> requiredGenerateColorsCount = Map.from(_colors);
+
+    _numbers.forEach((number) {
+      LottoColors color = LottoColor.getLottoNumberColorEnum(number);
+      requiredGenerateColorsCount[color] =
+          requiredGenerateColorsCount[color]! - 1;
+    });
+
+    requiredGenerateColorsCount.forEach((color, count) {
+      if (count > 0) {
+        int limitIndex = generateNumbers.length + count;
+        while (generateNumbers.length < limitIndex) {
+          generateNumbers.add(_generateNumberByColor(color));
+        }
+      }
+    });
+
     while (generateNumbers.length < 6) {
-      generateNumbers.add(random.nextInt(45) + 1);
+      generateNumbers.add(_generateNumber());
     }
 
     return generateNumbers.toList()..sort();
+  }
+
+  _generateNumberByColor(LottoColors color) {
+    int min = 1;
+    int max = 45;
+
+    switch (color) {
+      case LottoColors.yellow:
+        min = 1;
+        max = 10;
+        break;
+      case LottoColors.blue:
+        min = 11;
+        max = 10;
+        break;
+      case LottoColors.red:
+        min = 21;
+        max = 10;
+        break;
+      case LottoColors.gray:
+        min = 31;
+        max = 10;
+        break;
+      case LottoColors.green:
+        min = 41;
+        max = 5;
+        break;
+      default:
+        min = 1;
+        max = 45;
+    }
+
+    return _generateNumber(min: min, max: max);
+  }
+
+  _generateNumber({int min = 1, int max = 45}) {
+    var random = Random();
+    return random.nextInt(max) + min;
   }
 }
