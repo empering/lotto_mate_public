@@ -6,9 +6,26 @@ import 'package:lotto_mate/commons/lotto_color.dart';
 enum LottoEvenOdd { even, odd }
 
 class RecommendState with ChangeNotifier {
-  final int numbersLimitSize = 5;
+  final int numbersLimitSize = 4;
 
   Set<int> _numbers = {};
+
+  Map<LottoColors, int> _requiredMinColorsCount = {
+    LottoColors.yellow: 0,
+    LottoColors.blue: 0,
+    LottoColors.red: 0,
+    LottoColors.gray: 0,
+    LottoColors.green: 0,
+  };
+
+  Map<LottoColors, int> _maxColorsCount = {
+    LottoColors.yellow: 6,
+    LottoColors.blue: 6,
+    LottoColors.red: 6,
+    LottoColors.gray: 6,
+    LottoColors.green: 5,
+  };
+
   Map<LottoColors, int> _colors = {
     LottoColors.yellow: 0,
     LottoColors.blue: 0,
@@ -36,37 +53,56 @@ class RecommendState with ChangeNotifier {
 
   addNumber(int number) {
     _numbers.add(number);
-
-    notifyListeners();
+    _setNumber();
   }
 
   removeNumber(int number) {
     _numbers.remove(number);
-
-    notifyListeners();
+    _setNumber();
   }
 
   clearNumbers() {
     _numbers.clear();
+    _setNumber();
+  }
+
+  _setNumber() {
+    _requiredMinColorsCount.updateAll((_, __) => 0);
+
+    _numbers.forEach((number) {
+      var color = LottoColor.getLottoNumberColorEnum(number);
+      _requiredMinColorsCount[color] =
+          (_requiredMinColorsCount[color] ?? 0) + 1;
+    });
+
+    _requiredMinColorsCount.forEach((color, count) {
+      // if (count > (_colors[color] ?? 0)) {
+      _setColorCount(color, count, isNotify: false);
+      // }
+    });
 
     notifyListeners();
   }
 
   minusColorCount(LottoColors color) {
     int targetCount = _colors[color] ?? 0;
-    if (targetCount > 0) {
-      this.setColorCount(color, --targetCount);
+    int minimunCount = _requiredMinColorsCount[color] ?? 0;
+
+    if (targetCount > minimunCount) {
+      _setColorCount(color, --targetCount);
     }
   }
 
   addColorCount(LottoColors color) {
     int targetCount = _colors[color] ?? 0;
-    if (targetCount < 6) {
-      this.setColorCount(color, ++targetCount);
+    int maximunCount = _maxColorsCount[color] ?? 6;
+
+    if (targetCount < maximunCount) {
+      _setColorCount(color, ++targetCount);
     }
   }
 
-  setColorCount(LottoColors color, int count) {
+  _setColorCount(LottoColors color, int count, {bool isNotify = true}) {
     var totalColorCount = count;
     _colors.forEach((key, value) {
       if (key != color) {
@@ -74,13 +110,13 @@ class RecommendState with ChangeNotifier {
       }
     });
 
-    if (totalColorCount >= 6) {
-      _colors[color] = count - (totalColorCount - 6);
-    } else {
+    if (totalColorCount <= 6) {
       _colors[color] = count;
-    }
+    } else {}
 
-    notifyListeners();
+    if (isNotify) {
+      notifyListeners();
+    }
   }
 
   getColorName(LottoColors color) {
