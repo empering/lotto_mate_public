@@ -89,7 +89,7 @@ class Recommend extends StatelessWidget {
         ),
       ),
       ListTile(title: Text('색상')),
-      Container(
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
@@ -102,8 +102,8 @@ class Recommend extends StatelessWidget {
         ),
       ),
       ListTile(title: Text('홀짝')),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
         child: Column(
           children: [
             _makeEvenOddCountSlider(recommendState, LottoEvenOddType.odd),
