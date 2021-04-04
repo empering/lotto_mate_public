@@ -92,7 +92,7 @@ class RecommendState with ChangeNotifier {
     });
 
     _requiredMinEvenOddCount.forEach((evenOdd, count) {
-      setEvenOddCount(evenOdd, count, isNotify: false);
+      _setEvenOddCount(evenOdd, count, isNotify: false);
     });
 
     notifyListeners();
@@ -142,7 +142,7 @@ class RecommendState with ChangeNotifier {
     int minimunCount = _requiredMinEvenOddCount[evenOdd] ?? 0;
 
     if (targetCount > minimunCount) {
-      setEvenOddCount(evenOdd, --targetCount);
+      _setEvenOddCount(evenOdd, --targetCount);
     }
   }
 
@@ -151,11 +151,12 @@ class RecommendState with ChangeNotifier {
     int maximunCount = 6;
 
     if (targetCount < maximunCount) {
-      setEvenOddCount(evenOdd, ++targetCount);
+      _setEvenOddCount(evenOdd, ++targetCount);
     }
   }
 
-  setEvenOddCount(LottoEvenOddType evenOdd, int count, {bool isNotify = true}) {
+  _setEvenOddCount(LottoEvenOddType evenOdd, int count,
+      {bool isNotify = true}) {
     var totalCount = count;
     _evenOdd.forEach((key, value) {
       if (key != evenOdd) {
