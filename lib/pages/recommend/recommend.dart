@@ -93,11 +93,11 @@ class Recommend extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
-            _makeColorCountSlider(recommendState, LottoColors.yellow),
-            _makeColorCountSlider(recommendState, LottoColors.blue),
-            _makeColorCountSlider(recommendState, LottoColors.red),
-            _makeColorCountSlider(recommendState, LottoColors.gray),
-            _makeColorCountSlider(recommendState, LottoColors.green),
+            _makeColorCountSlider(recommendState, LottoColorType.yellow),
+            _makeColorCountSlider(recommendState, LottoColorType.blue),
+            _makeColorCountSlider(recommendState, LottoColorType.red),
+            _makeColorCountSlider(recommendState, LottoColorType.gray),
+            _makeColorCountSlider(recommendState, LottoColorType.green),
           ],
         ),
       ),
@@ -114,8 +114,8 @@ class Recommend extends StatelessWidget {
     ];
   }
 
-  _makeColorCountSlider(RecommendState recommendState, LottoColors color) {
-    String colorName = recommendState.getColorName(color);
+  _makeColorCountSlider(RecommendState recommendState, LottoColorType color) {
+    String colorName = LottoColor.getLottoColorTypeName(color);
     return ListTile(
       leading: AppCircleIconButton(
         icon: Icon(Icons.exposure_minus_1),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum LottoColors {
+enum LottoColorType {
   none,
   yellow,
   blue,
@@ -18,62 +18,62 @@ class LottoColor {
   static const gray = Color.fromRGBO(170, 170, 170, 1);
   static const green = Color.fromRGBO(176, 216, 64, 1);
 
-  static Color getLottoColor(LottoColors color) {
+  static Color getLottoColor(LottoColorType color) {
     switch (color) {
-      case LottoColors.yellow:
+      case LottoColorType.yellow:
         return yellow;
-      case LottoColors.blue:
+      case LottoColorType.blue:
         return blue;
-      case LottoColors.red:
+      case LottoColorType.red:
         return red;
-      case LottoColors.gray:
+      case LottoColorType.gray:
         return gray;
-      case LottoColors.green:
+      case LottoColorType.green:
         return green;
-      case LottoColors.none:
+      case LottoColorType.none:
         return none;
     }
   }
 
-  static String getLottoColorName(LottoColors color) {
+  static String getLottoColorTypeName(LottoColorType color) {
     switch (color) {
-      case LottoColors.yellow:
+      case LottoColorType.yellow:
         return '노랑';
-      case LottoColors.blue:
+      case LottoColorType.blue:
         return '파랑';
-      case LottoColors.red:
+      case LottoColorType.red:
         return '빨강';
-      case LottoColors.gray:
+      case LottoColorType.gray:
         return '회색';
-      case LottoColors.green:
+      case LottoColorType.green:
         return '초록';
-      case LottoColors.none:
+      case LottoColorType.none:
         return '';
     }
   }
 
-  static LottoColors getLottoNumberColorEnum(int number) {
+  static LottoColorType getLottoNumberColorType(int number) {
     switch ((number - 1) ~/ 10) {
       case 0:
-        return LottoColors.yellow;
+        return LottoColorType.yellow;
       case 1:
-        return LottoColors.blue;
+        return LottoColorType.blue;
       case 2:
-        return LottoColors.red;
+        return LottoColorType.red;
       case 3:
-        return LottoColors.gray;
+        return LottoColorType.gray;
       case 4:
-        return LottoColors.green;
+        return LottoColorType.green;
     }
 
-    return LottoColors.none;
+    return LottoColorType.none;
   }
 
   static Color getLottoNumberColor(int number) {
-    return getLottoColor(getLottoNumberColorEnum(number));
+    return getLottoColor(getLottoNumberColorType(number));
   }
 
   static String getLottoNumberColorName(int number) {
-    return getLottoColorName(getLottoNumberColorEnum(number));
+    return getLottoColorTypeName(getLottoNumberColorType(number));
   }
 }

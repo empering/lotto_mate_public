@@ -9,28 +9,28 @@ class RecommendState with ChangeNotifier {
 
   Set<int> _numbers = {};
 
-  Map<LottoColors, int> _requiredMinColorsCount = {
-    LottoColors.yellow: 0,
-    LottoColors.blue: 0,
-    LottoColors.red: 0,
-    LottoColors.gray: 0,
-    LottoColors.green: 0,
+  Map<LottoColorType, int> _requiredMinColorsCount = {
+    LottoColorType.yellow: 0,
+    LottoColorType.blue: 0,
+    LottoColorType.red: 0,
+    LottoColorType.gray: 0,
+    LottoColorType.green: 0,
   };
 
-  Map<LottoColors, int> _maxColorsCount = {
-    LottoColors.yellow: 6,
-    LottoColors.blue: 6,
-    LottoColors.red: 6,
-    LottoColors.gray: 6,
-    LottoColors.green: 5,
+  Map<LottoColorType, int> _maxColorsCount = {
+    LottoColorType.yellow: 6,
+    LottoColorType.blue: 6,
+    LottoColorType.red: 6,
+    LottoColorType.gray: 6,
+    LottoColorType.green: 5,
   };
 
-  Map<LottoColors, int> _colors = {
-    LottoColors.yellow: 0,
-    LottoColors.blue: 0,
-    LottoColors.red: 0,
-    LottoColors.gray: 0,
-    LottoColors.green: 0,
+  Map<LottoColorType, int> _colors = {
+    LottoColorType.yellow: 0,
+    LottoColorType.blue: 0,
+    LottoColorType.red: 0,
+    LottoColorType.gray: 0,
+    LottoColorType.green: 0,
   };
 
   Map<LottoEvenOddType, int> _requiredMinEvenOddCount = {
@@ -45,7 +45,7 @@ class RecommendState with ChangeNotifier {
 
   List<int> get numbers => _numbers.toList()..sort();
 
-  Map<LottoColors, int> get colors => _colors;
+  Map<LottoColorType, int> get colors => _colors;
 
   Map<LottoEvenOddType, int> get evenOdd => _evenOdd;
 
@@ -75,7 +75,7 @@ class RecommendState with ChangeNotifier {
     _requiredMinEvenOddCount.updateAll((_, __) => 0);
 
     _numbers.forEach((number) {
-      var color = LottoColor.getLottoNumberColorEnum(number);
+      var color = LottoColor.getLottoNumberColorType(number);
       var evenOdd = LottoEvenOdd.getEvenOddType(number);
 
       _requiredMinColorsCount[color] =
@@ -98,7 +98,7 @@ class RecommendState with ChangeNotifier {
     notifyListeners();
   }
 
-  minusColorCount(LottoColors color) {
+  minusColorCount(LottoColorType color) {
     int targetCount = _colors[color] ?? 0;
     int minimunCount = _requiredMinColorsCount[color] ?? 0;
 
@@ -107,7 +107,7 @@ class RecommendState with ChangeNotifier {
     }
   }
 
-  plusColorCount(LottoColors color) {
+  plusColorCount(LottoColorType color) {
     int targetCount = _colors[color] ?? 0;
     int maximunCount = _maxColorsCount[color] ?? 6;
 
@@ -116,7 +116,7 @@ class RecommendState with ChangeNotifier {
     }
   }
 
-  _setColorCount(LottoColors color, int count, {bool isNotify = true}) {
+  _setColorCount(LottoColorType color, int count, {bool isNotify = true}) {
     var totalColorCount = count;
     _colors.forEach((key, value) {
       if (key != color) {
@@ -131,10 +131,6 @@ class RecommendState with ChangeNotifier {
     if (isNotify) {
       notifyListeners();
     }
-  }
-
-  getColorName(LottoColors color) {
-    return LottoColor.getLottoColorName(color);
   }
 
   minusEvenOddCount(LottoEvenOddType evenOdd) {
@@ -187,10 +183,10 @@ class RecommendState with ChangeNotifier {
   _generateNumbers() {
     Set<int> generateNumbers = _numbers.toSet();
 
-    Map<LottoColors, int> requiredGenerateColorsCount = Map.from(_colors);
+    Map<LottoColorType, int> requiredGenerateColorsCount = Map.from(_colors);
 
     _numbers.forEach((number) {
-      LottoColors color = LottoColor.getLottoNumberColorEnum(number);
+      LottoColorType color = LottoColor.getLottoNumberColorType(number);
       requiredGenerateColorsCount[color] =
           requiredGenerateColorsCount[color]! - 1;
     });
@@ -211,28 +207,28 @@ class RecommendState with ChangeNotifier {
     return generateNumbers.toList()..sort();
   }
 
-  _generateNumberByColor(LottoColors color) {
+  _generateNumberByColor(LottoColorType color) {
     int min = 1;
     int max = 45;
 
     switch (color) {
-      case LottoColors.yellow:
+      case LottoColorType.yellow:
         min = 1;
         max = 10;
         break;
-      case LottoColors.blue:
+      case LottoColorType.blue:
         min = 11;
         max = 10;
         break;
-      case LottoColors.red:
+      case LottoColorType.red:
         min = 21;
         max = 10;
         break;
-      case LottoColors.gray:
+      case LottoColorType.gray:
         min = 31;
         max = 10;
         break;
-      case LottoColors.green:
+      case LottoColorType.green:
         min = 41;
         max = 5;
         break;
