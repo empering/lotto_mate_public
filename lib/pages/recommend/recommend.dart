@@ -132,7 +132,7 @@ class Recommend extends StatelessWidget {
         splashColor: AppColors.accent,
         splashRadius: 24.0,
         onPressed: () {
-          recommendState.addColorCount(color);
+          recommendState.plusColorCount(color);
         },
       ),
       title: Center(
@@ -160,7 +160,7 @@ class Recommend extends StatelessWidget {
         splashColor: AppColors.accent,
         splashRadius: 24.0,
         onPressed: () {
-          recommendState.addEvenOddCount(evenOdd);
+          recommendState.plusEvenOddCount(evenOdd);
         },
       ),
       title: Center(

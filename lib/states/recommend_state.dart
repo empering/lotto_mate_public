@@ -107,7 +107,7 @@ class RecommendState with ChangeNotifier {
     }
   }
 
-  addColorCount(LottoColors color) {
+  plusColorCount(LottoColors color) {
     int targetCount = _colors[color] ?? 0;
     int maximunCount = _maxColorsCount[color] ?? 6;
 
@@ -146,7 +146,7 @@ class RecommendState with ChangeNotifier {
     }
   }
 
-  addEvenOddCount(LottoEvenOddType evenOdd) {
+  plusEvenOddCount(LottoEvenOddType evenOdd) {
     int targetCount = _evenOdd[evenOdd] ?? 0;
     int maximunCount = 6;
 
