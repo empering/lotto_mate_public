@@ -43,11 +43,15 @@ class RecommendState with ChangeNotifier {
     LottoEvenOddType.even: 0,
   };
 
+  List<List<int>> _recommends = [];
+
   List<int> get numbers => _numbers.toList()..sort();
 
   Map<LottoColorType, int> get colors => _colors;
 
   Map<LottoEvenOddType, int> get evenOdd => _evenOdd;
+
+  List<List<int>> get recommends => _recommends;
 
   bool get numberAddable => _numbers.length < numbersLimitSize;
 
@@ -193,7 +197,11 @@ class RecommendState with ChangeNotifier {
     }
   }
 
-  Future<List<List<int>>> getRecommends({int loopCount = 5}) async {
+  getRecommends({int loopCount = 5}) async {
+    _recommends = [];
+
+    notifyListeners();
+
     await Future.delayed(Duration(seconds: 2));
 
     List<List<int>> recommends = [];
@@ -201,7 +209,9 @@ class RecommendState with ChangeNotifier {
       recommends.add(_generateNumbers());
     }
 
-    return recommends;
+    _recommends = recommends;
+
+    notifyListeners();
   }
 
   _generateNumbers() {

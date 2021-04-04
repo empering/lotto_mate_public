@@ -28,6 +28,7 @@ class Recommend extends StatelessWidget {
         foregroundColor: AppColors.accent,
         splashColor: AppColors.accent,
         onPressed: () {
+          recommendState.getRecommends();
           Get.to(RecommendResult());
         },
       ),
