@@ -33,6 +33,11 @@ class RecommendState with ChangeNotifier {
     LottoColors.green: 0,
   };
 
+  Map<LottoEvenOddType, int> _requiredMinEvenOddCount = {
+    LottoEvenOddType.odd: 0,
+    LottoEvenOddType.even: 0,
+  };
+
   Map<LottoEvenOddType, int> _evenOdd = {
     LottoEvenOddType.odd: 0,
     LottoEvenOddType.even: 0,
@@ -67,17 +72,27 @@ class RecommendState with ChangeNotifier {
 
   _setNumber() {
     _requiredMinColorsCount.updateAll((_, __) => 0);
+    _requiredMinEvenOddCount.updateAll((_, __) => 0);
 
     _numbers.forEach((number) {
       var color = LottoColor.getLottoNumberColorEnum(number);
+      var evenOdd = LottoEvenOdd.getEvenOddType(number);
+
       _requiredMinColorsCount[color] =
           (_requiredMinColorsCount[color] ?? 0) + 1;
+
+      _requiredMinEvenOddCount[evenOdd] =
+          (_requiredMinEvenOddCount[evenOdd] ?? 0) + 1;
     });
 
     _requiredMinColorsCount.forEach((color, count) {
       // if (count > (_colors[color] ?? 0)) {
       _setColorCount(color, count, isNotify: false);
       // }
+    });
+
+    _requiredMinEvenOddCount.forEach((evenOdd, count) {
+      setEvenOddCount(evenOdd, count, isNotify: false);
     });
 
     notifyListeners();
@@ -122,10 +137,39 @@ class RecommendState with ChangeNotifier {
     return LottoColor.getLottoColorName(color);
   }
 
-  setEvenOddCount(LottoEvenOddType evenOdd, int count) {
-    _evenOdd[evenOdd] = count;
+  minusEvenOddCount(LottoEvenOddType evenOdd) {
+    int targetCount = _evenOdd[evenOdd] ?? 0;
+    int minimunCount = _requiredMinEvenOddCount[evenOdd] ?? 0;
 
-    notifyListeners();
+    if (targetCount > minimunCount) {
+      setEvenOddCount(evenOdd, --targetCount);
+    }
+  }
+
+  addEvenOddCount(LottoEvenOddType evenOdd) {
+    int targetCount = _evenOdd[evenOdd] ?? 0;
+    int maximunCount = 6;
+
+    if (targetCount < maximunCount) {
+      setEvenOddCount(evenOdd, ++targetCount);
+    }
+  }
+
+  setEvenOddCount(LottoEvenOddType evenOdd, int count, {bool isNotify = true}) {
+    var totalCount = count;
+    _evenOdd.forEach((key, value) {
+      if (key != evenOdd) {
+        totalCount += value;
+      }
+    });
+
+    if (totalCount <= 6) {
+      _evenOdd[evenOdd] = count;
+    } else {}
+
+    if (isNotify) {
+      notifyListeners();
+    }
   }
 
   Future<List<List<int>>> getRecommends({int loopCount = 5}) async {

@@ -145,18 +145,26 @@ class Recommend extends StatelessWidget {
       RecommendState recommendState, LottoEvenOddType evenOdd) {
     String evenOddName = LottoEvenOdd.getEvenOddTypeName(evenOdd);
     return ListTile(
-      title: Text('$evenOddName수 : ${recommendState.evenOdd[evenOdd]} 개 이상'),
-      subtitle: Slider(
-        value: recommendState.evenOdd[evenOdd]! * 1.0,
-        min: 0,
-        max: 6,
-        divisions: 6,
-        label: recommendState.evenOdd[evenOdd]!.toString(),
-        onChanged: (double count) {
-          recommendState.setEvenOddCount(evenOdd, count.floor());
+      leading: AppCircleIconButton(
+        icon: Icon(Icons.exposure_minus_1),
+        iconColor: AppColors.primary,
+        splashColor: AppColors.accent,
+        splashRadius: 24.0,
+        onPressed: () {
+          recommendState.minusEvenOddCount(evenOdd);
         },
-        inactiveColor: AppColors.light,
-        activeColor: AppColors.primary,
+      ),
+      trailing: AppCircleIconButton(
+        icon: Icon(Icons.exposure_plus_1),
+        iconColor: AppColors.primary,
+        splashColor: AppColors.accent,
+        splashRadius: 24.0,
+        onPressed: () {
+          recommendState.addEvenOddCount(evenOdd);
+        },
+      ),
+      title: Center(
+        child: Text('$evenOddName수 : ${recommendState.evenOdd[evenOdd]} 개 이상'),
       ),
     );
   }
