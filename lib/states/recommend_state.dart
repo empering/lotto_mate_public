@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
-
-enum LottoEvenOdd { even, odd }
+import 'package:lotto_mate/commons/lotto_even_odd.dart';
 
 class RecommendState with ChangeNotifier {
   final int numbersLimitSize = 4;
@@ -34,16 +33,16 @@ class RecommendState with ChangeNotifier {
     LottoColors.green: 0,
   };
 
-  Map<LottoEvenOdd, int> _evenOdd = {
-    LottoEvenOdd.odd: 0,
-    LottoEvenOdd.even: 0,
+  Map<LottoEvenOddType, int> _evenOdd = {
+    LottoEvenOddType.odd: 0,
+    LottoEvenOddType.even: 0,
   };
 
   List<int> get numbers => _numbers.toList()..sort();
 
   Map<LottoColors, int> get colors => _colors;
 
-  Map<LottoEvenOdd, int> get evenOdd => _evenOdd;
+  Map<LottoEvenOddType, int> get evenOdd => _evenOdd;
 
   bool get numberAddable => _numbers.length < numbersLimitSize;
 
@@ -123,7 +122,7 @@ class RecommendState with ChangeNotifier {
     return LottoColor.getLottoColorName(color);
   }
 
-  setEvenOddCount(LottoEvenOdd evenOdd, int count) {
+  setEvenOddCount(LottoEvenOddType evenOdd, int count) {
     _evenOdd[evenOdd] = count;
 
     notifyListeners();

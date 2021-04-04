@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
+import 'package:lotto_mate/commons/lotto_even_odd.dart';
 import 'package:lotto_mate/pages/recommend/recommend_result.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:lotto_mate/widgets/app_circle_icon_button.dart';
@@ -105,8 +106,8 @@ class Recommend extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
-            _makeEvenOddCountSlider(recommendState, LottoEvenOdd.odd),
-            _makeEvenOddCountSlider(recommendState, LottoEvenOdd.even),
+            _makeEvenOddCountSlider(recommendState, LottoEvenOddType.odd),
+            _makeEvenOddCountSlider(recommendState, LottoEvenOddType.even),
           ],
         ),
       ),
@@ -140,8 +141,9 @@ class Recommend extends StatelessWidget {
     );
   }
 
-  _makeEvenOddCountSlider(RecommendState recommendState, LottoEvenOdd evenOdd) {
-    String evenOddName = LottoEvenOdd.odd == evenOdd ? '홀' : '짝';
+  _makeEvenOddCountSlider(
+      RecommendState recommendState, LottoEvenOddType evenOdd) {
+    String evenOddName = LottoEvenOdd.getEvenOddTypeName(evenOdd);
     return ListTile(
       title: Text('$evenOddName수 : ${recommendState.evenOdd[evenOdd]} 개 이상'),
       subtitle: Slider(
