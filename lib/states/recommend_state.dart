@@ -185,29 +185,59 @@ class RecommendState with ChangeNotifier {
 
     Map<LottoColorType, int> requiredGenerateColorsCount = Map.from(_colors);
 
+    Map<LottoEvenOddType, int> requiredGenerateEvenOddCount =
+        Map.from(_evenOdd);
+
+    List<LottoEvenOddType> evenOddTable = List.filled(
+        generateNumbers.length, LottoEvenOddType.none,
+        growable: true);
+
     _numbers.forEach((number) {
       LottoColorType color = LottoColor.getLottoNumberColorType(number);
+      LottoEvenOddType evenOdd = LottoEvenOdd.getEvenOddType(number);
+
       requiredGenerateColorsCount[color] =
           requiredGenerateColorsCount[color]! - 1;
+
+      requiredGenerateEvenOddCount[evenOdd] =
+          requiredGenerateEvenOddCount[evenOdd]! - 1;
     });
+
+    List<LottoEvenOddType> evenOdds = [];
+    requiredGenerateEvenOddCount.forEach((evenOdd, count) {
+      for (int i = 0; i < count; i++) {
+        evenOdds.add(evenOdd);
+      }
+    });
+
+    for (int i = 0; evenOddTable.length + evenOdds.length < 6; i++) {
+      evenOdds.add(LottoEvenOddType.none);
+    }
+
+    evenOddTable.addAll(evenOdds..shuffle());
 
     requiredGenerateColorsCount.forEach((color, count) {
       if (count > 0) {
         int limitIndex = generateNumbers.length + count;
         while (generateNumbers.length < limitIndex) {
-          generateNumbers.add(_generateNumberByColor(color));
+          generateNumbers.add(_generateNumberByColor(
+            color,
+            evenOdd: evenOddTable[generateNumbers.length],
+          ));
         }
       }
     });
 
     while (generateNumbers.length < 6) {
-      generateNumbers.add(_generateNumber());
+      generateNumbers
+          .add(_generateNumber(evenOdd: evenOddTable[generateNumbers.length]));
     }
 
     return generateNumbers.toList()..sort();
   }
 
-  _generateNumberByColor(LottoColorType color) {
+  _generateNumberByColor(LottoColorType color,
+      {LottoEvenOddType evenOdd = LottoEvenOddType.none}) {
     int min = 1;
     int max = 45;
 
@@ -237,11 +267,32 @@ class RecommendState with ChangeNotifier {
         max = 45;
     }
 
-    return _generateNumber(min: min, max: max);
+    return _generateNumber(min: min, max: max, evenOdd: evenOdd);
   }
 
-  _generateNumber({int min = 1, int max = 45}) {
+  _generateNumber({
+    int min = 1,
+    int max = 45,
+    LottoEvenOddType evenOdd = LottoEvenOddType.none,
+  }) {
     var random = Random();
-    return random.nextInt(max) + min;
+    int result = random.nextInt(max) + min;
+
+    if (LottoEvenOddType.none != evenOdd) {
+      if (_diffEvenOdd(result, evenOdd)) {
+        result = _editEvenOddNumber(min, result);
+      }
+    }
+
+    return result;
+  }
+
+  _diffEvenOdd(int num, LottoEvenOddType evenOdd) {
+    return (num.isOdd && LottoEvenOddType.even == evenOdd) ||
+        (num.isEven && LottoEvenOddType.odd == evenOdd);
+  }
+
+  _editEvenOddNumber(int min, int num) {
+    return num - 1 < min ? num + 1 : num - 1;
   }
 }

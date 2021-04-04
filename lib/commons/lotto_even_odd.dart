@@ -1,4 +1,8 @@
-enum LottoEvenOddType { even, odd }
+enum LottoEvenOddType {
+  even,
+  odd,
+  none,
+}
 
 class LottoEvenOdd {
   static LottoEvenOddType getEvenOddType(int number) {
