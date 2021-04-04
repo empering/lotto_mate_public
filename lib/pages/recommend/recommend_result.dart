@@ -17,7 +17,7 @@ class RecommendResult extends StatelessWidget {
       body: FutureBuilder(
         future: _recommendState.getRecommends(),
         builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: AppIndicator());
           }
           return _makeResult(snapshot.data as List<List<int>>);

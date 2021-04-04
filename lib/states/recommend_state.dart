@@ -160,7 +160,31 @@ class RecommendState with ChangeNotifier {
       }
     });
 
-    if (totalCount <= 6) {
+    int limitCount = 6;
+
+    _colors.forEach((color, count) {
+      if (LottoColorType.green == color && count == 5) {
+        limitCount = LottoEvenOddType.even == evenOdd ? 3 : 4;
+      } else if (count == 6) {
+        limitCount = 5;
+      }
+    });
+
+    // 초록색을 5개 선택한 경우 나머지 한가지 숫자에 따라 홀,짝 조건을 만족 못하는 경우가 생김
+    if (limitCount <= 4) {
+      // if LottoColorType.green
+      int notGreenNumber = _numbers.firstWhere(
+        (number) => number < 41,
+        orElse: () => 0,
+      );
+      if (notGreenNumber != 0 &&
+          ((notGreenNumber.isEven && LottoEvenOddType.even != evenOdd) ||
+              (notGreenNumber.isOdd && LottoEvenOddType.odd != evenOdd))) {
+        limitCount -= 1;
+      }
+    }
+
+    if (totalCount <= 6 && count <= limitCount) {
       _evenOdd[evenOdd] = count;
     } else {}
 
@@ -192,7 +216,11 @@ class RecommendState with ChangeNotifier {
         generateNumbers.length, LottoEvenOddType.none,
         growable: true);
 
-    _numbers.forEach((number) {
+    if (requiredGenerateColorsCount[LottoColorType.green] == 5) {
+      generateNumbers.addAll(List<int>.generate(5, (i) => 41 + i));
+    }
+
+    generateNumbers.forEach((number) {
       LottoColorType color = LottoColor.getLottoNumberColorType(number);
       LottoEvenOddType evenOdd = LottoEvenOdd.getEvenOddType(number);
 
