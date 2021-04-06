@@ -50,27 +50,30 @@ class BuyService {
   }
 
   Future<Buy> getByDrawId(int drawId) async {
-    Buy buy = await _buyRepository.getByWhere(
-        where: 'drawId = ?',
-        whereArgs: [drawId]).then((buyMap) => Buy.fromDb(buyMap.first));
+    Buy buy = await _buyRepository
+        .getByWhere(where: 'drawId = ?', whereArgs: [drawId]).then((buyMap) =>
+            buyMap.first.isNotEmpty ? Buy.fromDb(buyMap.first) : Buy());
 
-    _pickResultRepository.getByWhere(
-        where: 'buyId = ?', whereArgs: [buy.id]).then((picksMap) async {
-      buy.picks =
-          picksMap.map<Pick>((pickMap) => Pick.fromDb(pickMap)).toList();
+    if (buy.id != null) {
+      _pickResultRepository.getByWhere(
+          where: 'buyId = ?', whereArgs: [buy.id]).then((picksMap) async {
+        buy.picks =
+            picksMap.map<Pick>((pickMap) => Pick.fromDb(pickMap)).toList();
 
-      if ((buy.picks ?? []).length > 0) {
-        await Future.forEach(
-          buy.picks!,
-          (Pick pick) => _pickResultRepository.getByWhere(
-              where: "pickId = ?", whereArgs: [pick.id]).then((pickResultMap) {
-            pick.pickResult = pickResultMap.length == 0
-                ? PickResult()
-                : PickResult.fromDb(pickResultMap.first);
-          }),
-        );
-      }
-    });
+        if ((buy.picks ?? []).length > 0) {
+          await Future.forEach(
+            buy.picks!,
+            (Pick pick) => _pickResultRepository.getByWhere(
+                where: "pickId = ?",
+                whereArgs: [pick.id]).then((pickResultMap) {
+              pick.pickResult = pickResultMap.length == 0
+                  ? PickResult()
+                  : PickResult.fromDb(pickResultMap.first);
+            }),
+          );
+        }
+      });
+    }
 
     return buy;
   }
