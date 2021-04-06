@@ -20,7 +20,6 @@ class Home extends StatelessWidget {
             child: Consumer<DrawState>(
               builder: (context, drawState, child) => Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: _makeLottoDrawInfo(context, drawState.draw),
                 ),
               ),
