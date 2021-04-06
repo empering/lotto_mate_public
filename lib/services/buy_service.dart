@@ -20,9 +20,15 @@ class BuyService {
     });
   }
 
-  Future<List<Buy>> getAll() async {
-    List<Buy> buys = await _buyRepository.getAll(orderBy: "drawId desc").then(
-        (buysMap) => buysMap.map((buyMap) => Buy.fromDb(buyMap)).toList());
+  Future<List<Buy>> getAll({int? limit, int? offset}) async {
+    List<Buy> buys = await _buyRepository
+        .getByWhere(
+          orderBy: "drawId desc",
+          limit: limit,
+          offset: offset,
+        )
+        .then(
+            (buysMap) => buysMap.map((buyMap) => Buy.fromDb(buyMap)).toList());
 
     await Future.forEach(
       buys,
