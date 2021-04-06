@@ -44,6 +44,8 @@ dependencies:
 
   flutter_spinkit: ^5.0.0
 
+  animations: ^2.0.0
+
   # cached_network_image: ^2.3.3
   qrscan: ^0.2.22
 

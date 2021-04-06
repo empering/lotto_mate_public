@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,12 +20,18 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TabController? _tabController;
+  int pageIndex = 0;
+  var pages = [
+    Home(),
+    History(),
+    HistoryForm(),
+    Recommend(),
+    Stats(),
+  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -33,16 +40,19 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       create: (_) => DrawState()..getDrawById(),
       child: Scaffold(
         appBar: AppAppBar('로또🤣💥'),
-        body: TabBarView(
-          controller: _tabController,
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            Home(),
-            History(),
-            HistoryForm(),
-            Recommend(),
-            Stats(),
-          ],
+        body: PageTransitionSwitcher(
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: pages[pageIndex],
         ),
         bottomNavigationBar: _makeConvexBottomNavigationBar(),
       ),
@@ -51,7 +61,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   _makeConvexBottomNavigationBar() {
     return ConvexAppBar(
-      controller: _tabController,
+      // controller: _tabController,
       style: TabStyle.textIn,
       backgroundColor: AppColors.primary,
       activeColor: AppColors.light,
@@ -69,6 +79,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         TabItem(icon: Icons.auto_awesome, title: '번호생성'),
         TabItem(icon: Icons.analytics_outlined, title: '통계'),
       ],
+      onTap: (int i) {
+        setState(() {
+          pageIndex = i;
+        });
+      },
       onTabNotify: (index) {
         var intercept = index == 2;
         if (intercept) {

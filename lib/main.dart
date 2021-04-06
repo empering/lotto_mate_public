@@ -81,6 +81,8 @@ class MyApp extends StatelessWidget {
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
+        defaultTransition: Transition.size,
+        transitionDuration: Duration(milliseconds: 500),
         theme: ThemeData(
           // brightness: Brightness.dark,
           primaryColor: AppColors.primary,
