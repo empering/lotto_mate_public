@@ -38,8 +38,7 @@ class DrawList extends StatelessWidget {
       itemBuilder: (context, index) {
         if (index < draws.length) {
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             decoration: AppBoxDecoration().circular(),
             child: ListTile(
               leading: _makeDrawListLeading(draws[index].id),
