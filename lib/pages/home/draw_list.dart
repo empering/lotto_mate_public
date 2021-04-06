@@ -36,15 +36,29 @@ class DrawList extends StatelessWidget {
       itemCount: draws.length + 1,
       itemBuilder: (context, index) {
         if (index < draws.length) {
-          return ListTile(
-            leading: _makeDrawListLeading(draws[index].id),
-            title: _makeDrawListViewTitle(draws[index]),
-            subtitle: _makeDrawListViewSubTitle(draws[index]),
-            dense: true,
-            isThreeLine: true,
-            onTap: () {
-              Get.to(DrawView(draws[index].id!));
-            },
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: AppColors.backgroundLight,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(100),
+                  blurRadius: 10.0,
+                ),
+              ],
+            ),
+            child: ListTile(
+              leading: _makeDrawListLeading(draws[index].id),
+              title: _makeDrawListViewTitle(draws[index]),
+              subtitle: _makeDrawListViewSubTitle(draws[index]),
+              dense: true,
+              isThreeLine: true,
+              onTap: () {
+                Get.to(DrawView(draws[index].id!));
+              },
+            ),
           );
         }
 
