@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lotto_mate/pages/stats/color_stats.dart';
+import 'package:lotto_mate/pages/stats/even_odd_stats.dart';
+import 'package:lotto_mate/pages/stats/number_stats.dart';
+import 'package:lotto_mate/pages/stats/series_number_stats.dart';
+import 'package:lotto_mate/pages/stats/unpick_number_stats.dart';
 
 class Stats extends StatelessWidget {
   @override
@@ -15,31 +21,41 @@ class Stats extends StatelessWidget {
         ListTile(
           title: Text('번호별'),
           leading: Icon(Icons.youtube_searched_for),
-          onTap: () {},
+          onTap: () {
+            Get.to(NumberStats());
+          },
         ),
         Divider(),
         ListTile(
           title: Text('색상별'),
           leading: Icon(Icons.color_lens_outlined),
-          onTap: () {},
+          onTap: () {
+            Get.to(ColorStats());
+          },
         ),
         Divider(),
         ListTile(
           title: Text('홀짝'),
           leading: Icon(Icons.star_half),
-          onTap: () {},
+          onTap: () {
+            Get.to(EvenOddStats());
+          },
         ),
         Divider(),
         ListTile(
           title: Text('연속번호'),
           leading: Icon(Icons.saved_search),
-          onTap: () {},
+          onTap: () {
+            Get.to(SeriesNumberStats());
+          },
         ),
         Divider(),
         ListTile(
           title: Text('미출현번호'),
           leading: Icon(Icons.search_off),
-          onTap: () {},
+          onTap: () {
+            Get.to(UnpickNumberStats());
+          },
         ),
         Divider(),
       ],
