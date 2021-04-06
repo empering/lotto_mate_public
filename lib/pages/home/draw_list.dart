@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
@@ -39,16 +40,7 @@ class DrawList extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
             padding: const EdgeInsets.symmetric(vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              color: AppColors.backgroundLight,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(100),
-                  blurRadius: 10.0,
-                ),
-              ],
-            ),
+            decoration: AppBoxDecoration().circular(),
             child: ListTile(
               leading: _makeDrawListLeading(draws[index].id),
               title: _makeDrawListViewTitle(draws[index]),
