@@ -21,34 +21,35 @@ class DrawView extends StatelessWidget {
         padding: const EdgeInsets.only(top: 20.0),
         child: ChangeNotifierProvider(
           create: (_) => DrawViewState(drawId)..getDraw(),
-          child:
-              Consumer<DrawViewState>(builder: (context, drawViewState, child) {
-            if (drawViewState.draw == null) {
-              return Center(child: AppIndicator());
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                DrawInfo(drawViewState.draw!),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundAccent,
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child: Column(
-                      children: [
-                        _firstPrizesInfo(drawViewState.draw!),
-                        SizedBox(height: 20.0),
-                        _detailPrizesInfo(drawViewState.draw!),
-                      ],
+          child: Consumer<DrawViewState>(
+            builder: (context, drawViewState, child) {
+              if (drawViewState.draw == null) {
+                return Center(child: AppIndicator());
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  DrawInfo(drawViewState.draw!),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundAccent,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: Column(
+                        children: [
+                          _firstPrizesInfo(drawViewState.draw!),
+                          SizedBox(height: 20.0),
+                          _detailPrizesInfo(drawViewState.draw!),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          }),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
