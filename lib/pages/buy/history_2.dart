@@ -23,7 +23,7 @@ class History2 extends StatelessWidget {
 
             if (snapshot.connectionState == ConnectionState.done) {
               List<Buy> buys = snapshot.data!.docs
-                  .map((e) => Buy.fromFirestore(e.data()!))
+                  .map((e) => Buy.fromFirestore(e.data()))
                   .toList();
 
               return SafeArea(

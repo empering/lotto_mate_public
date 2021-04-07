@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/src/widgets/scroll_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
@@ -20,7 +20,9 @@ class DrawListState with ChangeNotifier {
 
   DrawListState() {
     this._listViewController.addListener(() async {
-      if (this._listViewController.position.pixels == this.listViewController.position.maxScrollExtent && this.hasMore) {
+      if (this._listViewController.position.pixels ==
+              this.listViewController.position.maxScrollExtent &&
+          this.hasMore) {
         await Future.delayed(Duration(milliseconds: 500));
         this.offset = draws.length;
         this.getDraws();

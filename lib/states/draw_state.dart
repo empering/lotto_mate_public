@@ -58,7 +58,7 @@ class DrawState with ChangeNotifier {
   }
 
   Future<void> syncDb(QueryDocumentSnapshot queryDocumentSnapshot) async {
-    Draw d = Draw.fromFirestore(queryDocumentSnapshot.data()!);
+    Draw d = Draw.fromFirestore(queryDocumentSnapshot.data());
     await _drawService.save(d);
 
     Buy buy = await _buyService.getByDrawId(d.id!);
