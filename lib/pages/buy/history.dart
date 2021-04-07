@@ -9,6 +9,7 @@ import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
+import 'package:search_choices/search_choices.dart';
 
 class History extends StatelessWidget {
   @override
@@ -127,6 +128,7 @@ class History extends StatelessWidget {
         onChanged: (value) {
           historyState.setSearchType(value!);
         },
+        underline: Container(),
       );
     });
   }
@@ -139,18 +141,16 @@ class History extends StatelessWidget {
         }
 
         return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(width: 20),
             Expanded(
-              child: _makeSearchValueDropDown(),
+              child: _makeSearchChoices(),
             ),
-            SizedBox(width: 10),
             Text('부터'),
-            SizedBox(width: 20),
-            Expanded(
-              child: _makeSearchValueDropDown(isStart: false),
-            ),
             SizedBox(width: 10),
+            Expanded(
+              child: _makeSearchChoices(isStart: false),
+            ),
             Text('까지'),
           ],
         );
@@ -158,33 +158,44 @@ class History extends StatelessWidget {
     );
   }
 
-  _makeSearchValueDropDown({bool isStart = true}) {
-    return Consumer<HistoryState>(
-      builder: (_, historyState, __) {
-        return DropdownButton<String>(
-          isExpanded: true,
-          value: isStart
-              ? historyState.searchStartValue
-              : historyState.searchEndValue,
-          items: (isStart
-                  ? historyState.searchValues
-                  : historyState.searchValues.reversed)
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
+  _makeSearchChoices({bool isStart = true}) {
+    return Consumer<HistoryState>(builder: (_, historyState, __) {
+      return SearchChoices.single(
+        items: (isStart
+                ? historyState.searchValues
+                : historyState.searchValues.reversed)
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Center(
               child: Text('$value 회'),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            isStart
-                ? historyState.searchStartValue = newValue!
-                : historyState.searchEndValue = newValue!;
+            ),
+          );
+        }).toList(),
+        value: isStart
+            ? historyState.searchStartValue
+            : historyState.searchEndValue,
+        searchHint: '회차를 선택하세요',
+        onChanged: (newValue) {
+          if (newValue == null) {
+            newValue = isStart
+                ? historyState.searchValues.first
+                : historyState.searchValues.last;
+          }
 
-            historyState.getHistory();
-          },
-        );
-      },
-    );
+          isStart
+              ? historyState.searchStartValue = newValue
+              : historyState.searchEndValue = newValue;
+
+          historyState.getHistory();
+        },
+        dialogBox: true,
+        isExpanded: true,
+        displayClearIcon: false,
+        underline: Container(),
+        keyboardType: TextInputType.number,
+      );
+    });
   }
 
   _makeMyStatInfo(DrawHistory? myHistory) {
