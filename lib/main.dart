@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
+import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:provider/provider.dart';
 
@@ -78,6 +79,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<RecommendState>(create: (_) => RecommendState()),
+        ChangeNotifierProvider<HistoryState>(
+            create: (_) => HistoryState()..setSearchDrawValues()),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',

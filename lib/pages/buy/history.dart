@@ -14,91 +14,88 @@ import 'package:search_choices/search_choices.dart';
 class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HistoryState()
-        ..setSearchDrawValues()
-        ..getHistory(),
-      child: Consumer<HistoryState>(
-        builder: (_, historyState, __) {
-          return Container(
-            child: Column(
+    context.read<HistoryState>()
+      ..setSearchType('all')
+      ..getHistory();
+
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: _makeSearchTypeDropDown(),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: _makeSearchValueArea(),
-                      ),
-                    ],
-                  ),
+                Expanded(
+                  child: _makeSearchTypeDropDown(),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '🔥 나의 로또 히스토리',
-                                  style: TextStyle(fontSize: 20.0),
-                                ),
-                                AppTextButton(
-                                  onPressed: () {
-                                    Get.to(HistoryList());
-                                  },
-                                  buttonColor: Colors.transparent,
-                                  labelColor: AppColors.primary,
-                                  labelIcon: Icons.navigate_next,
-                                )
-                              ],
-                            ),
-                          ),
-                          _makeMyStatInfo(historyState.myHistory),
-                          Divider(height: 20.0),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '🔥 전체 로또 히스토리',
-                                  style: TextStyle(fontSize: 20.0),
-                                ),
-                                AppTextButton(
-                                  onPressed: () {
-                                    Get.to(DrawList());
-                                  },
-                                  buttonColor: Colors.transparent,
-                                  labelColor: AppColors.primary,
-                                  labelIcon: Icons.navigate_next,
-                                )
-                              ],
-                            ),
-                          ),
-                          _makeTotalStatInfo(historyState.drawHistory),
-                        ],
-                      ),
-                    ),
-                  ),
+                  flex: 3,
+                  child: _makeSearchValueArea(),
                 ),
               ],
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '🔥 나의 로또 히스토리',
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                          AppTextButton(
+                            onPressed: () {
+                              Get.to(HistoryList());
+                            },
+                            buttonColor: Colors.transparent,
+                            labelColor: AppColors.primary,
+                            labelIcon: Icons.navigate_next,
+                          )
+                        ],
+                      ),
+                    ),
+                    Consumer<HistoryState>(builder: (_, historyState, __) {
+                      return _makeMyStatInfo(historyState.myHistory);
+                    }),
+                    Divider(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '🔥 전체 로또 히스토리',
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                          AppTextButton(
+                            onPressed: () {
+                              Get.to(DrawList());
+                            },
+                            buttonColor: Colors.transparent,
+                            labelColor: AppColors.primary,
+                            labelIcon: Icons.navigate_next,
+                          )
+                        ],
+                      ),
+                    ),
+                    Consumer<HistoryState>(builder: (_, historyState, __) {
+                      return _makeTotalStatInfo(historyState.drawHistory);
+                    }),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
