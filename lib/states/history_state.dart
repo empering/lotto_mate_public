@@ -30,24 +30,13 @@ class HistoryState extends ChangeNotifier {
   setSearchDrawValues() {
     int maxDrawId = AppConstants().getThisWeekDrawId();
     _searchValues =
-        List<String>.generate(maxDrawId, (index) => '${index + 1}')
-            .toList();
+        List<String>.generate(maxDrawId, (index) => '${index + 1}').toList();
   }
 
   setSearchType(String searchType) {
-    if (_searchType == searchType) {
-      print('searchType not changed');
-    } else {
-      _searchType = searchType;
-      searchStartValue = searchType == 'all' ? '' : _searchValues.first;
-      searchEndValue = searchType == 'all' ? '' : _searchValues.last;
-
-      if (_searchType == 'all') {
-        getHistory();
-      }
-
-      notifyListeners();
-    }
+    _searchType = searchType;
+    searchStartValue = _searchValues.first;
+    searchEndValue = _searchValues.last;
   }
 
   getHistory() async {

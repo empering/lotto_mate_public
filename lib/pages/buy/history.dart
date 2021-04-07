@@ -19,113 +19,87 @@ class History extends StatelessWidget {
       ..getHistory();
 
     return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _makeSearchTypeDropDown(),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: _makeSearchValueArea(),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '🔥 나의 로또 히스토리',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          AppTextButton(
-                            onPressed: () {
-                              Get.to(HistoryList());
-                            },
-                            buttonColor: Colors.transparent,
-                            labelColor: AppColors.primary,
-                            labelIcon: Icons.navigate_next,
-                          )
-                        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+        child: Column(
+          children: [
+            _makeSearchTypeSwitchListTile(),
+            _makeSearchValueArea(),
+            Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '🔥 나의 로또 히스토리',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            AppTextButton(
+                              onPressed: () {
+                                Get.to(HistoryList());
+                              },
+                              buttonColor: Colors.transparent,
+                              labelColor: AppColors.primary,
+                              labelIcon: Icons.navigate_next,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Consumer<HistoryState>(builder: (_, historyState, __) {
-                      return _makeMyStatInfo(historyState.myHistory);
-                    }),
-                    Divider(height: 20.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '🔥 전체 로또 히스토리',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          AppTextButton(
-                            onPressed: () {
-                              Get.to(DrawList());
-                            },
-                            buttonColor: Colors.transparent,
-                            labelColor: AppColors.primary,
-                            labelIcon: Icons.navigate_next,
-                          )
-                        ],
+                      Consumer<HistoryState>(builder: (_, historyState, __) {
+                        return _makeMyStatInfo(historyState.myHistory);
+                      }),
+                      Divider(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '🔥 전체 로또 히스토리',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                            AppTextButton(
+                              onPressed: () {
+                                Get.to(DrawList());
+                              },
+                              buttonColor: Colors.transparent,
+                              labelColor: AppColors.primary,
+                              labelIcon: Icons.navigate_next,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Consumer<HistoryState>(builder: (_, historyState, __) {
-                      return _makeTotalStatInfo(historyState.drawHistory);
-                    }),
-                  ],
+                      Consumer<HistoryState>(builder: (_, historyState, __) {
+                        return _makeTotalStatInfo(historyState.drawHistory);
+                      }),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  _makeSearchTypeDropDown() {
+  _makeSearchTypeSwitchListTile() {
     return Consumer<HistoryState>(builder: (_, historyState, __) {
-      return DropdownButton<String>(
-        value: historyState.searchType,
-        items: [
-          DropdownMenuItem<String>(
-            value: 'all',
-            child: Text('전체'),
-          ),
-          // DropdownMenuItem<String>(
-          //   value: 'year',
-          //   child: Text('년도별'),
-          // ),
-          // DropdownMenuItem<String>(
-          //   value: 'month',
-          //   child: Text('월별'),
-          // ),
-          DropdownMenuItem<String>(
-            value: 'draw',
-            child: Text('회차별'),
-          ),
-        ],
+      var isDraw = historyState.searchType == 'draw';
+      return SwitchListTile(
+        title: isDraw ? Text('회차 선택') : Text('전체 회차'),
+        value: isDraw,
         onChanged: (value) {
-          historyState.setSearchType(value!);
+          historyState.setSearchType(value ? 'draw' : 'all');
+          historyState.getHistory();
         },
-        underline: Container(),
       );
     });
   }
@@ -133,10 +107,6 @@ class History extends StatelessWidget {
   _makeSearchValueArea() {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
-        if (historyState.searchType == 'all') {
-          return Container();
-        }
-
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -190,6 +160,7 @@ class History extends StatelessWidget {
         isExpanded: true,
         displayClearIcon: false,
         underline: Container(),
+        readOnly: historyState.searchType == 'all',
         keyboardType: TextInputType.number,
       );
     });
