@@ -16,8 +16,8 @@ class DrawHistory {
         drawCount: map['drawCount'],
         buyAmount: map['buyAmount'],
         buyCount: (map['buyAmount'] ?? 0) ~/ 1000,
-        winAmount: map['winAmount'],
-        winCount: map['winCount'],
+        winAmount: map['winAmount'] ?? 0,
+        winCount: map['winCount'] ?? 0,
       );
 
   bool get isProfit => winAmount > buyAmount;
@@ -27,7 +27,6 @@ class DrawHistory {
   num get profitRate => profitAmount / buyAmount;
 
   num get winRate => winCount / buyCount;
-
 
   @override
   String toString() {
