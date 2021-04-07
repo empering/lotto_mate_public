@@ -97,6 +97,12 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: AppColors.backgroundAccent,
           ),
+          tabBarTheme: TabBarTheme(
+            labelColor: AppColors.primary,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(color: AppColors.primary),
+            ),
+          ),
           textTheme: TextTheme(
             headline1: TextStyle(
               color: AppColors.primary,

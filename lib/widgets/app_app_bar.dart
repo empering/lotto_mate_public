@@ -3,8 +3,9 @@ import 'package:lotto_mate/commons/app_colors.dart';
 
 class AppAppBar extends AppBar {
   final String titleStr;
+  final PreferredSizeWidget? bottom;
 
-  AppAppBar(this.titleStr)
+  AppAppBar(this.titleStr, {this.bottom})
       : super(
           title: Text(
             titleStr,
@@ -15,5 +16,6 @@ class AppAppBar extends AppBar {
           iconTheme: IconThemeData(
             color: AppColors.primary,
           ),
+          bottom: bottom,
         );
 }
