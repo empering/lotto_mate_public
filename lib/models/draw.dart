@@ -21,7 +21,7 @@ class Draw {
       this.eachFirstPrizeAmount,
       this.firstPrizewinnerCount});
 
-  factory Draw.fromJson(Map<String, Object> json) {
+  factory Draw.fromJson(Map<String, dynamic> json) {
     return Draw(
       id: json['drwNo'] as int,
       numbers: [
