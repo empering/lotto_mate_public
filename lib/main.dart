@@ -9,6 +9,8 @@ import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
 import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
+import 'package:lotto_mate/states/search_filter_state.dart';
+import 'package:lotto_mate/states/stat_state.dart';
 import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -76,11 +78,19 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SearchFilterState searchFilterState = SearchFilterState();
+    StatState statState = StatState(searchFilterState);
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<RecommendState>(create: (_) => RecommendState()),
+        ChangeNotifierProvider<RecommendState>(
+          create: (_) => RecommendState(),
+        ),
         ChangeNotifierProvider<HistoryState>(
-            create: (_) => HistoryState()..setSearchDrawValues()),
+          create: (_) => HistoryState()..setSearchDrawValues(),
+        ),
+        ChangeNotifierProvider.value(value: searchFilterState),
+        ChangeNotifierProvider.value(value: statState),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
