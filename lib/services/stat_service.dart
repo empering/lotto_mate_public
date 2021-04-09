@@ -29,13 +29,13 @@ class StatService {
 
     result.forEach((map) {
       for (var suffix = 1; suffix <= 6; suffix++) {
-        int number = map['drawNumber$suffix'] - 1;
-        stats[number].count += 1;
+        int number = map['drawNumber$suffix'];
+        stats.singleWhere((stat) => stat.statType == number)..count += 1;
       }
 
       if (isWithBounsNumber) {
-        int number = map['drawNumberBo'] - 1;
-        stats[number].count += 1;
+        int number = map['drawNumberBo'];
+        stats.singleWhere((stat) => stat.statType == number)..count += 1;
       }
     });
 

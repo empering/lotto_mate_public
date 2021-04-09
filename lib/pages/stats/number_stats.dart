@@ -13,7 +13,7 @@ import 'package:search_choices/search_choices.dart';
 class NumberStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<StatState>().getData();
+    context.read<StatState>().getStats();
 
     return Consumer<StatState>(builder: (_, statState, __) {
       SearchFilter searchFilter = statState.searchFilter;
@@ -123,14 +123,14 @@ class NumberStats extends StatelessWidget {
 
   _stats() {
     return Consumer<StatState>(builder: (_, statState, __) {
-      var list = List.from(statState.list);
+      var stats = List.from(statState.stats);
 
-      if (list.length == 0) {
+      if (stats.length == 0) {
         return Center(child: AppIndicator());
       }
 
       if (!statState.isOrderAsc) {
-        list.sort((a, b) =>
+        stats.sort((a, b) =>
             a.count == b.count ? a.statType - b.statType : b.count - a.count);
       }
 
@@ -138,19 +138,19 @@ class NumberStats extends StatelessWidget {
         child: ListView.separated(
           controller: statState.listViewController,
           separatorBuilder: (context, index) => Divider(),
-          itemCount: list.length,
+          itemCount: stats.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: LottoNumber(number: list[index].statType),
-              trailing: Text('${list[index].count}회 당첨'),
+              leading: LottoNumber(number: stats[index].statType),
+              trailing: Text('${stats[index].count}회 당첨'),
               title: LinearPercentIndicator(
                 animation: true,
                 lineHeight: 20.0,
                 center: Text(
                   NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                      .format(list[index].rate),
+                      .format(stats[index].rate),
                 ),
-                percent: list[index].rate,
+                percent: stats[index].rate,
                 progressColor: AppColors.primary,
               ),
             );

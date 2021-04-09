@@ -3,29 +3,53 @@ import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/services/stat_service.dart';
 
+enum StatType {
+  NUMBER,
+  COLOR,
+  EVEN_ODD,
+  SERIES,
+  UNPICK,
+}
+
 class StatState extends ChangeNotifier {
   final StatService _statService;
   final SearchFilter _searchFilter = SearchFilter();
   final ScrollController _listViewController = ScrollController();
+  late Function getData;
+  StatType _statType = StatType.NUMBER;
 
-  StatState(this._statService);
+  StatState(this._statService) {
+    getData = getNumberStats;
+  }
 
   SearchFilter get searchFilter => _searchFilter;
 
   ScrollController get listViewController => _listViewController;
 
-  List<Stat> _list = [];
+  List<Stat> _stats = [];
 
-  List<Stat> get list => _list;
+  List<Stat> get stats => _stats;
 
   bool get isOrderAsc => _searchFilter.isAsc;
 
+  set statType(StatType statType) {
+    _statType = statType;
+
+    switch (_statType) {
+      case StatType.NUMBER:
+        getData = getNumberStats;
+        break;
+      default:
+        getData = getNumberStats;
+    }
+  }
+
   notify() {
     if (_searchFilter.isDirty) {
-      _list.clear();
+      _stats.clear();
       notifyListeners();
 
-      getData();
+      getStats();
 
       _searchFilter.dirty = false;
     } else {
@@ -39,14 +63,18 @@ class StatState extends ChangeNotifier {
     );
   }
 
-  getData() async {
+  getStats() {
+    getData.call();
+  }
+
+  getNumberStats() async {
     var list = await _statService.getNumberStat(
       startId: int.parse(_searchFilter.searchStartValue),
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,
     );
 
-    _list = list;
+    _stats = list;
 
     notifyListeners();
   }
