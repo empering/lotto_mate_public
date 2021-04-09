@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 enum LottoColorType {
-  none,
   yellow,
   blue,
   red,
   gray,
   green,
+  none,
 }
 
 class LottoColor {
@@ -47,6 +47,23 @@ class LottoColor {
         return '회색';
       case LottoColorType.green:
         return '초록';
+      case LottoColorType.none:
+        return '';
+    }
+  }
+
+  static String getLottoColorTypeDesc(LottoColorType color) {
+    switch (color) {
+      case LottoColorType.yellow:
+        return '1~10';
+      case LottoColorType.blue:
+        return '11~20';
+      case LottoColorType.red:
+        return '21~30';
+      case LottoColorType.gray:
+        return '31~40';
+      case LottoColorType.green:
+        return '41~45';
       case LottoColorType.none:
         return '';
     }

@@ -39,6 +39,9 @@ class StatState extends ChangeNotifier {
       case StatType.NUMBER:
         getData = getNumberStats;
         break;
+      case StatType.COLOR:
+        getData = getColorStats;
+        break;
       default:
         getData = getNumberStats;
     }
@@ -63,12 +66,28 @@ class StatState extends ChangeNotifier {
     );
   }
 
-  getStats() {
+  getStats({StatType? statType}) {
+    if ((statType ?? _statType) != _statType) {
+      this.statType = statType ?? _statType;
+      _stats = [];
+    }
     getData.call();
   }
 
   getNumberStats() async {
     var list = await _statService.getNumberStat(
+      startId: int.parse(_searchFilter.searchStartValue),
+      endId: int.parse(_searchFilter.searchEndValue),
+      isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
+
+    _stats = list;
+
+    notifyListeners();
+  }
+
+  getColorStats() async {
+    var list = await _statService.getColorStat(
       startId: int.parse(_searchFilter.searchStartValue),
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,

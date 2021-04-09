@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
+import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
-import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
@@ -13,7 +13,7 @@ import 'package:search_choices/search_choices.dart';
 class ColorStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<StatState>().getStats();
+    context.read<StatState>().getStats(statType: StatType.COLOR);
 
     return Consumer<StatState>(builder: (_, statState, __) {
       SearchFilter searchFilter = statState.searchFilter;
@@ -123,15 +123,18 @@ class ColorStats extends StatelessWidget {
 
   _stats() {
     return Consumer<StatState>(builder: (_, statState, __) {
-      var list = List.from(statState.stats);
+      List<Stat<LottoColorType>> list = List.from(statState.stats);
 
       if (list.length == 0) {
         return Center(child: AppIndicator());
       }
 
+      int maxCount = list.fold(0, (p, s) => p > s.count ? p : s.count);
+
       if (!statState.isOrderAsc) {
-        list.sort((a, b) =>
-            a.count == b.count ? a.statType - b.statType : b.count - a.count);
+        list.sort((a, b) => a.count == b.count
+            ? a.statType.index - b.statType.index
+            : b.count - a.count);
       }
 
       return Expanded(
@@ -140,18 +143,32 @@ class ColorStats extends StatelessWidget {
           separatorBuilder: (context, index) => Divider(),
           itemCount: list.length,
           itemBuilder: (context, index) {
+            var stat = list[index];
+
             return ListTile(
-              leading: LottoNumber(number: list[index].statType),
-              trailing: Text('${list[index].count}회 당첨'),
+              leading: ClipOval(
+                child: Container(
+                  width: 55,
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  color: LottoColor.getLottoColor(stat.statType),
+                  child: Center(
+                    child: Text(
+                      LottoColor.getLottoColorTypeDesc(stat.statType),
+                    ),
+                  ),
+                ),
+              ),
+              trailing:
+                  Text('${NumberFormat.decimalPattern().format(stat.count)} 회'),
               title: LinearPercentIndicator(
                 animation: true,
                 lineHeight: 20.0,
                 center: Text(
                   NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                      .format(list[index].rate),
+                      .format(stat.count / maxCount),
                 ),
-                percent: list[index].rate,
-                progressColor: AppColors.primary,
+                percent: stat.count / maxCount,
+                progressColor: LottoColor.getLottoColor(stat.statType),
               ),
             );
           },
