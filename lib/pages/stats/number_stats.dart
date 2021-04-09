@@ -13,7 +13,7 @@ import 'package:search_choices/search_choices.dart';
 class NumberStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<StatState>().getStats();
+    context.read<StatState>().getStats(statType: StatType.NUMBER);
 
     return Consumer<StatState>(builder: (_, statState, __) {
       SearchFilter searchFilter = statState.searchFilter;
