@@ -55,15 +55,15 @@ class LottoColor {
   static String getLottoColorTypeDesc(LottoColorType color) {
     switch (color) {
       case LottoColorType.yellow:
-        return '1~10';
+        return '1번대';
       case LottoColorType.blue:
-        return '11~20';
+        return '10번대';
       case LottoColorType.red:
-        return '21~30';
+        return '20번대';
       case LottoColorType.gray:
-        return '31~40';
+        return '30번대';
       case LottoColorType.green:
-        return '41~45';
+        return '40번대';
       case LottoColorType.none:
         return '';
     }

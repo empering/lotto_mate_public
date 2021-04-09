@@ -123,16 +123,16 @@ class ColorStats extends StatelessWidget {
 
   _stats() {
     return Consumer<StatState>(builder: (_, statState, __) {
-      List<Stat<LottoColorType>> list = List.from(statState.stats);
+      List<Stat<LottoColorType>> stats = List.from(statState.stats);
 
-      if (list.length == 0) {
+      if (stats.length == 0) {
         return Center(child: AppIndicator());
       }
 
-      int maxCount = list.fold(0, (p, s) => p > s.count ? p : s.count);
+      int maxCount = stats.fold(0, (p, s) => p > s.count ? p : s.count);
 
       if (!statState.isOrderAsc) {
-        list.sort((a, b) => a.count == b.count
+        stats.sort((a, b) => a.count == b.count
             ? a.statType.index - b.statType.index
             : b.count - a.count);
       }
@@ -141,20 +141,20 @@ class ColorStats extends StatelessWidget {
         child: ListView.separated(
           controller: statState.listViewController,
           separatorBuilder: (context, index) => Divider(),
-          itemCount: list.length,
+          itemCount: stats.length,
           itemBuilder: (context, index) {
-            var stat = list[index];
+            var stat = stats[index];
 
             return ListTile(
               leading: ClipOval(
                 child: Container(
-                  width: 55,
+                  alignment: Alignment.center,
+                  width: 60,
+                  height: 45,
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   color: LottoColor.getLottoColor(stat.statType),
-                  child: Center(
-                    child: Text(
-                      LottoColor.getLottoColorTypeDesc(stat.statType),
-                    ),
+                  child: Text(
+                    LottoColor.getLottoColorTypeDesc(stat.statType),
                   ),
                 ),
               ),
