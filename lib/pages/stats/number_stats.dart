@@ -129,6 +129,8 @@ class NumberStats extends StatelessWidget {
         return Center(child: AppIndicator());
       }
 
+      int maxCount = stats.fold(0, (p, s) => p > s.count ? p : s.count);
+
       if (!statState.isOrderAsc) {
         stats.sort((a, b) =>
             a.count == b.count ? a.statType - b.statType : b.count - a.count);
@@ -140,17 +142,21 @@ class NumberStats extends StatelessWidget {
           separatorBuilder: (context, index) => Divider(),
           itemCount: stats.length,
           itemBuilder: (context, index) {
+            var stat = stats[index];
+
             return ListTile(
-              leading: LottoNumber(number: stats[index].statType),
-              trailing: Text('${stats[index].count}회 당첨'),
+              leading: LottoNumber(number: stat.statType),
+              trailing:
+                  Text('${NumberFormat.decimalPattern().format(stat.count)} 회'),
               title: LinearPercentIndicator(
                 animation: true,
                 lineHeight: 20.0,
                 center: Text(
                   NumberFormat.decimalPercentPattern(decimalDigits: 2)
-                      .format(stats[index].rate),
+                      .format(stat.count / maxCount),
+                  style: TextStyle(color: AppColors.accent),
                 ),
-                percent: stats[index].rate,
+                percent: stat.count / maxCount,
                 progressColor: AppColors.primary,
               ),
             );
