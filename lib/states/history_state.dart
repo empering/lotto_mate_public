@@ -5,8 +5,12 @@ import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
 class HistoryState extends ChangeNotifier {
-  final DrawService _drawService = DrawService();
-  final BuyService _buyService = BuyService();
+  final DrawService _drawService;
+  final BuyService _buyService;
+
+  HistoryState(this._drawService, this._buyService) {
+    setSearchDrawValues();
+  }
 
   // 나의 히스토리
   DrawHistory? _myHistory;

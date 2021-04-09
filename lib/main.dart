@@ -6,8 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
-import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/pages/app.dart';
+import 'package:lotto_mate/services/buy_service.dart';
+import 'package:lotto_mate/services/draw_service.dart';
 import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
@@ -78,17 +79,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    StatState statState = StatState(SearchFilter());
+    DrawService drawService = DrawService();
+    BuyService buyService = BuyService();
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<RecommendState>(
           create: (_) => RecommendState(),
         ),
-        ChangeNotifierProvider<HistoryState>(
-          create: (_) => HistoryState()..setSearchDrawValues(),
-        ),
-        ChangeNotifierProvider.value(value: statState),
+        ChangeNotifierProvider.value(
+            value: HistoryState(drawService, buyService)),
+        ChangeNotifierProvider.value(value: StatState()),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
