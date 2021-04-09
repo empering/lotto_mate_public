@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
 
 enum SearchType {
@@ -8,11 +7,12 @@ enum SearchType {
 
 enum Order { ASC, DESC }
 
-class SearchFilterState extends ChangeNotifier {
+class SearchFilter {
   SearchType _searchType = SearchType.ALL;
   Order _order = Order.ASC;
   List<String> _searchValues = [];
-  bool _isWithBounsNumber = false;
+  bool dirty = false;
+  bool isWithBounsNumber = false;
   String searchStartValue = '';
   String searchEndValue = '';
 
@@ -22,20 +22,12 @@ class SearchFilterState extends ChangeNotifier {
 
   List<String> get searchValues => _searchValues;
 
-  bool get isWithBounsNumber => _isWithBounsNumber;
-
   bool get isDraw => _searchType == SearchType.DRAWS;
 
   bool get isAsc => _order == Order.ASC;
 
-  SearchFilterState() {
+  SearchFilter() {
     setSearchDrawValues();
-  }
-
-  set isWithBounsNumber(bool value) {
-    _isWithBounsNumber = value;
-
-    notifyListeners();
   }
 
   setSearchDrawValues() {
@@ -48,16 +40,16 @@ class SearchFilterState extends ChangeNotifier {
 
   setSearchType(SearchType searchType) {
     _searchType = searchType;
-    searchStartValue = _searchValues.first;
-    searchEndValue = _searchValues.last;
+    if (SearchType.ALL == searchType) {
+      dirty = searchStartValue == _searchValues.first ||
+          searchEndValue == _searchValues.last;
 
-    print('setSearchType');
-    notifyListeners();
+      searchStartValue = _searchValues.first;
+      searchEndValue = _searchValues.last;
+    }
   }
 
   setOrder(Order order) {
     _order = order;
-
-    notifyListeners();
   }
 }

@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lotto_mate/states/search_filter_state.dart';
+import 'package:lotto_mate/models/search_filter.dart';
 
 class StatState extends ChangeNotifier {
-  final SearchFilterState _searchFilterState;
+  final SearchFilter _searchFilter;
 
-  StatState(this._searchFilterState) {
-    _searchFilterState.addListener(reloadData);
-  }
+  StatState(this._searchFilter);
+
+  SearchFilter get searchFilter => _searchFilter;
 
   List<int> _list = [];
 
   List<int> get list => _list;
 
-  bool get isOrderAsc => _searchFilterState.isAsc;
+  bool get isOrderAsc => _searchFilter.isAsc;
 
   reloadData() {
     _list.clear();
@@ -24,9 +24,9 @@ class StatState extends ChangeNotifier {
   getData() async {
     var list = List.generate(45, (index) => index + 1);
 
-    print(_searchFilterState.searchType);
-    print(_searchFilterState.searchStartValue);
-    print(_searchFilterState.searchEndValue);
+    print(_searchFilter.searchType);
+    print(_searchFilter.searchStartValue);
+    print(_searchFilter.searchEndValue);
 
     await Future.delayed(Duration(seconds: 5));
 

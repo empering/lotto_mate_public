@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lotto_mate/states/search_filter_state.dart';
+import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -13,8 +13,8 @@ class NumberStats extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<StatState>().getData();
 
-    return Consumer<SearchFilterState>(builder: (_, searchFilterState, __) {
-      var isDraw = searchFilterState.isDraw;
+    return Consumer<StatState>(builder: (_, statState, __) {
+      SearchFilter searchFilter = statState.searchFilter;
       return Scaffold(
         appBar: AppAppBar('번호별'),
         body: Padding(
@@ -23,27 +23,30 @@ class NumberStats extends StatelessWidget {
             children: [
               SwitchListTile(
                 title: Text(
-                    '보너스 번호 ${searchFilterState.isWithBounsNumber ? '포함' : '제외'}'),
-                value: searchFilterState.isWithBounsNumber,
+                    '보너스 번호 ${searchFilter.isWithBounsNumber ? '포함' : '제외'}'),
+                value: searchFilter.isWithBounsNumber,
                 onChanged: (value) {
-                  searchFilterState.isWithBounsNumber = value;
+                  searchFilter.isWithBounsNumber = value;
+
+                  statState.reloadData();
                 },
               ),
               SwitchListTile(
-                title: isDraw ? Text('회차 선택') : Text('전체 회차'),
-                value: isDraw,
+                title: searchFilter.isDraw ? Text('회차 선택') : Text('전체 회차'),
+                value: searchFilter.isDraw,
                 onChanged: (value) {
-                  searchFilterState
+                  searchFilter
                       .setSearchType(value ? SearchType.DRAWS : SearchType.ALL);
+
+                  statState.reloadData();
                 },
               ),
               _makeSearchValueArea(),
               SwitchListTile(
-                title:
-                    searchFilterState.isAsc ? Text('번호 순서') : Text('당첨 횟수 순서'),
-                value: searchFilterState.isAsc,
+                title: searchFilter.isAsc ? Text('번호 순서') : Text('당첨 횟수 순서'),
+                value: searchFilter.isAsc,
                 onChanged: (value) {
-                  searchFilterState.setOrder(value ? Order.ASC : Order.DESC);
+                  searchFilter.setOrder(value ? Order.ASC : Order.DESC);
                 },
               ),
               Divider(),
@@ -73,11 +76,12 @@ class NumberStats extends StatelessWidget {
   }
 
   _makeSearchChoices({bool isStart = true}) {
-    return Consumer<SearchFilterState>(builder: (_, searchFilterState, __) {
+    return Consumer<StatState>(builder: (_, statState, __) {
+      SearchFilter searchFilter = statState.searchFilter;
       return SearchChoices.single(
         items: (isStart
-                ? searchFilterState.searchValues
-                : searchFilterState.searchValues.reversed)
+                ? searchFilter.searchValues
+                : searchFilter.searchValues.reversed)
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -87,25 +91,27 @@ class NumberStats extends StatelessWidget {
           );
         }).toList(),
         value: isStart
-            ? searchFilterState.searchStartValue
-            : searchFilterState.searchEndValue,
+            ? searchFilter.searchStartValue
+            : searchFilter.searchEndValue,
         searchHint: '회차를 선택하세요',
         onChanged: (newValue) {
           if (newValue == null) {
             newValue = isStart
-                ? searchFilterState.searchValues.first
-                : searchFilterState.searchValues.last;
+                ? searchFilter.searchValues.first
+                : searchFilter.searchValues.last;
           }
 
           isStart
-              ? searchFilterState.searchStartValue = newValue
-              : searchFilterState.searchEndValue = newValue;
+              ? searchFilter.searchStartValue = newValue
+              : searchFilter.searchEndValue = newValue;
+
+          statState.reloadData();
         },
         dialogBox: true,
         isExpanded: true,
         displayClearIcon: false,
         underline: Container(),
-        readOnly: !searchFilterState.isDraw,
+        readOnly: !searchFilter.isDraw,
         keyboardType: TextInputType.number,
       );
     });
