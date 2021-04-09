@@ -28,7 +28,7 @@ class NumberStats extends StatelessWidget {
                 onChanged: (value) {
                   searchFilter.isWithBounsNumber = value;
 
-                  statState.reloadData();
+                  statState.notify();
                 },
               ),
               SwitchListTile(
@@ -38,7 +38,7 @@ class NumberStats extends StatelessWidget {
                   searchFilter
                       .setSearchType(value ? SearchType.DRAWS : SearchType.ALL);
 
-                  statState.reloadData();
+                  statState.notify();
                 },
               ),
               _makeSearchValueArea(),
@@ -47,6 +47,8 @@ class NumberStats extends StatelessWidget {
                 value: searchFilter.isAsc,
                 onChanged: (value) {
                   searchFilter.setOrder(value ? Order.ASC : Order.DESC);
+
+                  statState.notify();
                 },
               ),
               Divider(),
@@ -105,7 +107,7 @@ class NumberStats extends StatelessWidget {
               ? searchFilter.searchStartValue = newValue
               : searchFilter.searchEndValue = newValue;
 
-          statState.reloadData();
+          statState.notify();
         },
         dialogBox: true,
         isExpanded: true,

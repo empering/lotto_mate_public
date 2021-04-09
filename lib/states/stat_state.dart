@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 
 class StatState extends ChangeNotifier {
-  final SearchFilter _searchFilter;
-
-  StatState(this._searchFilter);
+  final SearchFilter _searchFilter = SearchFilter();
 
   SearchFilter get searchFilter => _searchFilter;
 
@@ -14,11 +12,17 @@ class StatState extends ChangeNotifier {
 
   bool get isOrderAsc => _searchFilter.isAsc;
 
-  reloadData() {
-    _list.clear();
-    notifyListeners();
+  notify() {
+    if (_searchFilter.isDirty) {
+      _list.clear();
+      notifyListeners();
 
-    getData();
+      getData();
+
+      _searchFilter.dirty = false;
+    } else {
+      notifyListeners();
+    }
   }
 
   getData() async {

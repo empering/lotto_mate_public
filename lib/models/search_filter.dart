@@ -8,11 +8,11 @@ enum SearchType {
 enum Order { ASC, DESC }
 
 class SearchFilter {
+  bool _dirty = false;
   SearchType _searchType = SearchType.ALL;
   Order _order = Order.ASC;
   List<String> _searchValues = [];
-  bool dirty = false;
-  bool isWithBounsNumber = false;
+  bool _isWithBounsNumber = false;
   String searchStartValue = '';
   String searchEndValue = '';
 
@@ -22,9 +22,13 @@ class SearchFilter {
 
   List<String> get searchValues => _searchValues;
 
+  bool get isDirty => _dirty;
+
   bool get isDraw => _searchType == SearchType.DRAWS;
 
   bool get isAsc => _order == Order.ASC;
+
+  bool get isWithBounsNumber => _isWithBounsNumber;
 
   SearchFilter() {
     setSearchDrawValues();
@@ -38,11 +42,16 @@ class SearchFilter {
     searchEndValue = _searchValues.last;
   }
 
+  set dirty(bool value) {
+    _dirty = value;
+  }
+
   setSearchType(SearchType searchType) {
     _searchType = searchType;
     if (SearchType.ALL == searchType) {
-      dirty = searchStartValue == _searchValues.first ||
-          searchEndValue == _searchValues.last;
+      _dirty = _dirty ||
+          searchStartValue != _searchValues.first ||
+          searchEndValue != _searchValues.last;
 
       searchStartValue = _searchValues.first;
       searchEndValue = _searchValues.last;
@@ -51,5 +60,12 @@ class SearchFilter {
 
   setOrder(Order order) {
     _order = order;
+  }
+
+  set isWithBounsNumber(bool value) {
+    if (_isWithBounsNumber != value) {
+      _dirty = true;
+      _isWithBounsNumber = value;
+    }
   }
 }
