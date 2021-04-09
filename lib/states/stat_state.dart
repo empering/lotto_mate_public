@@ -1,14 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lotto_mate/models/search_filter.dart';
+import 'package:lotto_mate/models/stat.dart';
+import 'package:lotto_mate/services/stat_service.dart';
 
 class StatState extends ChangeNotifier {
+  final StatService _statService;
   final SearchFilter _searchFilter = SearchFilter();
+  final ScrollController _listViewController = ScrollController();
+
+  StatState(this._statService);
 
   SearchFilter get searchFilter => _searchFilter;
 
-  List<int> _list = [];
+  ScrollController get listViewController => _listViewController;
 
-  List<int> get list => _list;
+  List<Stat> _list = [];
+
+  List<Stat> get list => _list;
 
   bool get isOrderAsc => _searchFilter.isAsc;
 
@@ -23,16 +31,20 @@ class StatState extends ChangeNotifier {
     } else {
       notifyListeners();
     }
+
+    _listViewController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
   }
 
   getData() async {
-    var list = List.generate(45, (index) => index + 1);
-
-    print(_searchFilter.searchType);
-    print(_searchFilter.searchStartValue);
-    print(_searchFilter.searchEndValue);
-
-    await Future.delayed(Duration(seconds: 5));
+    var list = await _statService.getNumberStat(
+      startId: int.parse(_searchFilter.searchStartValue),
+      endId: int.parse(_searchFilter.searchEndValue),
+      isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
 
     _list = list;
 

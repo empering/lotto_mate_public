@@ -9,6 +9,7 @@ import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
+import 'package:lotto_mate/services/stat_service.dart';
 import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DrawService drawService = DrawService();
     BuyService buyService = BuyService();
+    StatService statService = StatService();
 
     return MultiProvider(
       providers: [
@@ -89,7 +91,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
             value: HistoryState(drawService, buyService)),
-        ChangeNotifierProvider.value(value: StatState()),
+        ChangeNotifierProvider.value(value: StatState(statService)),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
@@ -32,11 +34,11 @@ class NumberStats extends StatelessWidget {
                 },
               ),
               SwitchListTile(
-                title: searchFilter.isDraw ? Text('회차 선택') : Text('전체 회차'),
-                value: searchFilter.isDraw,
+                title: searchFilter.isAll ? Text('전체 회차') : Text('회차 선택'),
+                value: searchFilter.isAll,
                 onChanged: (value) {
                   searchFilter
-                      .setSearchType(value ? SearchType.DRAWS : SearchType.ALL);
+                      .setSearchType(value ? SearchType.ALL : SearchType.DRAWS);
 
                   statState.notify();
                 },
@@ -113,7 +115,7 @@ class NumberStats extends StatelessWidget {
         isExpanded: true,
         displayClearIcon: false,
         underline: Container(),
-        readOnly: !searchFilter.isDraw,
+        readOnly: searchFilter.isAll,
         keyboardType: TextInputType.number,
       );
     });
@@ -121,29 +123,35 @@ class NumberStats extends StatelessWidget {
 
   _stats() {
     return Consumer<StatState>(builder: (_, statState, __) {
-      var list = statState.list;
+      var list = List.from(statState.list);
 
       if (list.length == 0) {
         return Center(child: AppIndicator());
       }
 
       if (!statState.isOrderAsc) {
-        list = list.reversed.toList();
+        list.sort((a, b) =>
+            a.count == b.count ? a.statType - b.statType : b.count - a.count);
       }
 
       return Expanded(
         child: ListView.separated(
+          controller: statState.listViewController,
           separatorBuilder: (context, index) => Divider(),
           itemCount: list.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: LottoNumber(number: list[index]),
-              trailing: Text('101회 당첨'),
+              leading: LottoNumber(number: list[index].statType),
+              trailing: Text('${list[index].count}회 당첨'),
               title: LinearPercentIndicator(
                 animation: true,
                 lineHeight: 20.0,
-                percent: (index * 2) / 100,
-                progressColor: Colors.blue,
+                center: Text(
+                  NumberFormat.decimalPercentPattern(decimalDigits: 2)
+                      .format(list[index].rate),
+                ),
+                percent: list[index].rate,
+                progressColor: AppColors.primary,
               ),
             );
           },
