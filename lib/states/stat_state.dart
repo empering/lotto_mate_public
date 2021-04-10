@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:lotto_mate/models/search_filter.dart';
-import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/services/stat_service.dart';
 
 enum StatType {
@@ -18,6 +17,8 @@ class StatState extends ChangeNotifier {
   late Function getData;
   StatType _statType = StatType.NUMBER;
 
+  int _drawIdDiff = 10;
+
   StatState(this._statService) {
     getData = getNumberStats;
   }
@@ -26,11 +27,13 @@ class StatState extends ChangeNotifier {
 
   ScrollController get listViewController => _listViewController;
 
-  List<Stat> _stats = [];
+  List _stats = [];
 
-  List<Stat> get stats => _stats;
+  List get stats => _stats;
 
   bool get isOrderAsc => _searchFilter.isAsc;
+
+  int get drawIdDiff => _drawIdDiff;
 
   set statType(StatType statType) {
     _statType = statType;
@@ -45,9 +48,18 @@ class StatState extends ChangeNotifier {
       case StatType.EVEN_ODD:
         getData = getEvenOddStats;
         break;
+      case StatType.UNPICK:
+        getData = getUnpickStats;
+        break;
       default:
         getData = getNumberStats;
     }
+  }
+
+  changeRecentDrawId(int drawIdDiff) {
+    _drawIdDiff = drawIdDiff;
+    _searchFilter.dirty = true;
+    notify();
   }
 
   notify() {
@@ -104,6 +116,18 @@ class StatState extends ChangeNotifier {
   getEvenOddStats() async {
     var list = await _statService.getEvenOddStat(
       startId: int.parse(_searchFilter.searchStartValue),
+      endId: int.parse(_searchFilter.searchEndValue),
+      isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
+
+    _stats = list;
+
+    notifyListeners();
+  }
+
+  getUnpickStats() async {
+    var list = await _statService.getUnpickStat(
+      startId: int.parse(_searchFilter.searchEndValue) - _drawIdDiff,
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,
     );

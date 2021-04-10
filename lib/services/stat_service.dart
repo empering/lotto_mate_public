@@ -99,6 +99,34 @@ class StatService {
     return stats;
   }
 
+  getUnpickStat({
+    int? startId,
+    int? endId,
+    bool isWithBounsNumber = false,
+  }) async {
+    var result = await _getStat(startId: startId, endId: endId);
+
+    var numberList = List<int>.generate(45, (i) => i + 1);
+
+    result.forEach((map) {
+      for (var suffix = 1; suffix <= 6; suffix++) {
+        int number = map['drawNumber$suffix'];
+        numberList.remove(number);
+      }
+
+      if (isWithBounsNumber) {
+        int number = map['drawNumberBo'];
+        numberList.remove(number);
+      }
+    });
+
+    if (numberList.length == 0) {
+      numberList.add(-999);
+    }
+
+    return numberList;
+  }
+
   Future<List<Map<String, dynamic>>> _getStat(
       {int? startId, int? endId}) async {
     String sql = '''
