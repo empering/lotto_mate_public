@@ -1,5 +1,6 @@
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
+import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/repositories/repository.dart';
 
@@ -99,6 +100,38 @@ class StatService {
     return stats;
   }
 
+  getSeriesStat({int? startId, int? endId}) async {
+    var result = await _getStat(startId: startId, endId: endId);
+
+    List<SeriesStat> stats =
+        List<SeriesStat>.generate(5, (i) => SeriesStat(6 - i));
+
+    result.forEach((map) {
+      int seriesSize = 1;
+      int prevNumber = map['drawNumber1'];
+      for (var suffix = 2; suffix <= 7; suffix++) {
+        int curNumber = suffix == 7 ? 0 : map['drawNumber$suffix'];
+        if (curNumber - prevNumber == 1) {
+          seriesSize += 1;
+        } else if (seriesSize > 1) {
+          stats.singleWhere((stat) => stat.statType == seriesSize)
+            ..draws.add(Draw.fromDb(map))
+            ..count += 1;
+
+          seriesSize = 1;
+        }
+
+        prevNumber = curNumber;
+      }
+    });
+
+    stats.forEach((element) {
+      print('${element.statType} : ${element.count}');
+    });
+
+    return stats;
+  }
+
   getUnpickStat({
     int? startId,
     int? endId,
@@ -131,6 +164,7 @@ class StatService {
       {int? startId, int? endId}) async {
     String sql = '''
       select
+        id,
         drawNumber1,
         drawNumber2,
         drawNumber3,

@@ -48,6 +48,9 @@ class StatState extends ChangeNotifier {
       case StatType.EVEN_ODD:
         getData = getEvenOddStats;
         break;
+      case StatType.SERIES:
+        getData = getSeriesStats;
+        break;
       case StatType.UNPICK:
         getData = getUnpickStats;
         break;
@@ -118,6 +121,17 @@ class StatState extends ChangeNotifier {
       startId: int.parse(_searchFilter.searchStartValue),
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
+
+    _stats = list;
+
+    notifyListeners();
+  }
+
+  getSeriesStats() async {
+    var list = await _statService.getSeriesStat(
+      startId: int.parse(_searchFilter.searchStartValue),
+      endId: int.parse(_searchFilter.searchEndValue),
     );
 
     _stats = list;
