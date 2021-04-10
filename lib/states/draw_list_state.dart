@@ -4,7 +4,7 @@ import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
 class DrawListState with ChangeNotifier {
-  final DrawService _drawService = DrawService();
+  final DrawService _drawService;
 
   final ScrollController _listViewController = ScrollController();
 
@@ -18,7 +18,7 @@ class DrawListState with ChangeNotifier {
   int offset = 0;
   bool hasMore = false;
 
-  DrawListState() {
+  DrawListState(this._drawService) {
     this._listViewController.addListener(() async {
       if (this._listViewController.position.pixels ==
               this.listViewController.position.maxScrollExtent &&
@@ -28,6 +28,12 @@ class DrawListState with ChangeNotifier {
         this.getDraws();
       }
     });
+  }
+
+  reset() {
+    this.offset = 0;
+    _draws.clear();
+    this.getDraws();
   }
 
   void getDraws() async {

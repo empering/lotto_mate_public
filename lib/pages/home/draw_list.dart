@@ -13,15 +13,14 @@ import 'package:provider/provider.dart';
 class DrawList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.read<DrawListState>().reset();
+
     return Scaffold(
       appBar: AppAppBar('회차별 당첨결과'),
-      body: ChangeNotifierProvider(
-        create: (_) => DrawListState()..getDraws(),
-        child: Container(
-          child: Consumer<DrawListState>(
-            builder: (context, drawListState, child) =>
-                _makeDrawListView(drawListState),
-          ),
+      body: Container(
+        child: Consumer<DrawListState>(
+          builder: (context, drawListState, child) =>
+              _makeDrawListView(drawListState),
         ),
       ),
     );
