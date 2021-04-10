@@ -5,7 +5,7 @@ import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/repositories/repository.dart';
 
 class StatService {
-  final Repository _repository = Repository('stat');
+  final Repository _repository = Repository('draws');
 
   getNumberStat({
     int? startId,
@@ -162,24 +162,7 @@ class StatService {
 
   Future<List<Map<String, dynamic>>> _getStat(
       {int? startId, int? endId}) async {
-    String sql = '''
-      select
-        id,
-        drawNumber1,
-        drawNumber2,
-        drawNumber3,
-        drawNumber4,
-        drawNumber5,
-        drawNumber6,
-        drawNumberBo
-      from draws
-    ''';
-    List<dynamic> args = [];
-    if (startId != null && endId != null) {
-      sql += 'where id >= ? and id <= ?';
-      args = [startId, endId];
-    }
-
-    return await _repository.getRawQuery(sql, arguments: args);
+    return await _repository
+        .getByWhere(where: 'id >= ? and id <= ?', whereArgs: [startId, endId]);
   }
 }
