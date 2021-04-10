@@ -108,6 +108,7 @@ class UnpickNumberStats extends StatelessWidget {
                 children: numbers
                     .map((n) => LottoNumber(
                           number: n,
+                          fontSize: 17.0,
                         ))
                     .toList(),
               ),
