@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
@@ -146,16 +147,18 @@ class ColorStats extends StatelessWidget {
             var stat = stats[index];
 
             return ListTile(
-              leading: ClipOval(
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 60,
-                  height: 45,
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              leading: Container(
+                alignment: Alignment.center,
+                decoration: AppBoxDecoration(
                   color: LottoColor.getLottoColor(stat.statType),
-                  child: Text(
-                    LottoColor.getLottoColorTypeDesc(stat.statType),
-                  ),
+                  blurRadius: 2.0,
+                  offset: Offset(1.0, 3.0),
+                ).circular(),
+                width: 60,
+                height: 45,
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                  LottoColor.getLottoColorTypeDesc(stat.statType),
                 ),
               ),
               trailing:

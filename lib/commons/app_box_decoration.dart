@@ -4,10 +4,14 @@ import 'package:lotto_mate/commons/app_colors.dart';
 class AppBoxDecoration {
   final Color color;
   final Color shdowColor;
+  final double blurRadius;
+  final Offset offset;
 
   AppBoxDecoration({
     this.color = AppColors.backgroundLight,
     this.shdowColor = Colors.black38,
+    this.blurRadius = 10.0,
+    this.offset = Offset.zero,
   });
 
   circular() {
@@ -17,7 +21,8 @@ class AppBoxDecoration {
       boxShadow: [
         BoxShadow(
           color: shdowColor,
-          blurRadius: 10.0,
+          blurRadius: blurRadius,
+          offset: offset,
         ),
       ],
     );
