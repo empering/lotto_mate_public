@@ -1,6 +1,6 @@
 enum LottoEvenOddType {
-  even,
   odd,
+  even,
   none,
 }
 

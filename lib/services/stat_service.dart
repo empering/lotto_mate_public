@@ -1,4 +1,5 @@
 import 'package:lotto_mate/commons/lotto_color.dart';
+import 'package:lotto_mate/commons/lotto_even_odd.dart';
 import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/repositories/repository.dart';
 
@@ -57,6 +58,40 @@ class StatService {
         int number = map['drawNumberBo'];
         stats.singleWhere((stat) =>
             stat.statType == LottoColor.getLottoNumberColorType(number))
+          ..count += 1;
+      }
+    });
+
+    return stats;
+  }
+
+  getEvenOddStat({
+    int? startId,
+    int? endId,
+    bool isWithBounsNumber = false,
+  }) async {
+    var result = await _getStat(startId: startId, endId: endId);
+
+    List<Stat<LottoEvenOddType>> stats = List<Stat<LottoEvenOddType>>.generate(
+      2,
+      (i) => Stat<LottoEvenOddType>(
+        LottoEvenOddType.values[i],
+        totCount: result.length,
+      ),
+    );
+
+    result.forEach((map) {
+      for (var suffix = 1; suffix <= 6; suffix++) {
+        int number = map['drawNumber$suffix'];
+        stats.singleWhere(
+            (stat) => stat.statType == LottoEvenOdd.getEvenOddType(number))
+          ..count += 1;
+      }
+
+      if (isWithBounsNumber) {
+        int number = map['drawNumberBo'];
+        stats.singleWhere(
+            (stat) => stat.statType == LottoEvenOdd.getEvenOddType(number))
           ..count += 1;
       }
     });

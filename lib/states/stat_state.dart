@@ -42,6 +42,9 @@ class StatState extends ChangeNotifier {
       case StatType.COLOR:
         getData = getColorStats;
         break;
+      case StatType.EVEN_ODD:
+        getData = getEvenOddStats;
+        break;
       default:
         getData = getNumberStats;
     }
@@ -88,6 +91,18 @@ class StatState extends ChangeNotifier {
 
   getColorStats() async {
     var list = await _statService.getColorStat(
+      startId: int.parse(_searchFilter.searchStartValue),
+      endId: int.parse(_searchFilter.searchEndValue),
+      isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
+
+    _stats = list;
+
+    notifyListeners();
+  }
+
+  getEvenOddStats() async {
+    var list = await _statService.getEvenOddStat(
       startId: int.parse(_searchFilter.searchStartValue),
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,
