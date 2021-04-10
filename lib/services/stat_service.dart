@@ -125,10 +125,6 @@ class StatService {
       }
     });
 
-    stats.forEach((element) {
-      print('${element.statType} : ${element.count}');
-    });
-
     return stats;
   }
 
