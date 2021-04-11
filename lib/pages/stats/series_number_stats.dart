@@ -124,7 +124,8 @@ class SeriesNumberStats extends StatelessWidget {
                 if (stat.draws.length > 0) {
                   Get.to(DrawList(
                     type: DrawListType.LIST,
-                    drawsFromParent: stat.draws,
+                    drawsFromParent: stat.draws.toList()
+                      ..sort((a, b) => b.id! - a.id!),
                   ));
                 }
               },

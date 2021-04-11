@@ -13,7 +13,7 @@ class Stat<T> {
 class SeriesStat {
   final int statType;
   int count;
-  List<Draw> draws = [];
+  Set<Draw> draws = {};
 
   SeriesStat(this.statType, {this.count = 0});
 }

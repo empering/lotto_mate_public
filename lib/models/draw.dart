@@ -99,4 +99,10 @@ class Draw {
     var dd = DateTime.parse(this.drawDate!);
     return '${dd.year}년 ${dd.month}월 ${dd.day}일';
   }
+
+  @override
+  bool operator ==(Object other) => other is Draw && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
