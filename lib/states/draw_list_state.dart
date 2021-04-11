@@ -1,7 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/draw_service.dart';
+
+enum DrawListType {
+  DB,
+  LIST,
+}
 
 class DrawListState with ChangeNotifier {
   final DrawService _drawService;
@@ -10,33 +17,64 @@ class DrawListState with ChangeNotifier {
 
   ScrollController get listViewController => _listViewController;
 
+  DrawListType _drawListType = DrawListType.DB;
+
+  late Function getData;
+
   List<Draw> _draws = [];
 
   List<Draw> get draws => _draws;
+
+  List<Draw> _drawsFromParent = [];
 
   final int limit = 10;
   int offset = 0;
   bool hasMore = false;
 
   DrawListState(this._drawService) {
+    getData = getDrawsFromDb;
+
     this._listViewController.addListener(() async {
       if (this._listViewController.position.pixels ==
               this.listViewController.position.maxScrollExtent &&
           this.hasMore) {
         await Future.delayed(Duration(milliseconds: 500));
         this.offset = draws.length;
-        this.getDraws();
+        this.getData.call();
       }
     });
   }
 
-  reset() {
-    this.offset = 0;
-    _draws.clear();
-    this.getDraws();
+  set drawListType(DrawListType drawListType) {
+    _drawListType = drawListType;
+
+    switch (_drawListType) {
+      case DrawListType.DB:
+        getData = getDrawsFromDb;
+        break;
+      case DrawListType.LIST:
+        getData = getDrawsFromList;
+        break;
+    }
   }
 
-  void getDraws() async {
+  set drawsFromParent(List<Draw>? drawsFromParent) {
+    if (_drawListType == DrawListType.LIST) {
+      _drawsFromParent = List.from(drawsFromParent ?? []);
+    }
+  }
+
+  getDraws({DrawListType? drawListType, List<Draw>? drawsFromParent}) {
+    this.drawListType = drawListType ?? _drawListType;
+    this.drawsFromParent = drawsFromParent;
+
+    offset = 0;
+    _draws = [];
+
+    getData.call();
+  }
+
+  getDrawsFromDb() async {
     var draws = await _drawService.getDraws(limit: limit, offset: offset);
 
     _draws.addAll(draws);
@@ -48,5 +86,17 @@ class DrawListState with ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  getDrawsFromList() async {
+    if (_drawsFromParent.length > 0) {
+      _draws.addAll(_drawsFromParent.sublist(
+          offset, offset + min(limit, _drawsFromParent.length - offset)));
+
+      hasMore = _draws.length != _drawsFromParent.length;
+
+      await Future.delayed(Duration(milliseconds: 100));
+      notifyListeners();
+    }
   }
 }

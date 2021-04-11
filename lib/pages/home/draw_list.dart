@@ -11,54 +11,61 @@ import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
 class DrawList extends StatelessWidget {
+  final DrawListType type;
+  final List<Draw>? drawsFromParent;
+
+  DrawList({this.type = DrawListType.DB, this.drawsFromParent});
+
   @override
   Widget build(BuildContext context) {
-    context.read<DrawListState>().reset();
+    context.read<DrawListState>().getDraws(
+          drawListType: type,
+          drawsFromParent: drawsFromParent,
+        );
 
     return Scaffold(
-      appBar: AppAppBar('회차별 당첨결과'),
+      appBar: AppAppBar(type == DrawListType.DB ? '회차별 당첨결과' : '추첨결과'),
       body: Container(
-        child: Consumer<DrawListState>(
-          builder: (context, drawListState, child) =>
-              _makeDrawListView(drawListState),
-        ),
+        child: _makeDrawListView(),
       ),
     );
   }
 
-  _makeDrawListView(DrawListState drawListState) {
-    var draws = drawListState.draws;
+  _makeDrawListView() {
+    return Consumer<DrawListState>(builder: (_, drawListState, __) {
+      var draws = drawListState.draws;
+      return ListView.separated(
+        controller: drawListState.listViewController,
+        padding: const EdgeInsets.all(10.0),
+        separatorBuilder: (context, index) => Divider(),
+        itemCount: draws.length + 1,
+        itemBuilder: (context, index) {
+          if (index < draws.length) {
+            var draw = draws[index];
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              decoration: AppBoxDecoration().circular(),
+              child: ListTile(
+                leading: _makeDrawListLeading(draw.id),
+                title: _makeDrawListViewTitle(draw),
+                subtitle: _makeDrawListViewSubTitle(draw),
+                dense: true,
+                isThreeLine: true,
+                onTap: () {
+                  Get.to(DrawView(draw.id!));
+                },
+              ),
+            );
+          }
 
-    return ListView.separated(
-      controller: drawListState.listViewController,
-      padding: const EdgeInsets.all(10.0),
-      separatorBuilder: (context, index) => Divider(),
-      itemCount: draws.length + 1,
-      itemBuilder: (context, index) {
-        if (index < draws.length) {
-          return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            decoration: AppBoxDecoration().circular(),
-            child: ListTile(
-              leading: _makeDrawListLeading(draws[index].id),
-              title: _makeDrawListViewTitle(draws[index]),
-              subtitle: _makeDrawListViewSubTitle(draws[index]),
-              dense: true,
-              isThreeLine: true,
-              onTap: () {
-                Get.to(DrawView(draws[index].id!));
-              },
-            ),
-          );
-        }
-
-        if (drawListState.hasMore) {
-          return Center(child: AppIndicator());
-        } else {
-          return Center(child: Text('더 이상 데이터가 없습니다'));
-        }
-      },
-    );
+          if (drawListState.hasMore) {
+            return Center(child: AppIndicator());
+          } else {
+            return Center(child: Text('더 이상 데이터가 없습니다'));
+          }
+        },
+      );
+    });
   }
 
   _makeDrawListLeading(int? id) {
@@ -81,7 +88,7 @@ class DrawList extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ...draw.numbers!
-            .take(5)
+            .take(6)
             .map(
               (n) => LottoNumber(
                 number: n,

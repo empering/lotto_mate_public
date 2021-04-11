@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
+import 'package:lotto_mate/pages/home/draw_list.dart';
+import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -118,7 +121,12 @@ class SeriesNumberStats extends StatelessWidget {
 
             return ListTile(
               onTap: () {
-                print(stat.draws);
+                if (stat.draws.length > 0) {
+                  Get.to(DrawList(
+                    type: DrawListType.LIST,
+                    drawsFromParent: stat.draws,
+                  ));
+                }
               },
               leading: FaIcon(FontAwesomeIcons.fireAlt),
               trailing: Icon(Icons.navigate_next),
