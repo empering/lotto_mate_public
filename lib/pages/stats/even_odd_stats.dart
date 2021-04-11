@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
@@ -142,30 +143,26 @@ class EvenOddStats extends StatelessWidget {
             var stat = stats[index];
 
             return ListTile(
-              leading: ClipOval(
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 60,
-                  height: 45,
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      FaIcon(
-                        stat.statType == LottoEvenOddType.odd
-                            ? FontAwesomeIcons.diceThree
-                            : FontAwesomeIcons.diceFour,
-                        color: AppColors.primary,
-                      ),
-                      Text(
-                        LottoEvenOdd.getEvenOddTypeName(stat.statType),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
+              leading: Container(
+                alignment: Alignment.center,
+                width: 60,
+                height: 45,
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FaIcon(
+                      stat.statType == LottoEvenOddType.odd
+                          ? FontAwesomeIcons.diceThree
+                          : FontAwesomeIcons.diceFour,
+                      color: stat.statType == LottoEvenOddType.odd
+                          ? LottoColor.red
+                          : LottoColor.blue,
+                    ),
+                    Text(
+                      LottoEvenOdd.getEvenOddTypeName(stat.statType),
+                    ),
+                  ],
                 ),
               ),
               trailing:
