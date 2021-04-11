@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
@@ -145,22 +144,10 @@ class ColorStats extends StatelessWidget {
           itemCount: stats.length,
           itemBuilder: (context, index) {
             var stat = stats[index];
+            var color = stat.statType;
 
             return ListTile(
-              leading: Container(
-                alignment: Alignment.center,
-                decoration: AppBoxDecoration(
-                  color: LottoColor.getLottoColor(stat.statType),
-                  blurRadius: 2.0,
-                  offset: Offset(1.0, 3.0),
-                ).circular(),
-                width: 60,
-                height: 45,
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  LottoColor.getLottoColorTypeDesc(stat.statType),
-                ),
-              ),
+              leading: _makeLeading(color),
               trailing:
                   Text('${NumberFormat.decimalPattern().format(stat.count)} 회'),
               title: LinearPercentIndicator(
@@ -178,5 +165,30 @@ class ColorStats extends StatelessWidget {
         ),
       );
     });
+  }
+
+  _makeLeading(LottoColorType colorType) {
+    return Container(
+      width: 85,
+      height: 45,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Material(
+            color: LottoColor.getLottoColor(colorType),
+            elevation: 8,
+            shape: CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              width: 32,
+              padding: EdgeInsets.all(6),
+            ),
+          ),
+          Text(
+            LottoColor.getLottoColorTypeDesc(colorType),
+          ),
+        ],
+      ),
+    );
   }
 }

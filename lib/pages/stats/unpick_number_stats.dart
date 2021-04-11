@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
@@ -90,32 +89,47 @@ class UnpickNumberStats extends StatelessWidget {
                 LottoColor.getLottoNumberColorType(number) == color);
 
             return ListTile(
-              leading: Container(
-                alignment: Alignment.center,
-                decoration: AppBoxDecoration(
-                  color: LottoColor.getLottoColor(color),
-                  blurRadius: 2.0,
-                  offset: Offset(1.0, 3.0),
-                ).circular(),
-                width: 60,
-                height: 45,
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  LottoColor.getLottoColorTypeDesc(color),
+              leading: _makeLeading(color),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  children: numbers
+                      .map((n) => LottoNumber(
+                            number: n,
+                            fontSize: 17.0,
+                          ))
+                      .toList(),
                 ),
-              ),
-              title: Row(
-                children: numbers
-                    .map((n) => LottoNumber(
-                          number: n,
-                          fontSize: 17.0,
-                        ))
-                    .toList(),
               ),
             );
           },
         ),
       );
     });
+  }
+
+  _makeLeading(LottoColorType colorType) {
+    return Container(
+      width: 85,
+      height: 45,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Material(
+            color: LottoColor.getLottoColor(colorType),
+            elevation: 8,
+            shape: CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              width: 32,
+              padding: EdgeInsets.all(6),
+            ),
+          ),
+          Text(
+            LottoColor.getLottoColorTypeDesc(colorType),
+          ),
+        ],
+      ),
+    );
   }
 }
