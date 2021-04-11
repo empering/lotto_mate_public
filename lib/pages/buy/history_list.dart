@@ -93,7 +93,7 @@ class HistoryList extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: pick.numbers!
-                  .take(5)
+                  .take(6)
                   .map(
                     (n) => LottoNumber(
                       number: n,
