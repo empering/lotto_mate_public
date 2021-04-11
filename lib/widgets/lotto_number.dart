@@ -19,14 +19,16 @@ class LottoNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (this.numberPicked != null) {
+    if (this.numberPicked != null) {
+      return GestureDetector(
+        onTap: () {
           this.numberPicked!(this.number!);
-        }
-      },
-      child: _makeNumber(),
-    );
+        },
+        child: _makeNumber(),
+      );
+    } else {
+      return _makeNumber();
+    }
   }
 
   Color _getColor() {
