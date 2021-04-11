@@ -135,6 +135,9 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: AppColors.primary,
           ),
+          buttonBarTheme: ButtonBarThemeData(
+            alignment: MainAxisAlignment.center,
+          ),
         ),
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: [const Locale('ko', 'KR')],
