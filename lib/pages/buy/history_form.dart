@@ -16,37 +16,30 @@ class HistoryForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppAppBar('로또 번호 ${isFirst ? '등록' : '수정'}'),
-      body: ChangeNotifierProvider(
-        create: (_) => BuyState(),
-        child: Scaffold(
-          body: Consumer<BuyState>(
-            builder: (context, buyHistoryState, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        DrawIdDropdown(),
-                        LottoNumberForms(),
-                      ],
-                    ),
+      body: Consumer<BuyState>(
+        builder: (_, buyState, __) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DrawIdDropdown(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: LottoNumberForms(),
                   ),
-                  LottoNumberPad(numberPicked: (value) {
-                    if (value != null) {
-                      buyHistoryState.pickNumber(value);
-                    }
-                  }),
-                  FormButton(),
-                  SizedBox(
-                    height: 20,
-                  )
-                ],
-              );
-            },
-          ),
-        ),
+                ),
+                Divider(),
+                LottoNumberPad(numberPicked: (value) {
+                  if (value != null) {
+                    buyState.pickNumber(value);
+                  }
+                }),
+                FormButton(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/buy/history.dart';
 import 'package:lotto_mate/pages/buy/history_form.dart';
@@ -87,7 +89,34 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       onTabNotify: (index) {
         var intercept = index == 2;
         if (intercept) {
-          Get.to(HistoryForm());
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) {
+              return Container(
+                margin: const EdgeInsets.all(50.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                decoration: AppBoxDecoration().circular(),
+                child: Wrap(
+                  children: [
+                    ListTile(
+                      leading: FaIcon(FontAwesomeIcons.handPointer),
+                      title: Text('직접 번호 등록'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Get.to(HistoryForm());
+                      },
+                    ),
+                    ListTile(
+                      leading: FaIcon(FontAwesomeIcons.qrcode),
+                      title: Text('QR 코드로 등록'),
+                      onTap: () => {},
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
         }
 
         return !intercept;
