@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
@@ -129,7 +130,10 @@ class SeriesNumberStats extends StatelessWidget {
                   ));
                 }
               },
-              leading: FaIcon(FontAwesomeIcons.fireAlt),
+              leading: FaIcon(
+                FontAwesomeIcons.fireAlt,
+                color: getColorByIndex(index),
+              ),
               trailing: Icon(Icons.navigate_next),
               title: Text('${stat.statType} 연속 출현'),
               subtitle: Text('${stat.count} 회'),
@@ -138,5 +142,20 @@ class SeriesNumberStats extends StatelessWidget {
         ),
       );
     });
+  }
+
+  getColorByIndex(int index) {
+    switch (index) {
+      case 0:
+        return LottoColor.red;
+      case 1:
+        return LottoColor.blue;
+      case 2:
+        return LottoColor.yellow;
+      case 3:
+        return LottoColor.green;
+      default:
+        return LottoColor.gray;
+    }
   }
 }
