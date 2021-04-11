@@ -31,11 +31,10 @@ class RecommendResult extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: recommendState.recommends.length == 0
-            ? RefreshProgressIndicator(
-                backgroundColor: Colors.transparent,
-              )
+            ? AppIndicator(color: AppColors.accent)
             : Icon(Icons.refresh),
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.accent,
