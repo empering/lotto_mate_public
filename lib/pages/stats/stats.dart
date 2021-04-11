@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/pages/stats/color_stats.dart';
 import 'package:lotto_mate/pages/stats/even_odd_stats.dart';
@@ -20,7 +21,7 @@ class Stats extends StatelessWidget {
       children: [
         ListTile(
           title: Text('번호별'),
-          leading: Icon(Icons.youtube_searched_for),
+          leading: FaIcon(FontAwesomeIcons.dice),
           onTap: () {
             Get.to(NumberStats());
           },
@@ -28,7 +29,7 @@ class Stats extends StatelessWidget {
         Divider(),
         ListTile(
           title: Text('색상별'),
-          leading: Icon(Icons.color_lens_outlined),
+          leading: FaIcon(FontAwesomeIcons.palette),
           onTap: () {
             Get.to(ColorStats());
           },
@@ -36,7 +37,7 @@ class Stats extends StatelessWidget {
         Divider(),
         ListTile(
           title: Text('홀짝'),
-          leading: Icon(Icons.star_half),
+          leading: FaIcon(FontAwesomeIcons.adjust),
           onTap: () {
             Get.to(EvenOddStats());
           },
@@ -44,7 +45,7 @@ class Stats extends StatelessWidget {
         Divider(),
         ListTile(
           title: Text('연속번호'),
-          leading: Icon(Icons.saved_search),
+          leading: FaIcon(FontAwesomeIcons.listOl),
           onTap: () {
             Get.to(SeriesNumberStats());
           },
@@ -52,7 +53,7 @@ class Stats extends StatelessWidget {
         Divider(),
         ListTile(
           title: Text('미출현번호'),
-          leading: Icon(Icons.search_off),
+          leading: FaIcon(FontAwesomeIcons.ban),
           onTap: () {
             Get.to(UnpickNumberStats());
           },
