@@ -31,6 +31,7 @@ class DrawIdDropdown extends StatelessWidget {
         dialogBox: true,
         isExpanded: true,
         displayClearIcon: false,
+        readOnly: buyState.formType == HistoryFormType.QR,
         underline: Container(),
         keyboardType: TextInputType.number,
       );

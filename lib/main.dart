@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
-        ChangeNotifierProvider.value(value: BuyState()),
+        ChangeNotifierProvider.value(value: BuyState(buyService)),
         ChangeNotifierProvider.value(value: RecommendState()),
         ChangeNotifierProvider.value(
             value: HistoryState(drawService, buyService)),

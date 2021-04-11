@@ -10,6 +10,7 @@ import 'package:lotto_mate/pages/buy/history_form.dart';
 import 'package:lotto_mate/pages/home/home.dart';
 import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
+import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -110,7 +111,10 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                     ListTile(
                       leading: FaIcon(FontAwesomeIcons.qrcode),
                       title: Text('QR 코드로 등록'),
-                      onTap: () => {},
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Get.to(HistoryForm(formType: HistoryFormType.QR));
+                      },
                     ),
                   ],
                 ),

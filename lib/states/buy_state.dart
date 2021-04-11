@@ -2,15 +2,42 @@ import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+
+enum HistoryFormType {
+  MANUAL,
+  QR,
+}
 
 class BuyState with ChangeNotifier {
-  final BuyService _buyService = BuyService();
+  final BuyService _buyService;
+
+  BuyState(this._buyService) {
+    _initBuy();
+  }
 
   final int thisWeekDrawId = AppConstants().getThisWeekDrawId();
+
+  HistoryFormType _formType = HistoryFormType.MANUAL;
 
   Buy? _buy;
 
   bool _canSave = false;
+
+  bool _okQr = false;
+
+  HistoryFormType get formType => _formType;
+
+  set formType(HistoryFormType formType) {
+    _formType = formType;
+    _buy!.picks = [];
+
+    if (_formType == HistoryFormType.QR) {
+      _getQrData();
+    } else {
+      _initBuy();
+    }
+  }
 
   Buy? get buy => _buy;
 
@@ -20,7 +47,14 @@ class BuyState with ChangeNotifier {
     notifyListeners();
   }
 
-  bool get getCanSave => _canSave;
+  bool get getCanSave {
+    if (_formType == HistoryFormType.QR) {
+      return _canSave && _okQr;
+    }
+    return _canSave;
+  }
+
+  bool get okQr => _okQr;
 
   _setCanSave() {
     _canSave = true;
@@ -37,10 +71,6 @@ class BuyState with ChangeNotifier {
         _canSave = false;
       }
     });
-  }
-
-  BuyState() {
-    _initBuy();
   }
 
   set setDrawId(int drawId) {
@@ -142,6 +172,30 @@ class BuyState with ChangeNotifier {
 
     _setCanSave();
     this.setPickedLast();
+  }
+
+  scanQr() {
+    _getQrData();
+  }
+
+  _getQrData() async {
+    String qrCodeData = await scanner.scan();
+    print(qrCodeData);
+    // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
+    // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
+    if (qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') < 0) {
+      _okQr = false;
+    } else {
+      _okQr = true;
+      String qrData = qrCodeData.split('v=')[1];
+      this.setBuy = Buy.fromQr(qrData);
+    }
+
+    print('??????');
+    print(_okQr);
+
+    _setCanSave();
+    notifyListeners();
   }
 
   void insert() {

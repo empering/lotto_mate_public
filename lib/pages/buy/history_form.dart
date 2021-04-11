@@ -9,19 +9,22 @@ import 'package:lotto_mate/widgets/lotto_number_pad.dart';
 import 'package:provider/provider.dart';
 
 class HistoryForm extends StatelessWidget {
-  final isFirst;
+  final bool isFirst;
+  final HistoryFormType formType;
 
-  HistoryForm({this.isFirst = true});
+  HistoryForm({this.isFirst = true, this.formType = HistoryFormType.MANUAL});
 
   @override
   Widget build(BuildContext context) {
+    context.read<BuyState>().formType = this.formType;
+
     return Consumer<BuyState>(builder: (_, buyState, __) {
       return Scaffold(
         appBar: AppAppBar('로또 번호 ${isFirst ? '등록' : '수정'}'),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               DrawIdDropdown(),
               Expanded(
@@ -30,30 +33,34 @@ class HistoryForm extends StatelessWidget {
                 ),
               ),
               Divider(),
-              LottoNumberPad(numberPicked: (value) {
-                if (value != null) {
-                  buyState.pickNumber(value);
-                }
-              }),
+              formType == HistoryFormType.MANUAL
+                  ? LottoNumberPad(numberPicked: (value) {
+                      if (value != null) {
+                        buyState.pickNumber(value);
+                      }
+                    })
+                  : Container(),
               // FormButton(),
-              ButtonBar(
-                alignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      buyState.setPickedDefault();
-                      buyState.addNewPick();
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.remove),
-                    onPressed: () {
-                      buyState.popPick();
-                    },
-                  ),
-                ],
-              )
+              formType == HistoryFormType.MANUAL
+                  ? ButtonBar(
+                      alignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            buyState.setPickedDefault();
+                            buyState.addNewPick();
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            buyState.popPick();
+                          },
+                        ),
+                      ],
+                    )
+                  : Container(height: 45.0),
             ],
           ),
         ),

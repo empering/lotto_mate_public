@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/states/buy_state.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,28 @@ class LottoNumberForms extends StatelessWidget {
   Widget _makeLottoNumberForms(final BuyState buyState) {
     var picks = buyState.buy!.picks!;
 
+    if (picks.length == 0) {
+      return Center(
+        child: Column(
+          children: [
+            AppIndicator(),
+            Text('QR 코드를 다시 스캔해주세요.'),
+            SizedBox(height: 20.0),
+            FloatingActionButton(
+              child: Icon(Icons.refresh),
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.accent,
+              splashColor: AppColors.accent,
+              heroTag: null,
+              onPressed: () {
+                buyState.scanQr();
+              },
+            )
+          ],
+        ),
+      );
+    }
+
     List<Widget> lottoNumberForms = [];
     picks.forEach((pick) {
       lottoNumberForms.add(GestureDetector(
@@ -28,9 +51,7 @@ class LottoNumberForms extends StatelessWidget {
                 width: pick.isPicked! ? 1 : 0,
               ),
               borderRadius: BorderRadius.circular(10),
-              color: pick.isPicked!
-                  ? AppColors.accent
-                  : AppColors.light),
+              color: pick.isPicked! ? AppColors.accent : AppColors.light),
           margin: EdgeInsets.fromLTRB(15, 2, 15, 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,9 +61,7 @@ class LottoNumberForms extends StatelessWidget {
                 onPressed: () {
                   buyState.togglePickType(pick);
                 },
-                style: TextButton.styleFrom(
-                  minimumSize: Size(15.0, 15.0)
-                ),
+                style: TextButton.styleFrom(minimumSize: Size(15.0, 15.0)),
                 child: Text(
                   pick.type == 'q' ? '자동' : '수동',
                   style: TextStyle(
