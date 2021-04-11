@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
@@ -141,9 +142,10 @@ class RecommendResult extends StatelessWidget {
       itemCount: recommends.length,
       itemBuilder: (_, index) {
         return ListTile(
-          leading: Text(
-            '💸',
-            style: TextStyle(fontSize: 30.0),
+          leading: FaIcon(
+            FontAwesomeIcons.fireAlt,
+            color: LottoColor.red,
+            size: 30.0,
           ),
           title: _makeRecommendListViewTitle(recommends[index], numbers),
         );
