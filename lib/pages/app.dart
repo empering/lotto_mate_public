@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/buy/history.dart';
@@ -10,6 +11,7 @@ import 'package:lotto_mate/pages/buy/history_form.dart';
 import 'package:lotto_mate/pages/home/home.dart';
 import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
+import 'package:lotto_mate/states/banner_ad_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
@@ -43,19 +45,35 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       create: (_) => DrawState()..getDrawById(),
       child: Scaffold(
         appBar: AppAppBar('로또🤣💥'),
-        body: PageTransitionSwitcher(
-          transitionBuilder: (
-            Widget child,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return FadeThroughTransition(
-              animation: animation,
-              secondaryAnimation: secondaryAnimation,
-              child: child,
-            );
-          },
-          child: pages[pageIndex],
+        body: Column(
+          children: [
+            Expanded(
+              child: PageTransitionSwitcher(
+                transitionBuilder: (
+                  Widget child,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                ) {
+                  return FadeThroughTransition(
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    child: child,
+                  );
+                },
+                child: pages[pageIndex],
+              ),
+            ),
+            Consumer<BannerAdState>(
+              builder: (_, adState, __) {
+                var adWidget = AdWidget(ad: adState.ad);
+                return Container(
+                  alignment: Alignment.center,
+                  child: adWidget,
+                  height: 72.0,
+                );
+              },
+            ),
+          ],
         ),
         bottomNavigationBar: _makeConvexBottomNavigationBar(),
       ),

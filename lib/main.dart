@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 import 'package:lotto_mate/services/stat_service.dart';
+import 'package:lotto_mate/states/banner_ad_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
@@ -35,6 +37,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DbHelper.initDatabase();
   await Firebase.initializeApp();
+  MobileAds.instance.initialize();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -94,6 +97,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
             value: HistoryState(drawService, buyService)),
         ChangeNotifierProvider.value(value: StatState(statService)),
+        ChangeNotifierProvider.value(value: BannerAdState()),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
