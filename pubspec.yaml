@@ -29,15 +29,15 @@ dependencies:
 
   intl: ^0.17.0
 
-  get: ^4.1.1
+  get: ^4.1.4
   provider: ^5.0.0
 
-  sqflite: ^2.0.0+2
+  sqflite: ^2.0.0+3
   path: ^1.8.0
 
-  firebase_core: ^1.0.0
-  cloud_firestore: ^1.0.0
-  firebase_messaging: ^9.0.0
+  firebase_core: ^1.0.3
+  cloud_firestore: ^1.0.4
+  firebase_messaging: ^9.1.1
   flutter_local_notifications: ^5.0.0+1
   google_mobile_ads: ^0.12.1
 
