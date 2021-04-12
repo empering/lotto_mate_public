@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
@@ -31,7 +32,49 @@ class RecommendResult extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      persistentFooterButtons: [
+        IconButton(
+          icon: Icon(Icons.add),
+          splashRadius: 24.0,
+          onPressed: () {
+            Get.defaultDialog(
+              title: '이런...',
+              middleText: '번호저장기능은 아직 준비중이에요.',
+              // title: '번호 저장',
+              // middleText: '생성된 번호를 저장할 건가요?',
+              // actions: [
+              //   IconButton(
+              //     icon: Icon(Icons.done),
+              //     splashRadius: 24.0,
+              //     onPressed: () {
+              //       print('okok');
+              //       Get.back();
+              //     },
+              //   ),
+              //   IconButton(
+              //     icon: Icon(Icons.clear),
+              //     splashRadius: 24.0,
+              //     onPressed: () {
+              //       print('cancel');
+              //       Get.back();
+              //     },
+              //   ),
+              // ],
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.share),
+          splashRadius: 24.0,
+          onPressed: () {
+            Get.defaultDialog(
+              title: '이런...',
+              middleText: '공유기능은 아직 준비중이에요.',
+            );
+          },
+        ),
+      ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: recommendState.recommends.length == 0
             ? AppIndicator()
