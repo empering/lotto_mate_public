@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/src/ad_containers.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -23,25 +25,45 @@ class DrawList extends StatelessWidget {
           drawsFromParent: drawsFromParent,
         );
 
+    var adProvider = context.read<BannerAdProvider>();
+
     return Scaffold(
       appBar: AppAppBar(type == DrawListType.DB ? '회차별 당첨결과' : '추첨결과'),
       body: Container(
-        child: _makeDrawListView(),
+        child: _makeDrawListView(adProvider),
       ),
     );
   }
 
-  _makeDrawListView() {
+  _makeDrawListView(BannerAdProvider adProvider) {
     return Consumer<DrawListState>(builder: (_, drawListState, __) {
       var draws = drawListState.draws;
+      int adCount = 0;
+      List<BannerAd> ads = [];
       return ListView.separated(
         controller: drawListState.listViewController,
         padding: const EdgeInsets.all(10.0),
         separatorBuilder: (context, index) => Divider(),
-        itemCount: draws.length + 1,
+        itemCount: draws.length + 1 + adCount,
         itemBuilder: (context, index) {
-          if (index < draws.length) {
-            var draw = draws[index];
+          if (index < draws.length + adCount) {
+            if (index % 10 == 5) {
+              if (ads.length <= adCount) {
+                ads.add(adProvider.newAd);
+              }
+
+              return Container(
+                alignment: Alignment.center,
+                decoration: AppBoxDecoration(
+                  color: Colors.white,
+                  shdowColor: Colors.transparent,
+                ).circular(),
+                child: AdWidget(ad: ads[adCount++]),
+                height: 72.0,
+              );
+            }
+
+            var draw = draws[index - (index / 10).round()];
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               decoration: AppBoxDecoration().circular(),
