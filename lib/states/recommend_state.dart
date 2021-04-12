@@ -45,6 +45,10 @@ class RecommendState with ChangeNotifier {
 
   List<List<int>> _recommends = [];
 
+  bool _isColorExpanded = false;
+
+  bool _isEvenOddExpanded = false;
+
   List<int> get numbers => _numbers.toList()..sort();
 
   Map<LottoColorType, int> get colors => _colors;
@@ -57,6 +61,20 @@ class RecommendState with ChangeNotifier {
 
   bool isContains(int number) {
     return _numbers.contains(number);
+  }
+
+  bool get isColorExpanded => _isColorExpanded;
+
+  set isColorExpanded(bool value) {
+    _isColorExpanded = value;
+    notifyListeners();
+  }
+
+  bool get isEvenOddExpanded => _isEvenOddExpanded;
+
+  set isEvenOddExpanded(bool value) {
+    _isEvenOddExpanded = value;
+    notifyListeners();
   }
 
   addNumber(int number) {

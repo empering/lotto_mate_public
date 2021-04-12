@@ -89,29 +89,59 @@ class Recommend extends StatelessWidget {
           },
         ),
       ),
-      ListTile(title: Text('색상')),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            _makeColorCountSlider(recommendState, LottoColorType.yellow),
-            _makeColorCountSlider(recommendState, LottoColorType.blue),
-            _makeColorCountSlider(recommendState, LottoColorType.red),
-            _makeColorCountSlider(recommendState, LottoColorType.gray),
-            _makeColorCountSlider(recommendState, LottoColorType.green),
-          ],
-        ),
+      ExpansionPanelList(
+        expansionCallback: (panelIndex, isExpanded) {
+          if (panelIndex == 0) {
+            recommendState.isColorExpanded = !isExpanded;
+          } else {
+            recommendState.isEvenOddExpanded = !isExpanded;
+          }
+        },
+        elevation: 0,
+        dividerColor: Colors.transparent,
+        expandedHeaderPadding: EdgeInsets.all(0),
+        children: [
+          ExpansionPanel(
+            headerBuilder: (context, isExpanded) {
+              return ListTile(title: Text('색상'));
+            },
+            backgroundColor: AppColors.light,
+            canTapOnHeader: true,
+            isExpanded: recommendState.isColorExpanded,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  _makeColorCountSlider(recommendState, LottoColorType.yellow),
+                  _makeColorCountSlider(recommendState, LottoColorType.blue),
+                  _makeColorCountSlider(recommendState, LottoColorType.red),
+                  _makeColorCountSlider(recommendState, LottoColorType.gray),
+                  _makeColorCountSlider(recommendState, LottoColorType.green),
+                ],
+              ),
+            ),
+          ),
+          ExpansionPanel(
+            headerBuilder: (context, isExpanded) {
+              return ListTile(title: Text('홀짝'));
+            },
+            backgroundColor: AppColors.light,
+            canTapOnHeader: true,
+            isExpanded: recommendState.isEvenOddExpanded,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  _makeEvenOddCountSlider(recommendState, LottoEvenOddType.odd),
+                  _makeEvenOddCountSlider(
+                      recommendState, LottoEvenOddType.even),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-      ListTile(title: Text('홀짝')),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
-        child: Column(
-          children: [
-            _makeEvenOddCountSlider(recommendState, LottoEvenOddType.odd),
-            _makeEvenOddCountSlider(recommendState, LottoEvenOddType.even),
-          ],
-        ),
-      ),
+      SizedBox(height: 80)
     ];
   }
 
