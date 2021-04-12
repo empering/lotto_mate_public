@@ -76,8 +76,8 @@ class HistoryForm extends StatelessWidget {
             if (buyState.getCanSave) {
               buyState.insert();
               Get.defaultDialog(
-                title: "처리완료",
-                middleText: "저장완료되었습니다.",
+                title: "저장완료",
+                middleText: "나의 로또 히스토리에서 확인 할 수 있어요.",
               );
             }
           },
