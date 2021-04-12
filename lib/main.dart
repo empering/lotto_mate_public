@@ -12,6 +12,7 @@ import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 import 'package:lotto_mate/services/stat_service.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
+import 'package:lotto_mate/states/buy_history_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
         ChangeNotifierProvider.value(value: BuyState(buyService)),
+        ChangeNotifierProvider.value(value: BuyHistoryState(buyService)),
         ChangeNotifierProvider.value(value: RecommendState()),
         ChangeNotifierProvider.value(
             value: HistoryState(drawService, buyService)),

@@ -4,7 +4,7 @@ import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 
 class BuyHistoryState with ChangeNotifier {
-  final BuyService _buyService = BuyService();
+  final BuyService _buyService;
 
   final ScrollController _listViewController = ScrollController();
 
@@ -20,7 +20,7 @@ class BuyHistoryState with ChangeNotifier {
   int offset = 0;
   bool hasMore = false;
 
-  BuyHistoryState() {
+  BuyHistoryState(this._buyService) {
     this._listViewController.addListener(() async {
       if (this._listViewController.position.pixels ==
               this.listViewController.position.maxScrollExtent &&

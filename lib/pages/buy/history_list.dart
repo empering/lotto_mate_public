@@ -13,20 +13,19 @@ import 'package:provider/provider.dart';
 class HistoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => BuyHistoryState()..getBuys(),
-      child: Consumer<BuyHistoryState>(
-        builder: (_, buyHistoryState, __) {
-          return Scaffold(
-            appBar: AppAppBar('나의 로또 히스토리'),
-            body: Container(
-              child: buyHistoryState.buys.length > 0
-                  ? this._makeHistoryListView(buyHistoryState)
-                  : Center(child: AppIndicator()),
-            ),
-          );
-        },
-      ),
+    context.read<BuyHistoryState>().getBuys();
+
+    return Consumer<BuyHistoryState>(
+      builder: (_, buyHistoryState, __) {
+        return Scaffold(
+          appBar: AppAppBar('나의 로또 히스토리'),
+          body: Container(
+            child: buyHistoryState.buys.length > 0
+                ? this._makeHistoryListView(buyHistoryState)
+                : Center(child: AppIndicator()),
+          ),
+        );
+      },
     );
   }
 
