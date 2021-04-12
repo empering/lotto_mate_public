@@ -34,9 +34,11 @@ class RecommendResult extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: recommendState.recommends.length == 0
-            ? AppIndicator(color: AppColors.accent)
+            ? AppIndicator()
             : Icon(Icons.refresh),
-        backgroundColor: AppColors.primary,
+        backgroundColor: recommendState.recommends.length == 0
+            ? AppColors.light
+            : AppColors.primary,
         foregroundColor: AppColors.accent,
         splashColor: AppColors.accent,
         onPressed: () {
