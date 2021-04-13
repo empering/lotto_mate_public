@@ -2,10 +2,10 @@
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!--<item android:drawable="?android:colorBackground" />-->
-    <item android:drawable="@android:color/holo_blue_dark" />
+    <item android:drawable="@color/bg" />
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_launcher" />
     </item>
 </layer-list>
