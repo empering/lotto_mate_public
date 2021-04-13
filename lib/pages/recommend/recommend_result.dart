@@ -23,11 +23,23 @@ class RecommendResult extends StatelessWidget {
           children: [
             ..._makeRecommendOption(recommendState),
             Divider(),
-            Expanded(
-              child: recommendState.recommends.length == 0
-                  ? Center(child: AppIndicator())
-                  : _makeResult(
-                      recommendState.recommends, recommendState.numbers),
+            FutureBuilder(
+              future: recommendState.interstitialAd.isLoaded(),
+              builder: (context, snapshot) {
+                print(snapshot.connectionState);
+                if (snapshot.connectionState == ConnectionState.done) {
+                  recommendState.interstitialAd.show();
+                } else {
+                  return Center(child: AppIndicator());
+                }
+
+                return Expanded(
+                  child: recommendState.recommends.length == 0
+                      ? Center(child: AppIndicator())
+                      : _makeResult(
+                          recommendState.recommends, recommendState.numbers),
+                );
+              },
             ),
           ],
         ),

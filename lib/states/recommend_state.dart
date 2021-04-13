@@ -1,11 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
 
 class RecommendState with ChangeNotifier {
   final int numbersLimitSize = 4;
+
+  final InterstitialAd _interstitialAd = InterstitialAd(
+    adUnitId: InterstitialAd.testAdUnitId,
+    listener: AdListener(
+      onAdClosed: (ad) {
+        ad.dispose();
+      },
+    ),
+    request: AdRequest(),
+  );
 
   Set<int> _numbers = {};
 
@@ -48,6 +59,8 @@ class RecommendState with ChangeNotifier {
   bool _isColorExpanded = false;
 
   bool _isEvenOddExpanded = false;
+
+  InterstitialAd get interstitialAd => _interstitialAd;
 
   List<int> get numbers => _numbers.toList()..sort();
 
@@ -219,6 +232,8 @@ class RecommendState with ChangeNotifier {
     _recommends = [];
 
     notifyListeners();
+
+    await _interstitialAd.load();
 
     await Future.delayed(Duration(seconds: 2));
 
