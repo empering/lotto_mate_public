@@ -8,15 +8,9 @@ import 'package:lotto_mate/commons/lotto_even_odd.dart';
 class RecommendState with ChangeNotifier {
   final int numbersLimitSize = 4;
 
-  final InterstitialAd _interstitialAd = InterstitialAd(
-    adUnitId: InterstitialAd.testAdUnitId,
-    listener: AdListener(
-      onAdClosed: (ad) {
-        ad.dispose();
-      },
-    ),
-    request: AdRequest(),
-  );
+  final InterstitialAd _interstitialAd;
+
+  RecommendState(this._interstitialAd);
 
   Set<int> _numbers = {};
 

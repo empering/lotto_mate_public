@@ -65,7 +65,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             ),
             Consumer<BannerAdProvider>(
               builder: (_, bannerAd, __) {
-                var adWidget = AdWidget(ad: bannerAd.ad);
+                var adWidget = AdWidget(ad: bannerAd.newAd);
                 return Container(
                   alignment: Alignment.center,
                   child: adWidget,

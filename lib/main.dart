@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +17,7 @@ import 'package:lotto_mate/states/buy_history_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
+import 'package:lotto_mate/states/interstitial_ad_provider.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:provider/provider.dart';
@@ -80,26 +82,35 @@ void main() async {
     }
   });
 
-  runApp(MyApp());
+  runApp(MyApp(isReleases: kReleaseMode));
 }
 
 class MyApp extends StatelessWidget {
+  final isReleases;
+
+  MyApp({required this.isReleases});
+
   @override
   Widget build(BuildContext context) {
     DrawService drawService = DrawService();
     BuyService buyService = BuyService();
     StatService statService = StatService();
 
+    var bannerAdProvider = BannerAdProvider(isReleases: isReleases);
+    var interstitialAdProvider = InterstitialAdProvider(isReleases: isReleases);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
         ChangeNotifierProvider.value(value: BuyState(buyService)),
         ChangeNotifierProvider.value(value: BuyHistoryState(buyService)),
-        ChangeNotifierProvider.value(value: RecommendState()),
+        ChangeNotifierProvider.value(
+            value: RecommendState(interstitialAdProvider.interstitialAd)),
         ChangeNotifierProvider.value(
             value: HistoryState(drawService, buyService)),
         ChangeNotifierProvider.value(value: StatState(statService)),
-        Provider.value(value: BannerAdProvider()),
+        Provider.value(value: bannerAdProvider),
+        Provider.value(value: interstitialAdProvider),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
