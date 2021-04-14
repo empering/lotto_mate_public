@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 
@@ -15,6 +16,10 @@ class BuyHistoryState with ChangeNotifier {
   List<Buy> get buys => _buys;
 
   set setBuys(List<Buy> buys) => _buys = buys;
+
+  List<BannerAd> _ads = [];
+
+  List<BannerAd> get ads => _ads;
 
   final int limit = 10;
   int offset = 0;
@@ -32,13 +37,14 @@ class BuyHistoryState with ChangeNotifier {
     });
   }
 
-  void getAll() async {
-    _buys = await _buyService.getAll();
+  void getBuys({bool isFirst = false}) async {
+    if (isFirst) {
+      offset = 0;
+      hasMore = false;
+      _buys = [];
+      _ads = [];
+    }
 
-    notifyListeners();
-  }
-
-  void getBuys() async {
     var buys = await _buyService.getAll(limit: limit, offset: offset);
 
     _buys.addAll(buys);

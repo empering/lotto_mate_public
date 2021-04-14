@@ -38,19 +38,20 @@ class DrawList extends StatelessWidget {
   _makeDrawListView(BannerAdProvider adProvider) {
     return Consumer<DrawListState>(builder: (_, drawListState, __) {
       var draws = drawListState.draws;
-      int adCount = 0;
-      List<BannerAd> ads = [];
+
       return ListView.separated(
         controller: drawListState.listViewController,
         padding: const EdgeInsets.all(10.0),
         separatorBuilder: (context, index) => Divider(),
-        itemCount: draws.length + 1 + adCount,
+        itemCount: draws.length + 1 + drawListState.ads.length + 1,
         itemBuilder: (context, index) {
-          if (index < draws.length + adCount) {
+          if (index < draws.length + drawListState.ads.length) {
             if (index % 10 == 5) {
-              if (ads.length <= adCount) {
-                ads.add(adProvider.newAd);
+              if (drawListState.ads.length <= (index / 10).floor()) {
+                drawListState.ads.add(adProvider.newAd);
               }
+
+              var ad = drawListState.ads[(index / 10).floor()];
 
               return Container(
                 alignment: Alignment.center,
@@ -58,7 +59,7 @@ class DrawList extends StatelessWidget {
                   color: Colors.white,
                   shdowColor: Colors.transparent,
                 ).circular(),
-                child: AdWidget(ad: ads[adCount++]),
+                child: AdWidget(ad: ad),
                 height: 72.0,
               );
             }

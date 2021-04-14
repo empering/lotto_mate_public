@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class HistoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<BuyHistoryState>().getBuys();
+    context.read<BuyHistoryState>().getBuys(isFirst: true);
 
     var adProvider = context.read<BannerAdProvider>();
 
@@ -28,23 +28,24 @@ class HistoryList extends StatelessWidget {
   _makeHistoryListView(BannerAdProvider adProvider) {
     return Consumer<BuyHistoryState>(builder: (_, buyHistoryState, __) {
       var buys = buyHistoryState.buys;
+
       if (buys.length == 0) {
         return Center(child: AppIndicator());
       }
 
-      int adCount = 0;
-      List<BannerAd> ads = [];
       return ListView.separated(
         controller: buyHistoryState.listViewController,
         padding: const EdgeInsets.all(10.0),
         separatorBuilder: (context, index) => Divider(),
-        itemCount: buys.length + 1 + adCount,
+        itemCount: buys.length + 1 + buyHistoryState.ads.length + 1,
         itemBuilder: (context, index) {
-          if (index < buys.length + adCount) {
+          if (index < buys.length + buyHistoryState.ads.length) {
             if (index % 10 == 5) {
-              if (ads.length <= adCount) {
-                ads.add(adProvider.newAd);
+              if (buyHistoryState.ads.length <= (index / 10).floor()) {
+                buyHistoryState.ads.add(adProvider.newAd);
               }
+
+              var ad = buyHistoryState.ads[(index / 10).floor()];
 
               return Container(
                 alignment: Alignment.center,
@@ -52,7 +53,7 @@ class HistoryList extends StatelessWidget {
                   color: Colors.white,
                   shdowColor: Colors.transparent,
                 ).circular(),
-                child: AdWidget(ad: ads[adCount++]),
+                child: AdWidget(ad: ad),
                 height: 72.0,
               );
             }

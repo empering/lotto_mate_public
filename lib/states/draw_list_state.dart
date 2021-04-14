@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
@@ -26,6 +27,8 @@ class DrawListState with ChangeNotifier {
   List<Draw> get draws => _draws;
 
   List<Draw> _drawsFromParent = [];
+
+  List<BannerAd> _ads = [];
 
   final int limit = 10;
   int offset = 0;
@@ -64,12 +67,15 @@ class DrawListState with ChangeNotifier {
     }
   }
 
+  List<BannerAd> get ads => _ads;
+
   getDraws({DrawListType? drawListType, List<Draw>? drawsFromParent}) {
     this.drawListType = drawListType ?? _drawListType;
     this.drawsFromParent = drawsFromParent;
 
     offset = 0;
     _draws = [];
+    _ads = [];
 
     getData.call();
   }
