@@ -13,7 +13,9 @@ import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_state.dart';
+import 'package:lotto_mate/states/data_sync_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -44,21 +46,39 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       appBar: AppAppBar('로또🤣💥'),
       body: Column(
         children: [
-          Expanded(
-            child: PageTransitionSwitcher(
-              transitionBuilder: (
-                Widget child,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return FadeThroughTransition(
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  child: child,
+          Consumer<DataSyncState>(
+            builder: (_, dataSyncState, __) {
+              if (dataSyncState.synchronizing) {
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIndicator(),
+                      SizedBox(height: 20.0),
+                      Text('최신 로또 데이터를 수신 중이에요.'),
+                      Text('처음 앱 구동시 조금 시간이 걸릴 수 있어요.'),
+                    ],
+                  ),
                 );
-              },
-              child: pages[pageIndex],
-            ),
+              }
+
+              return Expanded(
+                child: PageTransitionSwitcher(
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      child: child,
+                    );
+                  },
+                  child: pages[pageIndex],
+                ),
+              );
+            },
           ),
           Consumer<BannerAdProvider>(
             builder: (_, bannerAd, __) {
