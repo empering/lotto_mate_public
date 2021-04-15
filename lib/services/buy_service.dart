@@ -56,9 +56,10 @@ class BuyService {
   }
 
   Future<Buy> getByDrawId(int drawId) async {
-    Buy buy = await _buyRepository
-        .getByWhere(where: 'drawId = ?', whereArgs: [drawId]).then((buyMap) =>
-            buyMap.first.isNotEmpty ? Buy.fromDb(buyMap.first) : Buy());
+    Buy buy = await _buyRepository.getByWhere(
+      where: 'drawId = ?',
+      whereArgs: [drawId],
+    ).then((buyMap) => buyMap.length > 0 ? Buy.fromDb(buyMap.first) : Buy());
 
     if (buy.id != null) {
       _pickResultRepository.getByWhere(
