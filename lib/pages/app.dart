@@ -13,7 +13,6 @@ import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_state.dart';
-import 'package:lotto_mate/states/draw_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -41,42 +40,39 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DrawState()..getDrawById(),
-      child: Scaffold(
-        appBar: AppAppBar('로또🤣💥'),
-        body: Column(
-          children: [
-            Expanded(
-              child: PageTransitionSwitcher(
-                transitionBuilder: (
-                  Widget child,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                ) {
-                  return FadeThroughTransition(
-                    animation: animation,
-                    secondaryAnimation: secondaryAnimation,
-                    child: child,
-                  );
-                },
-                child: pages[pageIndex],
-              ),
-            ),
-            Consumer<BannerAdProvider>(
-              builder: (_, bannerAd, __) {
-                var adWidget = AdWidget(ad: bannerAd.newAd);
-                return Container(
-                  alignment: Alignment.center,
-                  child: adWidget,
-                  height: 72.0,
+    return Scaffold(
+      appBar: AppAppBar('로또🤣💥'),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageTransitionSwitcher(
+              transitionBuilder: (
+                Widget child,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return FadeThroughTransition(
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  child: child,
                 );
               },
+              child: pages[pageIndex],
             ),
-          ],
-        ),
-        bottomNavigationBar: _makeConvexBottomNavigationBar(),
+          ),
+          Consumer<BannerAdProvider>(
+            builder: (_, bannerAd, __) {
+              var adWidget = AdWidget(ad: bannerAd.newAd);
+              return Container(
+                alignment: Alignment.center,
+                child: adWidget,
+                height: 72.0,
+              );
+            },
+          ),
+        ],
       ),
+      bottomNavigationBar: _makeConvexBottomNavigationBar(),
     );
   }
 

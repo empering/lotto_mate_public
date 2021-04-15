@@ -9,11 +9,11 @@ import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
 class DrawState with ChangeNotifier {
-  final LottoApi _lottoApi = LottoApi();
+  final LottoApi _lottoApi;
 
-  final DrawService _drawService = DrawService();
+  final DrawService _drawService;
 
-  final BuyService _buyService = BuyService();
+  final BuyService _buyService;
 
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
@@ -21,7 +21,7 @@ class DrawState with ChangeNotifier {
 
   Draw? get draw => _draw;
 
-  DrawState() {
+  DrawState(this._lottoApi, this._drawService, this._buyService) {
     _syncDbFromFirebase();
   }
 

@@ -14,12 +14,16 @@ import 'package:provider/provider.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.read<DrawState>().getDrawById();
+
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Consumer<DrawState>(
-        builder: (context, drawState, child) => drawState.draw == null
-            ? Center(child: AppIndicator())
-            : Column(children: _makeLottoDrawInfo(context, drawState.draw)),
+        builder: (_, drawState, __) {
+          return drawState.draw == null
+              ? Center(child: AppIndicator())
+              : Column(children: _makeLottoDrawInfo(context, drawState.draw));
+        },
       ),
     );
   }

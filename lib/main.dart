@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:lotto_mate/api/lotto_api.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
@@ -16,6 +17,7 @@ import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_history_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
+import 'package:lotto_mate/states/draw_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/interstitial_ad_provider.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
@@ -92,6 +94,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LottoApi lottoApi = LottoApi();
     DrawService drawService = DrawService();
     BuyService buyService = BuyService();
     StatService statService = StatService();
@@ -101,6 +104,8 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+            value: DrawState(lottoApi, drawService, buyService)),
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
         ChangeNotifierProvider.value(value: BuyState(buyService)),
         ChangeNotifierProvider.value(value: BuyHistoryState(buyService)),
