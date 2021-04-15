@@ -6,7 +6,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
-import 'package:lotto_mate/states/draw_state.dart';
+import 'package:lotto_mate/states/home_state.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +14,11 @@ import 'package:provider/provider.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<DrawState>().getDrawById();
+    context.read<HomeState>().getDrawById();
 
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: Consumer<DrawState>(
+      child: Consumer<HomeState>(
         builder: (_, drawState, __) {
           return drawState.draw == null
               ? Center(child: AppIndicator())
@@ -50,7 +50,7 @@ class Home extends StatelessWidget {
                       children: [
                         AppTextButton(
                           onPressed: () {
-                            context.read<DrawState>().getPrevDraw();
+                            context.read<HomeState>().getPrevDraw();
                           },
                           labelIcon: Icons.navigate_before,
                         ),
@@ -120,7 +120,7 @@ class Home extends StatelessWidget {
                         ),
                         AppTextButton(
                           onPressed: () {
-                            context.read<DrawState>().getNextDraw();
+                            context.read<HomeState>().getNextDraw();
                           },
                           labelIcon: Icons.navigate_next,
                         ),
