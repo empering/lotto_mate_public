@@ -16,33 +16,20 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          Expanded(
-            child: Consumer<DrawState>(
-              builder: (context, drawState, child) => Container(
-                child: Column(
-                  children: _makeLottoDrawInfo(context, drawState.draw),
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: Consumer<DrawState>(
+        builder: (context, drawState, child) => drawState.draw == null
+            ? Center(child: AppIndicator())
+            : Column(children: _makeLottoDrawInfo(context, drawState.draw)),
       ),
     );
   }
 
   _makeLottoDrawInfo(BuildContext context, draw) {
-    if (draw == null) {
-      return [AppIndicator()];
-    }
-
-    return <Widget>[
+    return [
       DrawInfo(draw),
       Expanded(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
             margin: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               decoration: AppBoxDecoration(color: AppColors.backgroundAccent)
