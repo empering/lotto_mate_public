@@ -43,7 +43,10 @@ class DrawList extends StatelessWidget {
         controller: drawListState.listViewController,
         padding: const EdgeInsets.all(10.0),
         separatorBuilder: (context, index) => Divider(),
-        itemCount: draws.length + 1 + drawListState.ads.length + 1,
+        itemCount: draws.length +
+            1 +
+            drawListState.ads.length +
+            (drawListState.ads.length > 0 ? 1 : 0),
         itemBuilder: (context, index) {
           if (index < draws.length + drawListState.ads.length) {
             if (index % 10 == 5) {

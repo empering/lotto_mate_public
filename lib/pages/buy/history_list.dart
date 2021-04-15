@@ -37,7 +37,10 @@ class HistoryList extends StatelessWidget {
         controller: buyHistoryState.listViewController,
         padding: const EdgeInsets.all(10.0),
         separatorBuilder: (context, index) => Divider(),
-        itemCount: buys.length + 1 + buyHistoryState.ads.length + 1,
+        itemCount: buys.length +
+            1 +
+            buyHistoryState.ads.length +
+            (buyHistoryState.ads.length > 0 ? 1 : 0),
         itemBuilder: (context, index) {
           if (index < buys.length + buyHistoryState.ads.length) {
             if (index % 10 == 5) {
