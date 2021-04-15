@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 enum HistoryFormType {
@@ -25,6 +26,8 @@ class BuyState with ChangeNotifier {
   bool _canSave = false;
 
   bool _okQr = false;
+
+  PermissionStatus _cameraPermissionStatus = PermissionStatus.granted;
 
   HistoryFormType get formType => _formType;
 
@@ -55,6 +58,8 @@ class BuyState with ChangeNotifier {
   }
 
   bool get okQr => _okQr;
+
+  PermissionStatus get cameraPermissionStatus => _cameraPermissionStatus;
 
   _setCanSave() {
     _canSave = true;
@@ -179,22 +184,34 @@ class BuyState with ChangeNotifier {
   }
 
   _getQrData() async {
-    String qrCodeData = await scanner.scan();
-    print(qrCodeData);
-    // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
-    // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
-    if (qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') < 0) {
-      _okQr = false;
-    } else {
-      _okQr = true;
-      String qrData = qrCodeData.split('v=')[1];
-      this.setBuy = Buy.fromQr(qrData);
+    _okQr = false;
+    _cameraPermissionStatus = await _checkPermission();
+    if (_cameraPermissionStatus.isGranted) {
+      String qrCodeData = await scanner.scan();
+      print(qrCodeData);
+      // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
+      // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
+      if (qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') >= 0) {
+        _okQr = true;
+        String qrData = qrCodeData.split('v=')[1];
+        this.setBuy = Buy.fromQr(qrData);
+      }
     }
 
-    print('??????');
-    print(_okQr);
-
     _setCanSave();
+    notifyListeners();
+  }
+
+  _checkPermission() async {
+    return await Permission.camera.request();
+  }
+
+  appSetting() async {
+    if (_cameraPermissionStatus.isPermanentlyDenied) {
+      await openAppSettings();
+    }
+
+    _cameraPermissionStatus = await _checkPermission();
     notifyListeners();
   }
 

@@ -3,6 +3,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class LottoNumberForms extends StatelessWidget {
@@ -17,23 +18,46 @@ class LottoNumberForms extends StatelessWidget {
     var picks = buyState.buy!.picks!;
 
     if (picks.length == 0) {
+      var items;
+      if (buyState.cameraPermissionStatus.isGranted) {
+        items = [
+          AppIndicator(),
+          Text('QR 코드를 다시 스캔해주세요.'),
+          SizedBox(height: 20.0),
+          FloatingActionButton(
+            child: Icon(Icons.refresh),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.accent,
+            splashColor: AppColors.accent,
+            heroTag: null,
+            onPressed: () {
+              buyState.scanQr();
+            },
+          ),
+        ];
+      } else {
+        items = [
+          AppIndicator(),
+          Text('QR 코드 스캔을 위해 권한이 필요해요.'),
+          SizedBox(height: 20.0),
+          Text('권한 설정하기'),
+          SizedBox(height: 10.0),
+          FloatingActionButton(
+            child: Icon(Icons.settings),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.accent,
+            splashColor: AppColors.accent,
+            heroTag: null,
+            onPressed: () {
+              buyState.appSetting();
+            },
+          ),
+        ];
+      }
+
       return Center(
         child: Column(
-          children: [
-            AppIndicator(),
-            Text('QR 코드를 다시 스캔해주세요.'),
-            SizedBox(height: 20.0),
-            FloatingActionButton(
-              child: Icon(Icons.refresh),
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.accent,
-              splashColor: AppColors.accent,
-              heroTag: null,
-              onPressed: () {
-                buyState.scanQr();
-              },
-            )
-          ],
+          children: items,
         ),
       );
     }
