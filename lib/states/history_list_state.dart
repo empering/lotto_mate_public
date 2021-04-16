@@ -57,4 +57,14 @@ class HistoryListState with ChangeNotifier {
 
     notifyListeners();
   }
+
+  deleteBuy(Buy buy) async {
+    print('deleteBuy');
+    print(buy);
+    await _buyService.delete(buy);
+
+    _buys.remove(buy);
+
+    notifyListeners();
+  }
 }

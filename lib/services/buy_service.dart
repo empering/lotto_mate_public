@@ -19,6 +19,21 @@ class BuyService {
     });
   }
 
+  delete(Buy buy) async {
+    await Future.forEach<Pick>(buy.picks!, (pick) async {
+      await _pickResultRepository.delete(
+        where: 'pickId = ?',
+        whereArgs: [pick.id],
+      );
+      await _pickRepository.delete(
+        where: 'id = ?',
+        whereArgs: [pick.id],
+      );
+    });
+
+    await _buyRepository.delete(where: 'id = ?', whereArgs: [buy.id]);
+  }
+
   Future<List<Buy>> getAll({int? limit, int? offset}) async {
     List<Buy> buys = await _buyRepository
         .getByWhere(

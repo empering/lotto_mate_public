@@ -14,6 +14,14 @@ class Repository {
         conflictAlgorithm: conflictAlgorithm);
   }
 
+  delete({String? where, List<dynamic>? whereArgs}) {
+    return _db.delete(
+      this._tableName,
+      where: where,
+      whereArgs: whereArgs,
+    );
+  }
+
   Future<List<Map<String, dynamic>>> getByWhere({
     String? where,
     List<dynamic>? whereArgs,

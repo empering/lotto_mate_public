@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
+import 'package:lotto_mate/states/history_list_state.dart';
+import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/states/history_view_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
@@ -62,6 +66,51 @@ class HistoryView extends StatelessWidget {
           },
         ),
       ),
+      persistentFooterButtons: [
+        IconButton(
+          icon: Icon(Icons.delete),
+          splashRadius: 24.0,
+          onPressed: () {
+            Get.defaultDialog(
+              title: '확인해주세요',
+              middleText: '정말 삭제하시나요??',
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppTextButton(
+                      labelIcon: Icons.check_circle,
+                      labelText: 'Yes!',
+                      onPressed: () {
+                        context.read<HistoryListState>().deleteBuy(buy);
+                        context.read<HistoryState>().getHistory();
+                        Get.close(2);
+                      },
+                    ),
+                    AppTextButton(
+                      labelIcon: Icons.cancel,
+                      labelText: 'No!',
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.share),
+          splashRadius: 24.0,
+          onPressed: () {
+            Get.defaultDialog(
+              title: '이런...',
+              middleText: '공유기능은 아직 준비중이에요.',
+            );
+          },
+        ),
+      ],
     );
   }
 
