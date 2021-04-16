@@ -10,13 +10,33 @@ class BuyService {
   final Repository _pickRepository = Repository('picks');
   final Repository _pickResultRepository = Repository('pickResult');
 
-  void save(Buy buy) async {
+  Future<Buy> save(Buy buy) async {
     int id = await _buyRepository.insert(buy.toDb());
 
-    buy.picks!.forEach((pick) {
+    await Future.forEach<Pick>(buy.picks!, (pick) async {
       pick.buyId = id;
-      _pickRepository.insert(pick.toDb());
+      await _pickRepository.insert(pick.toDb());
     });
+
+    var buys = await _buyRepository
+        .getByWhere(
+          where: 'id = ?',
+          whereArgs: [id],
+          limit: 1,
+        )
+        .then(
+            (buysMap) => buysMap.map((buyMap) => Buy.fromDb(buyMap)).toList());
+
+    await Future.forEach(
+      buys,
+      (Buy buy) => _pickRepository.getByWhere(
+          where: "buyId = ?", whereArgs: [buy.id]).then((picksMap) async {
+        buy.picks =
+            picksMap.map<Pick>((pickMap) => Pick.fromDb(pickMap)).toList();
+      }),
+    );
+
+    return buys.first;
   }
 
   delete(Buy buy) async {
@@ -99,7 +119,7 @@ class BuyService {
     return buy;
   }
 
-  void savePickResult(PickResult pickResult) async {
+  savePickResult(PickResult pickResult) async {
     await _pickResultRepository.insert(pickResult.toDb(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }

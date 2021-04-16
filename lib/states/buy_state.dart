@@ -222,18 +222,18 @@ class BuyState with ChangeNotifier {
     notifyListeners();
   }
 
-  void insert() async {
-    _buyService.save(_buy!);
+  insert() async {
+    var newBuy = await _buyService.save(_buy!);
 
-    var draw = await _drawService.getDrawById(_buy!.drawId);
+    var draw = await _drawService.getDrawById(newBuy.drawId);
 
     if (draw != null) {
-      await Future.forEach<Pick>(_buy!.picks!, (pick) async {
+      await Future.forEach<Pick>(newBuy.picks!, (pick) async {
         await _setRank(pick, draw);
       });
     }
 
-    _historyState.getHistory();
+    await _historyState.getHistory();
 
     _initBuy();
     notifyListeners();
@@ -259,6 +259,6 @@ class BuyState with ChangeNotifier {
 
   _setRank(Pick pick, Draw draw) async {
     pick.pickResult = _buyService.calcPickResult(pick, draw);
-    _buyService.savePickResult(pick.pickResult!);
+    await _buyService.savePickResult(pick.pickResult!);
   }
 }

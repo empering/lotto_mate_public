@@ -5,6 +5,7 @@ import 'package:lotto_mate/pages/buy/widget/draw_id_dropdown.dart';
 import 'package:lotto_mate/pages/buy/widget/lotto_number_forms.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:lotto_mate/widgets/lotto_number_pad.dart';
 import 'package:provider/provider.dart';
 
@@ -72,12 +73,26 @@ class HistoryForm extends StatelessWidget {
           foregroundColor:
               buyState.getCanSave ? AppColors.accent : AppColors.light,
           splashColor: AppColors.accent,
-          onPressed: () {
+          onPressed: () async {
             if (buyState.getCanSave) {
-              buyState.insert();
+              await buyState.insert();
               Get.defaultDialog(
-                title: "저장완료",
+                title: "저장되었어요",
                 middleText: "나의 로또 히스토리에서 확인 할 수 있어요.",
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppTextButton(
+                        labelIcon: Icons.check_circle_outline,
+                        labelText: '확인',
+                        onPressed: () {
+                          Get.close(2);
+                        },
+                      ),
+                    ],
+                  )
+                ],
               );
             }
           },
