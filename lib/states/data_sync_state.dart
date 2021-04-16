@@ -36,11 +36,14 @@ class DataSyncState extends ChangeNotifier {
           .where('id', isGreaterThan: maxDrawId)
           .get();
 
-      snapshot.docs.forEach((queryDocumentSnapshot) {
-        this._syncDb(queryDocumentSnapshot);
+      await Future.forEach<QueryDocumentSnapshot>(snapshot.docs,
+          (queryDocumentSnapshot) async {
+        await this._syncDb(queryDocumentSnapshot);
       });
 
       synchronizing = false;
+
+      notifyListeners();
     }
   }
 
@@ -51,13 +54,18 @@ class DataSyncState extends ChangeNotifier {
 
   _syncDb(QueryDocumentSnapshot queryDocumentSnapshot) async {
     Draw d = Draw.fromFirestore(queryDocumentSnapshot.data());
+
+    print(d.id);
     await _drawService.save(d);
 
     Buy buy = await _buyService.getByDrawId(d.id!);
-    buy.picks?.forEach((pick) {
-      if (pick.pickResult?.pickId == null) {
-        _buyService.savePickResult(_buyService.calcPickResult(pick, d));
-      }
-    });
+
+    if (buy.picks != null) {
+      await Future.forEach<Pick>(buy.picks!, (pick) async {
+        if (pick.pickResult?.pickId == null) {
+          await _buyService.savePickResult(_buyService.calcPickResult(pick, d));
+        }
+      });
+    }
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -7,15 +9,33 @@ class DbHelper {
   static late Database _database;
 
   static Future<Database?> initDatabase() async {
-    _database = await _initDatabase();
+    var dataBasePath = await getDatabasesPath();
+    var path = join(dataBasePath, 'lotto_mate.db');
+
+    var dbExists = await databaseExists(path);
+
+    if (!dbExists) {
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (_) {}
+
+      ByteData data = await rootBundle.load(join("assets", "base.db"));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+      await File(path).writeAsBytes(bytes, flush: true);
+    }
+
+    _database = await _initDatabase(path);
+
     return _database;
   }
 
   static Database get database => _database;
 
-  static _initDatabase() async {
+  static _initDatabase(String path) async {
     return openDatabase(
-      join(await (getDatabasesPath()), 'lotto_mate.db'),
+      path,
       onCreate: (db, version) async {
         await db.execute(
           '''
