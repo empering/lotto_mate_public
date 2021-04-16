@@ -107,15 +107,6 @@ class RecommendResult extends StatelessWidget {
 
   _makeRecommendOption(RecommendState recommendState) {
     return [
-      Center(
-        child: Text(
-          '번호생성 조건',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
       ListTile(
         leading: Text('번호'),
         title: Row(
@@ -134,18 +125,21 @@ class RecommendResult extends StatelessWidget {
                       ))
                   .toList(),
         ),
+        dense: true,
       ),
       ListTile(
         leading: Text('색상'),
         title: Row(
           children: _makeColorsOption(recommendState.colors),
         ),
+        dense: true,
       ),
       ListTile(
         leading: Text('홀짝'),
         title: Row(
           children: _makeEvenOddOption(recommendState.evenOdd),
         ),
+        dense: true,
       ),
     ];
   }
