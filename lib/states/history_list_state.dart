@@ -4,7 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 
-class BuyHistoryState with ChangeNotifier {
+class HistoryListState with ChangeNotifier {
   final BuyService _buyService;
 
   final ScrollController _listViewController = ScrollController();
@@ -25,7 +25,7 @@ class BuyHistoryState with ChangeNotifier {
   int offset = 0;
   bool hasMore = false;
 
-  BuyHistoryState(this._buyService) {
+  HistoryListState(this._buyService) {
     this._listViewController.addListener(() async {
       if (this._listViewController.position.pixels ==
               this.listViewController.position.maxScrollExtent &&

@@ -6,7 +6,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/pages/buy/history_view.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
-import 'package:lotto_mate/states/buy_history_state.dart';
+import 'package:lotto_mate/states/history_list_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class HistoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<BuyHistoryState>().getBuys(isFirst: true);
+    context.read<HistoryListState>().getBuys(isFirst: true);
 
     var adProvider = context.read<BannerAdProvider>();
 
@@ -26,7 +26,7 @@ class HistoryList extends StatelessWidget {
   }
 
   _makeHistoryListView(BannerAdProvider adProvider) {
-    return Consumer<BuyHistoryState>(builder: (_, buyHistoryState, __) {
+    return Consumer<HistoryListState>(builder: (_, buyHistoryState, __) {
       var buys = buyHistoryState.buys;
 
       if (buys.length == 0) {
