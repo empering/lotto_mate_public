@@ -79,17 +79,17 @@ class HistoryView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppTextButton(
-                      labelIcon: Icons.check_circle,
-                      labelText: 'Yes!',
-                      onPressed: () {
-                        context.read<HistoryListState>().deleteBuy(buy);
+                      labelIcon: Icons.check_circle_outline,
+                      labelText: 'Ok!',
+                      onPressed: () async {
+                        await context.read<HistoryListState>().deleteBuy(buy);
                         context.read<HistoryState>().getHistory();
                         Get.close(2);
                       },
                     ),
                     AppTextButton(
-                      labelIcon: Icons.cancel,
-                      labelText: 'No!',
+                      labelIcon: Icons.cancel_outlined,
+                      labelText: 'Cancel',
                       onPressed: () {
                         Get.back();
                       },
