@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
 import 'package:lotto_mate/models/buy.dart';
+import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/buy_service.dart';
+import 'package:lotto_mate/services/draw_service.dart';
+import 'package:lotto_mate/states/history_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
@@ -13,7 +16,11 @@ enum HistoryFormType {
 class BuyState with ChangeNotifier {
   final BuyService _buyService;
 
-  BuyState(this._buyService) {
+  final DrawService _drawService;
+
+  final HistoryState _historyState;
+
+  BuyState(this._buyService, this._drawService, this._historyState) {
     _initBuy();
   }
 
@@ -215,10 +222,20 @@ class BuyState with ChangeNotifier {
     notifyListeners();
   }
 
-  void insert() {
+  void insert() async {
     _buyService.save(_buy!);
-    _initBuy();
 
+    var draw = await _drawService.getDrawById(_buy!.drawId);
+
+    if (draw != null) {
+      await Future.forEach<Pick>(_buy!.picks!, (pick) async {
+        await _setRank(pick, draw);
+      });
+    }
+
+    _historyState.getHistory();
+
+    _initBuy();
     notifyListeners();
   }
 
@@ -238,5 +255,10 @@ class BuyState with ChangeNotifier {
         return a.compareTo(b);
       }
     });
+  }
+
+  _setRank(Pick pick, Draw draw) async {
+    pick.pickResult = _buyService.calcPickResult(pick, draw);
+    _buyService.savePickResult(pick.pickResult!);
   }
 }

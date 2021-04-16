@@ -19,6 +19,7 @@ import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
+import 'package:lotto_mate/states/history_view_state.dart';
 import 'package:lotto_mate/states/home_state.dart';
 import 'package:lotto_mate/states/interstitial_ad_provider.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
@@ -103,18 +104,21 @@ class MyApp extends StatelessWidget {
     var bannerAdProvider = BannerAdProvider(isReleases: isReleases);
     var interstitialAdProvider = InterstitialAdProvider(isReleases: isReleases);
 
+    var historyState = HistoryState(drawService, buyService);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
         ChangeNotifierProvider.value(value: HomeState(lottoApi)),
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
-        ChangeNotifierProvider.value(value: BuyState(buyService)),
+        ChangeNotifierProvider.value(
+            value: BuyState(buyService, drawService, historyState)),
+        ChangeNotifierProvider.value(value: historyState),
         ChangeNotifierProvider.value(value: BuyHistoryState(buyService)),
+        ChangeNotifierProvider.value(value: HistoryViewState()),
         ChangeNotifierProvider.value(
             value: RecommendState(interstitialAdProvider.interstitialAd)),
-        ChangeNotifierProvider.value(
-            value: HistoryState(drawService, buyService)),
         ChangeNotifierProvider.value(value: StatState(statService)),
         Provider.value(value: bannerAdProvider),
         Provider.value(value: interstitialAdProvider),

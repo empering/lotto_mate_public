@@ -8,18 +8,22 @@ class HistoryViewState extends ChangeNotifier {
   final DrawService _drawService = DrawService();
   final BuyService _buyService = BuyService();
 
-  final Buy _buy;
+  late Buy _buy;
   Draw? _draw;
 
   num totAmount = 0;
 
   bool loading = true;
 
-  HistoryViewState(this._buy);
-
   Buy get buy => _buy;
 
   Draw? get draw => _draw;
+
+  setBuy(Buy buy) {
+    _buy = buy;
+
+    getDraw();
+  }
 
   getDraw() async {
     _draw = await _drawService.getDrawById(_buy.drawId);

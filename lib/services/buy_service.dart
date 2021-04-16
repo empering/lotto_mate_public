@@ -15,7 +15,6 @@ class BuyService {
 
     buy.picks!.forEach((pick) {
       pick.buyId = id;
-      print(pick);
       _pickRepository.insert(pick.toDb());
     });
   }

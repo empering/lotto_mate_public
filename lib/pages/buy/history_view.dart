@@ -16,49 +16,50 @@ class HistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<HistoryViewState>()
+      ..setBuy(buy)
+      ..getPickResult();
+
     return Scaffold(
       appBar: AppAppBar('나의 로또 히스토리'),
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
-        child: ChangeNotifierProvider(
-          create: (_) => HistoryViewState(this.buy)..getPickResult(),
-          child: Consumer<HistoryViewState>(
-            builder: (context, historyViewState, child) {
-              if (historyViewState.loading) {
-                return Center(
-                  child: AppIndicator(),
-                );
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  historyViewState.draw != null
-                      ? DrawInfo(historyViewState.draw!)
-                      : _makeBeforeDrawInfo(),
-                  Column(
-                    children: _makeTotPrize(historyViewState.totAmount,
-                        historyViewState.draw != null),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-                    child: Column(
-                      children: [
-                        Text('나의 선택 번호'),
-                        SizedBox(height: 5),
-                        ..._makeMyPicks(
-                          historyViewState.buy.picks,
-                          historyViewState.draw != null
-                              ? historyViewState.draw!.numbers
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+        child: Consumer<HistoryViewState>(
+          builder: (_, historyViewState, __) {
+            if (historyViewState.loading) {
+              return Center(
+                child: AppIndicator(),
               );
-            },
-          ),
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                historyViewState.draw != null
+                    ? DrawInfo(historyViewState.draw!)
+                    : _makeBeforeDrawInfo(),
+                Column(
+                  children: _makeTotPrize(historyViewState.totAmount,
+                      historyViewState.draw != null),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  child: Column(
+                    children: [
+                      Text('나의 선택 번호'),
+                      SizedBox(height: 5),
+                      ..._makeMyPicks(
+                        historyViewState.buy.picks,
+                        historyViewState.draw != null
+                            ? historyViewState.draw!.numbers
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
