@@ -133,6 +133,7 @@ class MyApp extends StatelessWidget {
           accentColor: AppColors.accent,
           backgroundColor: AppColors.backgroundLight,
           scaffoldBackgroundColor: AppColors.backgroundLight,
+          dialogBackgroundColor: AppColors.backgroundAccent,
           dividerColor: AppColors.accent,
           fontFamily: 'CookieRun',
           appBarTheme: AppBarTheme(
@@ -160,6 +161,11 @@ class MyApp extends StatelessWidget {
             bodyText1: TextStyle(),
             bodyText2: TextStyle(color: AppColors.accent),
           ).apply(bodyColor: AppColors.primary),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: AppColors.primary,
+            ),
+          ),
           iconTheme: IconThemeData(
             color: AppColors.primary,
           ),

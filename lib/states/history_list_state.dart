@@ -24,6 +24,7 @@ class HistoryListState with ChangeNotifier {
   final int limit = 10;
   int offset = 0;
   bool hasMore = false;
+  bool isLoading = false;
 
   HistoryListState(this._buyService) {
     this._listViewController.addListener(() async {
@@ -45,6 +46,8 @@ class HistoryListState with ChangeNotifier {
       _ads = [];
     }
 
+    isLoading = true;
+
     var buys = await _buyService.getAll(limit: limit, offset: offset);
 
     _buys.addAll(buys);
@@ -55,12 +58,12 @@ class HistoryListState with ChangeNotifier {
       hasMore = false;
     }
 
+    isLoading = false;
+
     notifyListeners();
   }
 
   deleteBuy(Buy buy) async {
-    print('deleteBuy');
-    print(buy);
     await _buyService.delete(buy);
 
     _buys.remove(buy);

@@ -7,8 +7,10 @@ import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/pages/buy/history_view.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/history_list_state.dart';
+import 'package:lotto_mate/states/history_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:lotto_mate/widgets/lotto_number.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +31,7 @@ class HistoryList extends StatelessWidget {
     return Consumer<HistoryListState>(builder: (_, buyHistoryState, __) {
       var buys = buyHistoryState.buys;
 
-      if (buys.length == 0) {
+      if (buys.length == 0 && buyHistoryState.isLoading) {
         return Center(child: AppIndicator());
       }
 
@@ -61,17 +63,78 @@ class HistoryList extends StatelessWidget {
               );
             }
 
-            var buy = buys[index - (index / 10).round()];
-            return Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: AppBoxDecoration().circular(),
-              child: ListTile(
-                leading: _makeBuyListLeading(buy),
-                title: _makeBuyListViewTitle(buy),
-                dense: true,
-                onTap: () {
-                  Get.to(HistoryView(buy));
-                },
+            var buyIndex = index - (index / 10).round();
+            var buy = buys[buyIndex];
+            return Dismissible(
+              key: ValueKey(buyIndex),
+              background: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.delete),
+                    Text('삭제'),
+                  ],
+                ),
+              ),
+              secondaryBackground: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.delete),
+                    Text('삭제'),
+                  ],
+                ),
+              ),
+              confirmDismiss: (direction) async {
+                if (direction == DismissDirection.endToStart ||
+                    direction == DismissDirection.startToEnd) {
+                  return await Get.defaultDialog(
+                        title: '확인해주세요',
+                        middleText: '정말 삭제하시나요??',
+                        barrierDismissible: true,
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppTextButton(
+                                labelIcon: Icons.check_circle_outline,
+                                labelText: 'Ok!',
+                                onPressed: () async {
+                                  await context
+                                      .read<HistoryListState>()
+                                      .deleteBuy(buy);
+                                  context.read<HistoryState>().getHistory();
+                                  Get.back(result: true);
+                                },
+                              ),
+                              AppTextButton(
+                                labelIcon: Icons.cancel_outlined,
+                                labelText: 'Cancel',
+                                onPressed: () {
+                                  Get.back(result: false);
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ) ??
+                      false;
+                }
+                return false;
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: AppBoxDecoration().circular(),
+                child: ListTile(
+                  leading: _makeBuyListLeading(buy),
+                  title: _makeBuyListViewTitle(buy),
+                  dense: true,
+                  onTap: () {
+                    Get.to(HistoryView(buy));
+                  },
+                ),
               ),
             );
           }
