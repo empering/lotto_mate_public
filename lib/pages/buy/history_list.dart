@@ -92,7 +92,7 @@ class HistoryList extends StatelessWidget {
                     direction == DismissDirection.startToEnd) {
                   return await Get.defaultDialog(
                         title: '확인해주세요',
-                        middleText: '정말 삭제하시나요??',
+                        middleText: '정말 삭제하나요??',
                         barrierDismissible: true,
                         actions: [
                           Row(
@@ -100,7 +100,7 @@ class HistoryList extends StatelessWidget {
                             children: [
                               AppTextButton(
                                 labelIcon: Icons.check_circle_outline,
-                                labelText: 'Ok!',
+                                labelText: '확인',
                                 onPressed: () async {
                                   await context
                                       .read<HistoryListState>()
@@ -111,7 +111,7 @@ class HistoryList extends StatelessWidget {
                               ),
                               AppTextButton(
                                 labelIcon: Icons.cancel_outlined,
-                                labelText: 'Cancel',
+                                labelText: '취소',
                                 onPressed: () {
                                   Get.back(result: false);
                                 },
