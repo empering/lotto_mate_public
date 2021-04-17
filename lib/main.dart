@@ -134,6 +134,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: AppColors.backgroundLight,
           scaffoldBackgroundColor: AppColors.backgroundLight,
           dialogBackgroundColor: AppColors.backgroundAccent,
+          canvasColor: AppColors.backgroundLight,
           dividerColor: AppColors.accent,
           fontFamily: 'CookieRun',
           appBarTheme: AppBarTheme(

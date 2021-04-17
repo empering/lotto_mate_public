@@ -16,6 +16,7 @@ import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
+import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -92,7 +93,115 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           ),
         ],
       ),
+      drawer: _makeDrawer(context),
       bottomNavigationBar: _makeConvexBottomNavigationBar(),
+    );
+  }
+
+  _makeDrawer(BuildContext context) {
+    var listTiles = [
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.rocket),
+        title: Text('앱 버전 정보'),
+        trailing: Text('v1.0.1'),
+      ),
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.bell),
+        title: Text('알림설정'),
+        onTap: () {
+          Get.defaultDialog(
+            title: '이런...',
+            middleText: '알림설정 기능은 아직 준비중이에요.',
+          );
+        },
+      ),
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.cogs),
+        title: Text('권한설정'),
+        onTap: () {
+          Get.defaultDialog(
+            title: '확인해주세요',
+            middleText: 'QR코드 스캔을 위해\n카메라 사용 권한이 필요해요.',
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppTextButton(
+                    labelIcon: Icons.check_circle_outline,
+                    labelText: '확인',
+                    onPressed: () async {
+                      Get.back();
+                      context.read<BuyState>().appSetting();
+                    },
+                  ),
+                  AppTextButton(
+                    labelIcon: Icons.cancel_outlined,
+                    labelText: '취소',
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                ],
+              )
+            ],
+          );
+        },
+      ),
+      // ListTile(
+      //   leading: FaIcon(FontAwesomeIcons.thumbsUp),
+      //   title: Text('리뷰작성'),
+      //   onTap: () {},
+      // ),
+      // ListTile(
+      //   leading: FaIcon(FontAwesomeIcons.shareAltSquare),
+      //   title: Text('친구에게 알리기'),
+      //   onTap: () {},
+      // ),
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.ad),
+        title: Text('광고보기 후원'),
+        onTap: () {},
+      ),
+    ];
+
+    return Drawer(
+      elevation: 10.0,
+      child: Column(
+        children: [
+          DrawerHeader(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    radius: 25.0,
+                    backgroundColor: AppColors.backgroundLight,
+                    backgroundImage: AssetImage('assets/icon.png'),
+                  ),
+                  Text(
+                    '로또메이트',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(color: AppColors.backgroundAccent),
+          ),
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 0.0,
+              ),
+              itemCount: listTiles.length,
+              separatorBuilder: (_, __) => Divider(),
+              itemBuilder: (context, index) {
+                return listTiles[index];
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
