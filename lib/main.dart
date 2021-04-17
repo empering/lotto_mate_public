@@ -23,6 +23,7 @@ import 'package:lotto_mate/states/history_view_state.dart';
 import 'package:lotto_mate/states/home_state.dart';
 import 'package:lotto_mate/states/interstitial_ad_provider.dart';
 import 'package:lotto_mate/states/recommend_state.dart';
+import 'package:lotto_mate/states/rewarded_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:provider/provider.dart';
 
@@ -103,6 +104,7 @@ class MyApp extends StatelessWidget {
 
     var bannerAdProvider = BannerAdProvider(isReleases: isReleases);
     var interstitialAdProvider = InterstitialAdProvider(isReleases: isReleases);
+    var rewardedAdProvider = RewardedAdProvider(isReleases: isReleases);
 
     var historyState = HistoryState(drawService, buyService);
 
@@ -122,6 +124,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: StatState(statService)),
         Provider.value(value: bannerAdProvider),
         Provider.value(value: interstitialAdProvider),
+        Provider.value(value: rewardedAdProvider),
       ],
       child: GetMaterialApp(
         title: 'Lotto Mate',
