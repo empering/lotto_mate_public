@@ -7,4 +7,21 @@ class AppConstants {
     int diffDrawId = now.difference(_baseDrawDate).inDays ~/ 7;
     return _baseDrawId + diffDrawId;
   }
+
+  DateTime getNextDrawDateTime() {
+    DateTime now = DateTime.now().toLocal();
+    int diffDrawId = now.difference(_baseDrawDate).inDays ~/ 7;
+
+    DateTime thisWeekDrawDate = DateTime(
+      _baseDrawDate.year,
+      _baseDrawDate.month,
+      _baseDrawDate.day,
+      21,
+      0,
+    );
+    thisWeekDrawDate =
+        thisWeekDrawDate.add(Duration(days: (diffDrawId + 1) * 7));
+
+    return thisWeekDrawDate;
+  }
 }

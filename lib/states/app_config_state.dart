@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotto_mate/commons/app_notification.dart';
 import 'package:lotto_mate/models/app_config.dart';
 import 'package:lotto_mate/services/app_config_service.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
@@ -18,10 +19,12 @@ class AppConfigState with ChangeNotifier {
 
   bool get appConfigValue => _appConfig?.configValue == 'Y';
 
-  getConfigValue() async {
+  initialize() async {
     var config = await _configService.getConfigValue(configId);
 
     _appConfig = config ?? AppConfig(configId: configId);
+
+    _setNotification();
 
     notifyListeners();
   }
@@ -29,6 +32,7 @@ class AppConfigState with ChangeNotifier {
   setConfigValue(bool value) async {
     _appConfig!.configValue = value ? 'Y' : 'N';
 
+    _setNotification();
     _saveConfigValue();
 
     notifyListeners();
@@ -63,6 +67,18 @@ class AppConfigState with ChangeNotifier {
           )
         ],
       );
+    }
+  }
+
+  _setNotification() {
+    print(_appConfig!.configValue);
+    if (_appConfig!.configValue == 'Y') {
+      AppNotification.zonedSchedule(
+        title: '로또 당첨결과가 발표되었어요',
+        body: '로또 메이트와 함께 어서 확인해보세요!',
+      );
+    } else {
+      AppNotification.cancelNotification();
     }
   }
 

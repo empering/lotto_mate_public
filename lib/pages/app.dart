@@ -45,8 +45,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AppConfigState>().getConfigValue();
-
     return Scaffold(
       appBar: AppAppBar('로또🤣💥'),
       body: Column(

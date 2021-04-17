@@ -121,7 +121,8 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: AppConfigState(appConfigService)),
+        ChangeNotifierProvider.value(
+            value: AppConfigState(appConfigService)..initialize()),
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
         ChangeNotifierProvider.value(value: HomeState(lottoApi)),

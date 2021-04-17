@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:lotto_mate/commons/app_constant.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -33,18 +34,37 @@ class AppNotification {
     await _instance.initialize(initializationSettings);
   }
 
-  static zonedSchedule(
-      String title, String body, tz.TZDateTime scheduledDate) async {
+  static zonedSchedule({
+    required String title,
+    required String body,
+    tz.TZDateTime? scheduledDate,
+  }) async {
     await _instance.zonedSchedule(
       0,
       title,
       body,
-      scheduledDate,
+      scheduledDate ?? getDrawSchedule(),
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
-      payload: 'item x',
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+  }
+
+  static cancelNotification() {
+    _instance.cancelAll();
+  }
+
+  static tz.TZDateTime getDrawSchedule() {
+    var drawDate = AppConstants().getNextDrawDateTime();
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local, drawDate.year, drawDate.month, drawDate.day, 21, 00);
+    if (scheduledDate.isBefore(drawDate)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 7));
+    }
+
+    print(scheduledDate);
+
+    return scheduledDate;
   }
 }
