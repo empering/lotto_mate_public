@@ -43,7 +43,7 @@ class History extends StatelessWidget {
                             ),
                             AppTextButton(
                               onPressed: () {
-                                Get.to(HistoryList());
+                                Get.to(() => HistoryList());
                               },
                               buttonColor: Colors.transparent,
                               labelColor: AppColors.primary,
@@ -67,7 +67,7 @@ class History extends StatelessWidget {
                             ),
                             AppTextButton(
                               onPressed: () {
-                                Get.to(DrawList());
+                                Get.to(() => DrawList());
                               },
                               buttonColor: Colors.transparent,
                               labelColor: AppColors.primary,

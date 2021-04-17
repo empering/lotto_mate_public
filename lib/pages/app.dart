@@ -251,7 +251,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                       title: Text('직접 번호 등록'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Get.to(HistoryForm());
+                        Get.to(() => HistoryForm());
                       },
                     ),
                     ListTile(
@@ -259,7 +259,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                       title: Text('QR 코드로 등록'),
                       onTap: () {
                         Navigator.of(context).pop();
-                        Get.to(HistoryForm(formType: HistoryFormType.QR));
+                        Get.to(() => HistoryForm(formType: HistoryFormType.QR));
                       },
                     ),
                   ],

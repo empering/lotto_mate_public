@@ -135,7 +135,7 @@ class Home extends StatelessWidget {
                           labelText: '회차별 당첨결과',
                           labelIcon: Icons.fact_check_outlined,
                           onPressed: () {
-                            Get.to(DrawList());
+                            Get.to(() => DrawList());
                           },
                         ),
                         AppTextButton(
@@ -143,7 +143,7 @@ class Home extends StatelessWidget {
                           labelText: '당첨결과 상세',
                           labelIcon: Icons.saved_search,
                           onPressed: () {
-                            Get.to(DrawView(draw.id));
+                            Get.to(() => DrawView(draw.id));
                           },
                         ),
                       ],

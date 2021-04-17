@@ -123,11 +123,11 @@ class SeriesNumberStats extends StatelessWidget {
             return ListTile(
               onTap: () {
                 if (stat.draws.length > 0) {
-                  Get.to(DrawList(
-                    type: DrawListType.LIST,
-                    drawsFromParent: stat.draws.toList()
-                      ..sort((a, b) => b.id! - a.id!),
-                  ));
+                  Get.to(() => DrawList(
+                        type: DrawListType.LIST,
+                        drawsFromParent: stat.draws.toList()
+                          ..sort((a, b) => b.id! - a.id!),
+                      ));
                 }
               },
               leading: FaIcon(

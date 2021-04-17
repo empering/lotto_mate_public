@@ -23,7 +23,7 @@ class Stats extends StatelessWidget {
           title: Text('번호별'),
           leading: FaIcon(FontAwesomeIcons.dice),
           onTap: () {
-            Get.to(NumberStats());
+            Get.to(() => NumberStats());
           },
         ),
         Divider(),
@@ -31,7 +31,7 @@ class Stats extends StatelessWidget {
           title: Text('색상별'),
           leading: FaIcon(FontAwesomeIcons.palette),
           onTap: () {
-            Get.to(ColorStats());
+            Get.to(() => ColorStats());
           },
         ),
         Divider(),
@@ -39,7 +39,7 @@ class Stats extends StatelessWidget {
           title: Text('홀짝'),
           leading: FaIcon(FontAwesomeIcons.adjust),
           onTap: () {
-            Get.to(EvenOddStats());
+            Get.to(() => EvenOddStats());
           },
         ),
         Divider(),
@@ -47,7 +47,7 @@ class Stats extends StatelessWidget {
           title: Text('연속번호'),
           leading: FaIcon(FontAwesomeIcons.listOl),
           onTap: () {
-            Get.to(SeriesNumberStats());
+            Get.to(() => SeriesNumberStats());
           },
         ),
         Divider(),
@@ -55,7 +55,7 @@ class Stats extends StatelessWidget {
           title: Text('미출현번호'),
           leading: FaIcon(FontAwesomeIcons.ban),
           onTap: () {
-            Get.to(UnpickNumberStats());
+            Get.to(() => UnpickNumberStats());
           },
         ),
         Divider(),

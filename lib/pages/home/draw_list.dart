@@ -78,7 +78,7 @@ class DrawList extends StatelessWidget {
                 dense: true,
                 isThreeLine: true,
                 onTap: () {
-                  Get.to(DrawView(draw.id!));
+                  Get.to(() => DrawView(draw.id!));
                 },
               ),
             );
