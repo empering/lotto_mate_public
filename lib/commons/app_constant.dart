@@ -1,6 +1,6 @@
 class AppConstants {
-  final int _baseDrawId = 935;
-  final DateTime _baseDrawDate = DateTime.parse('2020-10-31 11:50:00');
+  final int _baseDrawId = 958;
+  final DateTime _baseDrawDate = DateTime.parse('2021-04-10 20:50:00');
 
   int getThisWeekDrawId() {
     DateTime now = DateTime.now().toLocal();

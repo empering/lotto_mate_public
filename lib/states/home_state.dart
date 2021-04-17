@@ -31,13 +31,14 @@ class HomeState with ChangeNotifier {
   void getNextDraw() async {
     var nextDrawId = _draw!.id! + 1;
     var nextDrawDateTime = DateTime.parse(_draw!.drawDate!)
-        .add(Duration(days: 7, hours: 11, minutes: 45));
+        .add(Duration(days: 7, hours: 20, minutes: 50));
 
     if (DateTime.now().isBefore(nextDrawDateTime.add(Duration(minutes: 5)))) {
-      Get.snackbar('다음 회차 추첨 결과가 없습니다', '''
-      $nextDrawId회차는 아직 추첨 전입니다. 
-      ${nextDrawDateTime.year}-${nextDrawDateTime.month}-${nextDrawDateTime.day} 21:00 추첨 예정입니다.
-      ''');
+      Get.defaultDialog(
+        title: '조금만 기다려 주세요.',
+        middleText:
+            '$nextDrawId회차는 아직 추첨 전이에요.\n${nextDrawDateTime.year}-${nextDrawDateTime.month}-${nextDrawDateTime.day} 20:45 부터 추첨 예정이에요.',
+      );
     } else {
       _draw = await _lottoApi.fetchLottoNumbers(nextDrawId);
     }
