@@ -130,9 +130,29 @@ class DbHelper {
           )
           ''',
         );
+
+        await db.execute(
+          '''
+          CREATE TABLE IF NOT EXISTS appConfig (
+            configId TEXT PRIMARY KEY,
+            configValue TEXT,
+            configDate TEXT
+          )
+          ''',
+        );
       },
-      onUpgrade: (db, oldVersion, newVersion) async {},
-      version: 1,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        await db.execute(
+          '''
+          CREATE TABLE IF NOT EXISTS appConfig (
+            configId TEXT PRIMARY KEY,
+            configValue TEXT,
+            configDate TEXT
+          )
+          ''',
+        );
+      },
+      version: 2,
     );
   }
 }

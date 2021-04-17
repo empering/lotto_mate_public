@@ -8,11 +8,14 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/api/lotto_api.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/commons/app_notification.dart';
 import 'package:lotto_mate/commons/db_helper.dart';
 import 'package:lotto_mate/pages/app.dart';
+import 'package:lotto_mate/services/app_config_service.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 import 'package:lotto_mate/services/stat_service.dart';
+import 'package:lotto_mate/states/app_config_state.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
@@ -41,12 +44,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DbHelper.initDatabase();
-  await Firebase.initializeApp();
-  MobileAds.instance.initialize();
-
+fcmInit() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
@@ -86,6 +84,18 @@ void main() async {
       );
     }
   });
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DbHelper.initDatabase();
+  await Firebase.initializeApp();
+  MobileAds.instance.initialize();
+
+  // firebase cloud message
+  // await fcmInit();
+
+  await AppNotification.initialize();
 
   runApp(MyApp(isReleases: kReleaseMode));
 }
@@ -98,6 +108,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LottoApi lottoApi = LottoApi();
+    AppConfigService appConfigService = AppConfigService();
     DrawService drawService = DrawService();
     BuyService buyService = BuyService();
     StatService statService = StatService();
@@ -110,6 +121,7 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: AppConfigState(appConfigService)),
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
         ChangeNotifierProvider.value(value: HomeState(lottoApi)),
@@ -133,7 +145,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           // brightness: Brightness.dark,
           primaryColor: AppColors.primary,
-          accentColor: AppColors.accent,
+          accentColor: AppColors.primary,
           backgroundColor: AppColors.backgroundLight,
           scaffoldBackgroundColor: AppColors.backgroundLight,
           dialogBackgroundColor: AppColors.backgroundAccent,

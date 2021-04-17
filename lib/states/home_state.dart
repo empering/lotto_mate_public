@@ -28,13 +28,13 @@ class HomeState with ChangeNotifier {
     notifyListeners();
   }
 
-  void getNextDraw() async {
+  getNextDraw() async {
     var nextDrawId = _draw!.id! + 1;
     var nextDrawDateTime = DateTime.parse(_draw!.drawDate!)
         .add(Duration(days: 7, hours: 20, minutes: 50));
 
     if (DateTime.now().isBefore(nextDrawDateTime.add(Duration(minutes: 5)))) {
-      Get.defaultDialog(
+      await Get.defaultDialog(
         title: '조금만 기다려 주세요.',
         middleText:
             '$nextDrawId회차는 아직 추첨 전이에요.\n${nextDrawDateTime.year}-${nextDrawDateTime.month}-${nextDrawDateTime.day} 20:45 부터 추첨 예정이에요.',

@@ -6,6 +6,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
+import 'package:lotto_mate/states/app_config_state.dart';
 import 'package:lotto_mate/states/home_state.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
@@ -119,8 +120,11 @@ class Home extends StatelessWidget {
                           ],
                         ),
                         AppTextButton(
-                          onPressed: () {
-                            context.read<HomeState>().getNextDraw();
+                          onPressed: () async {
+                            await context.read<HomeState>().getNextDraw();
+                            context
+                                .read<AppConfigState>()
+                                .requestNotifyPermission();
                           },
                           labelIcon: Icons.navigate_next,
                         ),

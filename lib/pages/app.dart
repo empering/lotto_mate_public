@@ -11,6 +11,7 @@ import 'package:lotto_mate/pages/buy/history_form.dart';
 import 'package:lotto_mate/pages/home/home.dart';
 import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
+import 'package:lotto_mate/states/app_config_state.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
@@ -44,6 +45,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AppConfigState>().getConfigValue();
+
     return Scaffold(
       appBar: AppAppBar('로또🤣💥'),
       body: Column(
@@ -106,15 +109,28 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         title: Text('앱 버전 정보'),
         trailing: Text('v1.0.1'),
       ),
-      ListTile(
-        leading: FaIcon(FontAwesomeIcons.bell),
-        title: Text('알림설정'),
-        onTap: () {
-          Get.defaultDialog(
-            title: '이런...',
-            middleText: '알림설정 기능은 아직 준비중이에요.',
-          );
-        },
+      Wrap(
+        children: [
+          Consumer<AppConfigState>(builder: (_, appConfigState, __) {
+            return SwitchListTile(
+              secondary: appConfigState.appConfigValue
+                  ? FaIcon(FontAwesomeIcons.bell)
+                  : FaIcon(FontAwesomeIcons.bellSlash),
+              title: Text('알림설정'),
+              value: appConfigState.appConfigValue,
+              onChanged: (value) {
+                appConfigState.setConfigValue(value);
+              },
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Text(
+              '알림설정 동의 하시면\n매주 토요일 오후 9시\n당첨결과 발표 시 알려드려요.',
+              style: TextStyle(color: AppColors.background),
+            ),
+          )
+        ],
       ),
       ListTile(
         leading: FaIcon(FontAwesomeIcons.cogs),
