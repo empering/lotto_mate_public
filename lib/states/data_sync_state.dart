@@ -55,7 +55,6 @@ class DataSyncState extends ChangeNotifier {
   _syncDb(QueryDocumentSnapshot queryDocumentSnapshot) async {
     Draw d = Draw.fromFirestore(queryDocumentSnapshot.data());
 
-    print(d.id);
     await _drawService.save(d);
 
     Buy buy = await _buyService.getByDrawId(d.id!);

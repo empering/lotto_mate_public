@@ -2,13 +2,24 @@ import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/draw_history.dart';
 import 'package:lotto_mate/models/prize.dart';
 import 'package:lotto_mate/repositories/repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DrawService {
   final Repository _drawRepository = Repository('draws');
   final Repository _prizeRepository = Repository('prizes');
 
   Future<void> save(Draw draw) async {
-    await _drawRepository.insert(draw.toDb());
+    var dbDraw =
+        await _drawRepository.getByWhere(where: 'id = ?', whereArgs: [draw.id]);
+
+    if (dbDraw.length > 0) {
+      await _prizeRepository.delete(where: 'drawId = ?', whereArgs: [draw.id]);
+    }
+
+    await _drawRepository.insert(
+      draw.toDb(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
 
     await Future.forEach<Prize>(
         draw.prizes!, (prize) => _prizeRepository.insert(prize.toDb()));
@@ -17,7 +28,23 @@ class DrawService {
   Future<Draw?> getLast() async {
     var list = await _drawRepository.getByWhere(orderBy: 'id desc', limit: 1);
     if (list.length > 0) {
-      return Draw.fromDb(list.first);
+      var draw = Draw.fromDb(list.first);
+      draw.prizes = await _prizeRepository.getByWhere(
+        where: 'drawId = ?',
+        whereArgs: [draw.id],
+      ).then((prizes) =>
+          prizes.map((prizeMap) => Prize.fromDb(prizeMap)).toList());
+
+      num totalAmount = 0;
+      draw.prizes!.forEach((prize) {
+        totalAmount += prize.totalAmount ?? 0;
+      });
+
+      if (totalAmount == 0) {
+        draw.id = draw.id! - 1;
+      }
+
+      return draw;
     }
     return null;
   }
