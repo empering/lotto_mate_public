@@ -46,7 +46,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar('로또🤣💥'),
+      appBar: AppAppBar('로또메이트'),
       body: Column(
         children: [
           Consumer<DataSyncState>(
