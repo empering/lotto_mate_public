@@ -1,16 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
+import 'package:lotto_mate/states/interstitial_ad_provider.dart';
+import 'package:lotto_mate/states/rewarded_ad_provider.dart';
 
 class RecommendState with ChangeNotifier {
   final int numbersLimitSize = 4;
 
-  final InterstitialAd _interstitialAd;
+  final InterstitialAdProvider _interstitialAdProvider;
 
-  RecommendState(this._interstitialAd);
+  final RewardedAdProvider _rewardedAdProvider;
+
+  RecommendState(this._interstitialAdProvider, this._rewardedAdProvider);
 
   Set<int> _numbers = {};
 
@@ -54,7 +57,7 @@ class RecommendState with ChangeNotifier {
 
   bool _isEvenOddExpanded = false;
 
-  InterstitialAd get interstitialAd => _interstitialAd;
+  int viewCount = 0;
 
   List<int> get numbers => _numbers.toList()..sort();
 
@@ -227,9 +230,7 @@ class RecommendState with ChangeNotifier {
 
     notifyListeners();
 
-    await _interstitialAd.load();
-
-    await Future.delayed(Duration(seconds: 2));
+    viewCount++;
 
     List<List<int>> recommends = [];
     for (var i = 0; i < loopCount; i++) {
@@ -239,6 +240,29 @@ class RecommendState with ChangeNotifier {
     _recommends = recommends;
 
     notifyListeners();
+  }
+
+  Future<bool> waitAdLoaded() async {
+    var isLoaded = false;
+
+    if (viewCount < 5) {
+      await _interstitialAdProvider.interstitialAd.load();
+      await _interstitialAdProvider.waitLoaded();
+    } else {
+      await _rewardedAdProvider.rewardedAd.load();
+      await _rewardedAdProvider.waitLoaded();
+    }
+
+    return isLoaded;
+  }
+
+  adShow() async {
+    if (viewCount < 5) {
+      await _interstitialAdProvider.interstitialAd.show();
+    } else {
+      await _rewardedAdProvider.rewardedAd.show();
+      viewCount = 0;
+    }
   }
 
   _generateNumbers() {

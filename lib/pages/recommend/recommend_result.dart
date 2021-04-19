@@ -24,11 +24,11 @@ class RecommendResult extends StatelessWidget {
             ..._makeRecommendOption(recommendState),
             Divider(),
             FutureBuilder(
-              future: recommendState.interstitialAd.isLoaded(),
+              future: recommendState.waitAdLoaded(),
               builder: (context, snapshot) {
                 print(snapshot.connectionState);
                 if (snapshot.connectionState == ConnectionState.done) {
-                  recommendState.interstitialAd.show();
+                  recommendState.adShow();
                 } else {
                   return Center(child: AppIndicator());
                 }

@@ -133,7 +133,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: HistoryListState(buyService)),
         ChangeNotifierProvider.value(value: HistoryViewState()),
         ChangeNotifierProvider.value(
-            value: RecommendState(interstitialAdProvider.interstitialAd)),
+            value: RecommendState(interstitialAdProvider, rewardedAdProvider)),
         ChangeNotifierProvider.value(value: StatState(statService)),
         Provider.value(value: bannerAdProvider),
         Provider.value(value: interstitialAdProvider),
