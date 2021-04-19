@@ -12,28 +12,9 @@ class DrawInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '✨',
-              style:
-                  Theme.of(context).textTheme.headline1!.copyWith(shadows: []),
-            ),
-            Text(
-              '${draw.id}회',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            Text(
-              ' 당첨결과',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            Text(
-              '✨',
-              style:
-                  Theme.of(context).textTheme.headline1!.copyWith(shadows: []),
-            ),
-          ],
+        Text(
+          '${draw.id}회 당첨결과',
+          style: Theme.of(context).textTheme.headline1,
         ),
         SizedBox(height: 10),
         Text(
@@ -45,7 +26,7 @@ class DrawInfo extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(15, 25, 15, 45),
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           child: Column(
             children: [
               Text('당첨 번호'),
