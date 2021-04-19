@@ -8,6 +8,7 @@ class AppTextButton extends StatelessWidget {
   final String? labelText;
   final VoidCallback? onPressed;
   final bool disabled;
+  final bool isIconFirst;
 
   AppTextButton(
       {this.buttonColor = Colors.transparent,
@@ -15,7 +16,8 @@ class AppTextButton extends StatelessWidget {
       this.labelIcon,
       this.labelText,
       this.onPressed,
-      this.disabled = false});
+      this.disabled = false,
+      this.isIconFirst = true});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,8 @@ class AppTextButton extends StatelessWidget {
         primary: disabled ? Colors.white : labelColor,
         backgroundColor: disabled ? Colors.white : buttonColor,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Wrap(
+        spacing: 10.0,
         children: _buildButtonLabel(),
       ),
     );
@@ -34,13 +36,16 @@ class AppTextButton extends StatelessWidget {
 
   _buildButtonLabel() {
     var buttonLabel = <Widget>[];
-    if (labelIcon != null) {
+    if (labelIcon != null && isIconFirst) {
       buttonLabel.add(Icon(labelIcon));
     }
 
     if (labelText != null) {
-      buttonLabel.add(SizedBox(width: 5));
       buttonLabel.add(Text(labelText!));
+    }
+
+    if (labelIcon != null && !isIconFirst) {
+      buttonLabel.add(Icon(labelIcon));
     }
 
     return buttonLabel;
