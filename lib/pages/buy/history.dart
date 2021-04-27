@@ -26,49 +26,49 @@ class History extends StatelessWidget {
           _makeSearchValueArea(),
           Expanded(
             child: SingleChildScrollView(
-              child: Container(
-                color: AppColors.backgroundAccent,
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text(
-                        '나의 로또 히스토리',
-                        style: TextStyle(fontSize: 25.0),
+              child: Consumer<HistoryState>(builder: (_, historyState, __) {
+                return Container(
+                  color: AppColors.backgroundAccent,
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(13.0),
+                          color: AppColors.backgroundLight,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            AppTextButton(
+                              labelIcon: historyState.isMyHistory
+                                  ? FontAwesomeIcons.checkCircle
+                                  : FontAwesomeIcons.circle,
+                              labelText: '나의 히스토리',
+                              onPressed: () {
+                                historyState.isMyHistory = true;
+                              },
+                            ),
+                            AppTextButton(
+                              labelIcon: historyState.isMyHistory
+                                  ? FontAwesomeIcons.circle
+                                  : FontAwesomeIcons.checkCircle,
+                              labelText: '전체 히스토리',
+                              onPressed: () {
+                                historyState.isMyHistory = false;
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                      trailing: AppTextButton(
-                        onPressed: () {
-                          Get.to(() => HistoryList());
-                        },
-                        labelText: '모두보기',
-                        labelIcon: Icons.navigate_next,
-                        isIconFirst: false,
-                      ),
-                    ),
-                    Consumer<HistoryState>(builder: (_, historyState, __) {
-                      return _makeMyStatInfo(historyState.myHistory);
-                    }),
-                    Divider(height: 20.0),
-                    ListTile(
-                      title: Text(
-                        '전체 로또 히스토리',
-                        style: TextStyle(fontSize: 25.0),
-                      ),
-                      trailing: AppTextButton(
-                        onPressed: () {
-                          Get.to(() => DrawList());
-                        },
-                        labelText: '모두보기',
-                        labelIcon: Icons.navigate_next,
-                        isIconFirst: false,
-                      ),
-                    ),
-                    Consumer<HistoryState>(builder: (_, historyState, __) {
-                      return _makeTotalStatInfo(historyState.drawHistory);
-                    }),
-                  ],
-                ),
-              ),
+                      historyState.isMyHistory
+                          ? _makeMyStatInfo(historyState.myHistory)
+                          : _makeTotalStatInfo(historyState.drawHistory),
+                    ],
+                  ),
+                );
+              }),
             ),
           ),
         ],
@@ -161,13 +161,21 @@ class History extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Column(
         children: [
           ListTile(
             title: Text(
               '총 당첨금',
               style: TextStyle(fontSize: 25.0),
+            ),
+            trailing: AppTextButton(
+              onPressed: () {
+                Get.to(() => HistoryList());
+              },
+              labelText: '모두보기',
+              labelIcon: Icons.navigate_next,
+              isIconFirst: false,
             ),
           ),
           ListTile(
@@ -269,13 +277,21 @@ class History extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Column(
         children: [
           ListTile(
             title: Text(
               '1등 누적 당첨금',
               style: TextStyle(fontSize: 25.0),
+            ),
+            trailing: AppTextButton(
+              onPressed: () {
+                Get.to(() => DrawList());
+              },
+              labelText: '모두보기',
+              labelIcon: Icons.navigate_next,
+              isIconFirst: false,
             ),
           ),
           ListTile(

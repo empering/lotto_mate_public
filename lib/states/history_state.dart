@@ -31,6 +31,16 @@ class HistoryState extends ChangeNotifier {
 
   List<String> get searchValues => _searchValues;
 
+  bool _isMyHistory = true;
+
+  bool get isMyHistory => _isMyHistory;
+
+  set isMyHistory(bool value) {
+    _isMyHistory = value;
+
+    notifyListeners();
+  }
+
   setSearchDrawValues() {
     int maxDrawId = AppConstants().getThisWeekDrawId();
     _searchValues =
