@@ -90,12 +90,26 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 alignment: Alignment.center,
                 child: adWidget,
                 height: 72.0,
+                color: Colors.white,
               );
             },
           ),
         ],
       ),
       drawer: _makeDrawer(context),
+      persistentFooterButtons: [
+        Container(
+          height: 25.0,
+          width: MediaQuery.of(context).copyWith().size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.add_circle_outline),
+              Text(' 버튼을 눌러서 로또 번호를 등록하세요!'),
+            ],
+          ),
+        )
+      ],
       bottomNavigationBar: _makeConvexBottomNavigationBar(),
     );
   }
