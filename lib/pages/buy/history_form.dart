@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
+import 'package:lotto_mate/pages/buy/history_view.dart';
 import 'package:lotto_mate/pages/buy/widget/draw_id_dropdown.dart';
 import 'package:lotto_mate/pages/buy/widget/lotto_number_forms.dart';
 import 'package:lotto_mate/states/buy_state.dart';
@@ -21,7 +22,7 @@ class HistoryForm extends StatelessWidget {
 
     return Consumer<BuyState>(builder: (_, buyState, __) {
       return Scaffold(
-        appBar: AppAppBar('로또 번호 ${isFirst ? '등록' : '수정'}'),
+        appBar: AppAppBar('${buyState.appBarTitle}'),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Column(
@@ -75,25 +76,56 @@ class HistoryForm extends StatelessWidget {
           splashColor: AppColors.accent,
           onPressed: () async {
             if (buyState.getCanSave) {
-              await buyState.insert();
-              Get.defaultDialog(
-                title: "저장되었어요",
-                middleText: "나의 로또 히스토리에서 확인 할 수 있어요.",
-                actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppTextButton(
-                        labelIcon: Icons.check_circle_outline,
-                        labelText: '확인',
-                        onPressed: () {
-                          Get.close(2);
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              );
+              if (buyState.formType == HistoryFormType.QR_CHECK) {
+                await Get.defaultDialog(
+                  title: "확인해주세요",
+                  middleText: "당첨결과를 확인하면서 번호를 저장할까요?",
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppTextButton(
+                          labelIcon: Icons.check_circle_outline,
+                          labelText: '저장할래요',
+                          onPressed: () async {
+                            await buyState.insert(isReset: false);
+                            Get.close(2);
+                          },
+                        ),
+                        AppTextButton(
+                          labelIcon: Icons.cancel_outlined,
+                          labelText: '결과만 볼래요',
+                          onPressed: () {
+                            Get.close(2);
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                );
+
+                Get.to(() => HistoryView(buyState.buy!));
+              } else {
+                await buyState.insert();
+                Get.defaultDialog(
+                  title: "저장되었어요",
+                  middleText: "나의 로또 히스토리에서 확인 할 수 있어요.",
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppTextButton(
+                          labelIcon: Icons.check_circle_outline,
+                          labelText: '확인',
+                          onPressed: () {
+                            Get.close(2);
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              }
             }
           },
         ),

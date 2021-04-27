@@ -15,103 +15,105 @@ import 'package:provider/provider.dart';
 
 class HistoryView extends StatelessWidget {
   final Buy buy;
+  final HistoryViewType historyViewType;
 
-  HistoryView(this.buy);
+  HistoryView(this.buy, {this.historyViewType = HistoryViewType.VIEW});
 
   @override
   Widget build(BuildContext context) {
     context.read<HistoryViewState>()
+      ..historyViewType = historyViewType
       ..setBuy(buy)
       ..getPickResult();
 
-    return Scaffold(
-      appBar: AppAppBar('나의 로또 히스토리'),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Consumer<HistoryViewState>(
-          builder: (_, historyViewState, __) {
-            if (historyViewState.loading) {
-              return Center(
-                child: AppIndicator(),
-              );
-            }
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                historyViewState.draw != null
-                    ? DrawInfo(historyViewState.draw!)
-                    : _makeBeforeDrawInfo(),
-                Column(
-                  children: _makeTotPrize(historyViewState.totAmount,
-                      historyViewState.draw != null),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-                  child: Column(
-                    children: [
-                      Text('나의 선택 번호'),
-                      SizedBox(height: 5),
-                      ..._makeMyPicks(
-                        historyViewState.buy.picks,
-                        historyViewState.draw != null
-                            ? historyViewState.draw!.numbers
-                            : null,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-      persistentFooterButtons: [
-        IconButton(
-          icon: Icon(Icons.delete),
-          splashRadius: 24.0,
-          onPressed: () {
-            Get.defaultDialog(
-              title: '확인해주세요',
-              middleText: '정말 삭제하나요??',
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return Consumer<HistoryViewState>(builder: (_, historyViewState, __) {
+      return Scaffold(
+        appBar: AppAppBar('${historyViewState.appBarTitle}'),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: historyViewState.loading
+              ? Center(
+                  child: AppIndicator(),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppTextButton(
-                      labelIcon: Icons.check_circle_outline,
-                      labelText: '확인',
-                      onPressed: () async {
-                        await context.read<HistoryListState>().deleteBuy(buy);
-                        context.read<HistoryState>().getHistory();
-                        Get.close(2);
-                      },
+                    historyViewState.draw != null
+                        ? DrawInfo(historyViewState.draw!)
+                        : _makeBeforeDrawInfo(),
+                    Column(
+                      children: _makeTotPrize(historyViewState.totAmount,
+                          historyViewState.draw != null),
                     ),
-                    AppTextButton(
-                      labelIcon: Icons.cancel_outlined,
-                      labelText: '취소',
-                      onPressed: () {
-                        Get.back();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                      child: Column(
+                        children: [
+                          Text('나의 선택 번호'),
+                          SizedBox(height: 5),
+                          ..._makeMyPicks(
+                            historyViewState.buy.picks,
+                            historyViewState.draw != null
+                                ? historyViewState.draw!.numbers
+                                : null,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
+                ),
+        ),
+        persistentFooterButtons: [
+          historyViewState.historyViewType == HistoryViewType.VIEW
+              ? IconButton(
+                  icon: Icon(Icons.delete),
+                  splashRadius: 24.0,
+                  onPressed: () {
+                    Get.defaultDialog(
+                      title: '확인해주세요',
+                      middleText: '정말 삭제하나요??',
+                      actions: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppTextButton(
+                              labelIcon: Icons.check_circle_outline,
+                              labelText: '확인',
+                              onPressed: () async {
+                                await context
+                                    .read<HistoryListState>()
+                                    .deleteBuy(buy);
+                                context.read<HistoryState>().getHistory();
+                                Get.close(2);
+                              },
+                            ),
+                            AppTextButton(
+                              labelIcon: Icons.cancel_outlined,
+                              labelText: '취소',
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  },
                 )
-              ],
-            );
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.share),
-          splashRadius: 24.0,
-          onPressed: () {
-            Get.defaultDialog(
-              title: '이런...',
-              middleText: '공유기능은 아직 준비중이에요.',
-            );
-          },
-        ),
-      ],
-    );
+              : Container(),
+          IconButton(
+            icon: Icon(Icons.share),
+            splashRadius: 24.0,
+            onPressed: () {
+              Get.defaultDialog(
+                title: '이런...',
+                middleText: '공유기능은 아직 준비중이에요.',
+              );
+            },
+          ),
+        ],
+      );
+    });
   }
 
   _makeBeforeDrawInfo() {
@@ -119,32 +121,9 @@ class HistoryView extends StatelessWidget {
       builder: (context) {
         return Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '✨',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1!
-                      .copyWith(shadows: []),
-                ),
-                Text(
-                  '${buy.drawId}회',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                Text(
-                  '당첨결과',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                Text(
-                  '✨',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1!
-                      .copyWith(shadows: []),
-                ),
-              ],
+            Text(
+              '${buy.drawId}회 당첨결과',
+              style: Theme.of(context).textTheme.headline1,
             ),
             SizedBox(height: 10),
             Text(

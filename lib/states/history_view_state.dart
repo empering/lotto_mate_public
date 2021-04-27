@@ -4,6 +4,11 @@ import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 import 'package:lotto_mate/services/draw_service.dart';
 
+enum HistoryViewType {
+  VIEW,
+  PREVIEW,
+}
+
 class HistoryViewState extends ChangeNotifier {
   final DrawService _drawService = DrawService();
   final BuyService _buyService = BuyService();
@@ -19,6 +24,19 @@ class HistoryViewState extends ChangeNotifier {
 
   Draw? get draw => _draw;
 
+  String appBarTitle = '나의 로또 히스토리';
+
+  HistoryViewType _historyViewType = HistoryViewType.VIEW;
+
+  HistoryViewType get historyViewType => _historyViewType;
+
+  set historyViewType(HistoryViewType historyViewType) {
+    _historyViewType = historyViewType;
+    appBarTitle = _historyViewType == HistoryViewType.PREVIEW
+        ? '나의 로또 결과 확인'
+        : '나의 로또 히스토리';
+  }
+
   setBuy(Buy buy) {
     _buy = buy;
 
@@ -27,8 +45,6 @@ class HistoryViewState extends ChangeNotifier {
 
   getDraw() async {
     _draw = await _drawService.getDrawById(_buy.drawId);
-
-    notifyListeners();
   }
 
   getPickResult() async {

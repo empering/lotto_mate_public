@@ -78,7 +78,7 @@ class Pick {
   String? type; // m: 수동, q: 자동
   List<int?>? numbers;
   bool? isPicked;
-  late PickResult? pickResult;
+  PickResult? pickResult;
 
   Pick({this.id, this.type, this.numbers, this.isPicked = false});
 

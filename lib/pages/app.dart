@@ -290,6 +290,15 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                         Get.to(() => HistoryForm(formType: HistoryFormType.QR));
                       },
                     ),
+                    ListTile(
+                      leading: FaIcon(FontAwesomeIcons.grinStars),
+                      title: Text('QR 코드로 확인'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Get.to(() =>
+                            HistoryForm(formType: HistoryFormType.QR_CHECK));
+                      },
+                    ),
                   ],
                 ),
               );

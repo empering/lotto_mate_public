@@ -11,6 +11,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 enum HistoryFormType {
   MANUAL,
   QR,
+  QR_CHECK,
 }
 
 class BuyState with ChangeNotifier {
@@ -34,6 +35,8 @@ class BuyState with ChangeNotifier {
 
   bool _okQr = false;
 
+  String appBarTitle = '로또 번호 등록';
+
   PermissionStatus _cameraPermissionStatus = PermissionStatus.granted;
 
   HistoryFormType get formType => _formType;
@@ -42,10 +45,14 @@ class BuyState with ChangeNotifier {
     _formType = formType;
     _buy!.picks = [];
 
-    if (_formType == HistoryFormType.QR) {
-      _getQrData();
-    } else {
+    if (_formType == HistoryFormType.MANUAL) {
       _initBuy();
+    } else {
+      _getQrData();
+    }
+
+    if (_formType == HistoryFormType.QR_CHECK) {
+      this.appBarTitle = '로또 번호 확인';
     }
   }
 
@@ -58,7 +65,8 @@ class BuyState with ChangeNotifier {
   }
 
   bool get getCanSave {
-    if (_formType == HistoryFormType.QR) {
+    if (_formType == HistoryFormType.QR ||
+        _formType == HistoryFormType.QR_CHECK) {
       return _canSave && _okQr;
     }
     return _canSave;
@@ -222,7 +230,7 @@ class BuyState with ChangeNotifier {
     notifyListeners();
   }
 
-  insert() async {
+  insert({bool isReset = true}) async {
     var newBuy = await _buyService.save(_buy!);
 
     var draw = await _drawService.getDrawById(newBuy.drawId);
@@ -235,7 +243,12 @@ class BuyState with ChangeNotifier {
 
     await _historyState.getHistory();
 
-    _initBuy();
+    if (isReset) {
+      _initBuy();
+    } else {
+      _buy = newBuy;
+    }
+
     notifyListeners();
   }
 
