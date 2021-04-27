@@ -125,8 +125,9 @@ class Home extends StatelessWidget {
             ),
             child: ListTile(
               leading: AppTextButton(
-                onPressed: () {
-                  context.read<HomeState>().getPrevDraw();
+                onPressed: () async {
+                  await context.read<HomeState>().getPrevDraw();
+                  context.read<AppConfigState>().requestNotifyPermission();
                 },
                 labelText: '이전',
                 labelIcon: Icons.navigate_before,
@@ -143,7 +144,10 @@ class Home extends StatelessWidget {
               title: AppTextButton(
                 labelText: '모든회차 보기',
                 labelIcon: Icons.fact_check_outlined,
-                onPressed: () {
+                onPressed: () async {
+                  await context
+                      .read<AppConfigState>()
+                      .requestNotifyPermission();
                   Get.to(() => DrawList());
                 },
               ),

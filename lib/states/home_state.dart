@@ -24,7 +24,7 @@ class HomeState with ChangeNotifier {
     notifyListeners();
   }
 
-  void getPrevDraw() async {
+  getPrevDraw() async {
     _draw = await _lottoApi.fetchLottoNumbers(_draw!.id! - 1);
 
     notifyListeners();
