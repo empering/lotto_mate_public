@@ -23,7 +23,10 @@ class Home extends StatelessWidget {
         builder: (_, drawState, __) {
           return drawState.draw == null
               ? Center(child: AppIndicator())
-              : Column(children: _makeLottoDrawInfo(context, drawState.draw));
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _makeLottoDrawInfo(context, drawState.draw),
+                );
         },
       ),
     );
@@ -32,18 +35,19 @@ class Home extends StatelessWidget {
   _makeLottoDrawInfo(BuildContext context, draw) {
     return <Widget>[
       DrawInfo(draw),
+      Divider(color: Colors.transparent),
       _makeWinnerInfo(context, draw),
     ];
   }
 
   _makeWinnerInfo(BuildContext context, draw) {
-    return Material(
-      elevation: 10.0,
+    return Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      color: AppColors.backgroundAccent,
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(20.0, 10.0, 0, 10.0),
-            color: AppColors.backgroundAccent,
             child: Wrap(
               children: [
                 ListTile(
@@ -115,6 +119,10 @@ class Home extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(13.0),
+              color: AppColors.backgroundLight,
+            ),
             child: ListTile(
               leading: AppTextButton(
                 onPressed: () {
