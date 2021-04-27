@@ -23,9 +23,11 @@ class Home extends StatelessWidget {
         builder: (_, drawState, __) {
           return drawState.draw == null
               ? Center(child: AppIndicator())
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _makeLottoDrawInfo(context, drawState.draw),
+              : SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _makeLottoDrawInfo(context, drawState.draw),
+                  ),
                 );
         },
       ),
