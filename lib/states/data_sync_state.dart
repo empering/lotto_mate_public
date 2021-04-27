@@ -57,14 +57,14 @@ class DataSyncState extends ChangeNotifier {
 
     await _drawService.save(d);
 
-    Buy buy = await _buyService.getByDrawId(d.id!);
+    List<Buy> buys = await _buyService.getByDrawId(d.id!);
 
-    if (buy.picks != null) {
+    await Future.forEach<Buy>(buys, (buy) async {
       await Future.forEach<Pick>(buy.picks!, (pick) async {
         if (pick.pickResult?.pickId == null) {
           await _buyService.savePickResult(_buyService.calcPickResult(pick, d));
         }
       });
-    }
+    });
   }
 }

@@ -89,14 +89,14 @@ class BuyService {
     return buys;
   }
 
-  Future<Buy> getByDrawId(int drawId) async {
-    Buy buy = await _buyRepository.getByWhere(
+  Future<List<Buy>> getByDrawId(int drawId) async {
+    List<Buy> buys = await _buyRepository.getByWhere(
       where: 'drawId = ?',
       whereArgs: [drawId],
-    ).then((buyMap) => buyMap.length > 0 ? Buy.fromDb(buyMap.first) : Buy());
+    ).then((buyMap) => buyMap.map((map) => Buy.fromDb(map)).toList());
 
-    if (buy.id != null) {
-      _pickResultRepository.getByWhere(
+    await Future.forEach<Buy>(buys, (buy) async {
+      await _pickRepository.getByWhere(
           where: 'buyId = ?', whereArgs: [buy.id]).then((picksMap) async {
         buy.picks =
             picksMap.map<Pick>((pickMap) => Pick.fromDb(pickMap)).toList();
@@ -114,9 +114,9 @@ class BuyService {
           );
         }
       });
-    }
+    });
 
-    return buy;
+    return buys;
   }
 
   savePickResult(PickResult pickResult) async {
