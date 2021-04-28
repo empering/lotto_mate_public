@@ -133,7 +133,10 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       ListTile(
         leading: FaIcon(FontAwesomeIcons.rocket),
         title: Text('앱 버전 정보'),
-        trailing: Text('v1.0.1'),
+        trailing: Consumer<AppConfigState>(builder: (_, appConfigState, __) {
+          return Text(
+              'v${appConfigState.appVersion}+${appConfigState.appBuildNumber}');
+        }),
       ),
       Wrap(
         children: [

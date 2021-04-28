@@ -5,6 +5,8 @@ import 'package:lotto_mate/commons/app_notification.dart';
 import 'package:lotto_mate/models/app_config.dart';
 import 'package:lotto_mate/services/app_config_service.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
+import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppConfigState with ChangeNotifier {
   final AppConfigService _configService;
@@ -19,12 +21,26 @@ class AppConfigState with ChangeNotifier {
 
   bool get appConfigValue => _appConfig?.configValue == 'Y';
 
-  initialize() async {
+  String appVersion = '';
+  String appBuildNumber = '';
+
+  initialize(String buildNumer) async {
     var config = await _configService.getConfigValue(configId);
 
     _appConfig = config ?? AppConfig(configId: configId);
 
     _setNotification();
+
+    var packageInfo = await PackageInfo.fromPlatform();
+    appVersion = packageInfo.version;
+    appBuildNumber = packageInfo.buildNumber;
+
+    if (int.parse(appBuildNumber) <
+        (buildNumer.isEmpty ? 1 : int.parse(buildNumer))) {
+      await requestAppUpdate();
+    }
+
+    await requestNotifyPermission();
 
     notifyListeners();
   }
@@ -36,6 +52,40 @@ class AppConfigState with ChangeNotifier {
     _saveConfigValue();
 
     notifyListeners();
+  }
+
+  requestAppUpdate() async {
+    await Get.defaultDialog(
+      title: '확인해주세요',
+      middleText: '앱 업데이트 버전이 있어요.\n업데이트 하고 새로운 기능을 활용하세요.',
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppTextButton(
+              labelIcon: Icons.check_circle_outline,
+              labelText: '확인',
+              onPressed: () async {
+                await goMarket();
+                Get.back();
+              },
+            ),
+            AppTextButton(
+              labelIcon: Icons.cancel_outlined,
+              labelText: '취소',
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  goMarket() async {
+    await launch(
+        'https://play.google.com/store/apps/details?id=com.lotto_mate');
   }
 
   requestNotifyPermission() async {

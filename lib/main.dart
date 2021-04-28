@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -86,6 +87,15 @@ fcmInit() async {
   });
 }
 
+getBuildNumber() async {
+  RemoteConfig remoteConfig = RemoteConfig.instance;
+  remoteConfig.settings.fetchTimeout = Duration(seconds: 60);
+
+  await remoteConfig.fetchAndActivate();
+
+  return remoteConfig.getString('build_number');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DbHelper.initDatabase();
@@ -97,13 +107,19 @@ void main() async {
 
   await AppNotification.initialize();
 
-  runApp(MyApp(isReleases: kReleaseMode));
+  String buildNumer = await getBuildNumber();
+
+  runApp(MyApp(
+    isReleases: kReleaseMode,
+    buildNumer: buildNumer,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final isReleases;
+  final buildNumer;
 
-  MyApp({required this.isReleases});
+  MyApp({required this.isReleases, this.buildNumer});
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +138,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-            value: AppConfigState(appConfigService)..initialize()),
+            value: AppConfigState(appConfigService)..initialize(buildNumer)),
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
         ChangeNotifierProvider.value(value: HomeState(lottoApi)),
