@@ -63,8 +63,6 @@ class AppNotification {
       scheduledDate = scheduledDate.add(const Duration(days: 7));
     }
 
-    print(scheduledDate);
-
     return scheduledDate;
   }
 }

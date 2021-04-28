@@ -71,7 +71,6 @@ class AppConfigState with ChangeNotifier {
   }
 
   _setNotification() {
-    print(_appConfig!.configValue);
     if (_appConfig!.configValue == 'Y') {
       AppNotification.zonedSchedule(
         title: '로또 당첨결과가 발표되었어요',

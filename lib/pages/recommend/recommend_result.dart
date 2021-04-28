@@ -26,7 +26,6 @@ class RecommendResult extends StatelessWidget {
             FutureBuilder(
               future: recommendState.waitAdLoaded(),
               builder: (context, snapshot) {
-                print(snapshot.connectionState);
                 if (snapshot.connectionState == ConnectionState.done) {
                   recommendState.adShow();
                 } else {
