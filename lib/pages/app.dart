@@ -21,6 +21,7 @@ import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_rewarded_ad.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class App extends StatefulWidget {
   @override
@@ -193,16 +194,26 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
           );
         },
       ),
-      // ListTile(
-      //   leading: FaIcon(FontAwesomeIcons.thumbsUp),
-      //   title: Text('리뷰작성'),
-      //   onTap: () {},
-      // ),
-      // ListTile(
-      //   leading: FaIcon(FontAwesomeIcons.shareAltSquare),
-      //   title: Text('친구에게 알리기'),
-      //   onTap: () {},
-      // ),
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.thumbsUp),
+        title: Text('리뷰작성'),
+        onTap: () {
+          context.read<AppConfigState>().goMarket();
+        },
+      ),
+      ListTile(
+        leading: FaIcon(FontAwesomeIcons.shareAltSquare),
+        title: Text('친구에게 알리기'),
+        onTap: () {
+          final RenderBox box = context.findRenderObject() as RenderBox;
+          Share.share(
+            '로또메이트와 함께 어디서나 쉽고 빠르게 나의 로또 번호를 확인하세요!',
+            subject:
+                'https://play.google.com/store/apps/details?id=com.lotto_mate',
+            sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+          );
+        },
+      ),
       ListTile(
         leading: FaIcon(FontAwesomeIcons.ad),
         title: Text('광고보기 후원'),
