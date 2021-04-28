@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -47,54 +48,67 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppAppBar('로또메이트'),
-      body: Column(
-        children: [
-          Consumer<DataSyncState>(
-            builder: (_, dataSyncState, __) {
-              if (dataSyncState.synchronizing) {
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          action: SnackBarAction(
+            label: '닫기',
+            onPressed: () {},
+          ),
+          backgroundColor: AppColors.accent,
+          content: Text(
+            '뒤로가기를 한번 더 탭하면 앱이 종료되요.',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Consumer<DataSyncState>(
+              builder: (_, dataSyncState, __) {
+                if (dataSyncState.synchronizing) {
+                  return Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppIndicator(),
+                        SizedBox(height: 20.0),
+                        Text('최신 로또 데이터를 수신 중이에요.'),
+                        Text('처음 앱 구동시 조금 시간이 걸릴 수 있어요.'),
+                      ],
+                    ),
+                  );
+                }
+
                 return Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppIndicator(),
-                      SizedBox(height: 20.0),
-                      Text('최신 로또 데이터를 수신 중이에요.'),
-                      Text('처음 앱 구동시 조금 시간이 걸릴 수 있어요.'),
-                    ],
+                  child: PageTransitionSwitcher(
+                    transitionBuilder: (
+                      Widget child,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                    ) {
+                      return FadeThroughTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
+                    child: pages[pageIndex],
                   ),
                 );
-              }
-
-              return Expanded(
-                child: PageTransitionSwitcher(
-                  transitionBuilder: (
-                    Widget child,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    return FadeThroughTransition(
-                      animation: animation,
-                      secondaryAnimation: secondaryAnimation,
-                      child: child,
-                    );
-                  },
-                  child: pages[pageIndex],
-                ),
-              );
-            },
-          ),
-          Consumer<BannerAdProvider>(
-            builder: (_, bannerAd, __) {
-              var adWidget = AdWidget(ad: bannerAd.newAd);
-              return Container(
-                alignment: Alignment.center,
-                child: adWidget,
-                height: 72.0,
-                color: Colors.white,
-              );
-            },
-          ),
-        ],
+              },
+            ),
+            Consumer<BannerAdProvider>(
+              builder: (_, bannerAd, __) {
+                var adWidget = AdWidget(ad: bannerAd.newAd);
+                return Container(
+                  alignment: Alignment.center,
+                  child: adWidget,
+                  height: 72.0,
+                  color: Colors.white,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       drawer: _makeDrawer(context),
       persistentFooterButtons: [
