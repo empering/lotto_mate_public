@@ -131,12 +131,14 @@ class BuyService {
     pickResult.pickId = pick.id;
     pickResult.rank = rank;
     pickResult.rankName = rank > 0 ? '$rank등' : '낙첨';
-    pickResult.amount = draw.prizes!
-        .singleWhere(
-          (p) => p.rank == rank,
-          orElse: () => Prize(eachAmount: 0),
-        )
-        .eachAmount;
+    pickResult.amount = rank == 5
+        ? 5000
+        : draw.prizes!
+            .singleWhere(
+              (p) => p.rank == rank,
+              orElse: () => Prize(eachAmount: 0),
+            )
+            .eachAmount;
 
     return pickResult;
   }

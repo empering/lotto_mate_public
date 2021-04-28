@@ -68,18 +68,30 @@ class DrawView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              '${NumberFormat.decimalPattern('ko').format(draw.totalFirstPrizeAmount)} 원',
-              style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(width: 10.0),
-            Text(
-              '총 ${draw.firstPrizewinnerCount}게임 당첨',
-              style: TextStyle(color: AppColors.sub),
-            ),
+            ...draw.totalSellAmount == 0
+                ? [
+                    Text(
+                      '당첨금 집계 중입니다',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]
+                : [
+                    Text(
+                      '${NumberFormat.decimalPattern('ko').format(draw.totalFirstPrizeAmount)} 원',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Text(
+                      '총 ${draw.firstPrizewinnerCount}게임 당첨',
+                      style: TextStyle(color: AppColors.sub),
+                    ),
+                  ]
           ],
         ),
       ],

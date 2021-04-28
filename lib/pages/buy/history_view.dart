@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/buy.dart';
+import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/states/history_list_state.dart';
 import 'package:lotto_mate/states/history_state.dart';
@@ -42,8 +43,11 @@ class HistoryView extends StatelessWidget {
                         ? DrawInfo(historyViewState.draw!)
                         : _makeBeforeDrawInfo(),
                     Column(
-                      children: _makeTotPrize(historyViewState.totAmount,
-                          historyViewState.draw != null),
+                      children: _makeTotPrize(
+                        historyViewState.totAmount,
+                        historyViewState.draw,
+                        historyViewState.isRanked,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
@@ -186,7 +190,9 @@ class HistoryView extends StatelessWidget {
     return result;
   }
 
-  _makeTotPrize(num totAmount, bool isDraw) {
+  _makeTotPrize(num totAmount, Draw? draw, bool isRanked) {
+    bool isDraw = draw != null;
+
     if (totAmount > 0) {
       return [
         Text('축하합니다!'),
@@ -202,7 +208,7 @@ class HistoryView extends StatelessWidget {
       return [
         Text('조금 더 기다려 주세요,'),
         Text(
-          '아직 추첨 전 입니다. 🥱',
+          isRanked ? '당첨금 집계 중입니다 😅' : '아직 추첨 전 입니다. 🥱',
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,

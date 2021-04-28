@@ -78,18 +78,36 @@ class Home extends StatelessWidget {
                   title: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        '${(draw.totalFirstPrizeAmount / 100000000).round()}억원',
-                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Text(
-                        '(${(draw.eachFirstPrizeAmount / 100000000).round()}억 원 씩 총 ${draw.firstPrizewinnerCount}명)',
-                        style: TextStyle(color: AppColors.sub),
-                      ),
+                      ...draw.totalSellAmount == 0
+                          ? [
+                              Text(
+                                '당첨금 집계 중입니다',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ]
+                          : [
+                              Text(
+                                '${(draw.totalFirstPrizeAmount / 100000000).round()}억원',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              SizedBox(width: 10.0),
+                              Text(
+                                '(${(draw.eachFirstPrizeAmount / 100000000).round()}억 원 씩 총 ${draw.firstPrizewinnerCount}명)',
+                                style: TextStyle(color: AppColors.sub),
+                              ),
+                            ],
                     ],
                   ),
                 ),
@@ -109,7 +127,9 @@ class Home extends StatelessWidget {
                     child: FaIcon(FontAwesomeIcons.wonSign),
                   ),
                   title: Text(
-                    '${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억 원',
+                    draw.totalSellAmount == 0
+                        ? '-'
+                        : '${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억 원',
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

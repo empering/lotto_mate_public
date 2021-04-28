@@ -18,6 +18,8 @@ class HistoryViewState extends ChangeNotifier {
 
   num totAmount = 0;
 
+  bool isRanked = false;
+
   bool loading = true;
 
   Buy get buy => _buy;
@@ -60,6 +62,10 @@ class HistoryViewState extends ChangeNotifier {
 
         if ((pick.pickResult?.amount ?? 0) > 0) {
           totAmount += pick.pickResult!.amount!;
+        }
+
+        if ((pick.pickResult?.rank ?? 0) > 0) {
+          isRanked = true;
         }
       });
     }
