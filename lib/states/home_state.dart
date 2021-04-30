@@ -4,16 +4,19 @@ import 'package:get/get.dart';
 import 'package:lotto_mate/api/lotto_api.dart';
 import 'package:lotto_mate/commons/app_constant.dart';
 import 'package:lotto_mate/models/draw.dart';
+import 'package:lotto_mate/services/draw_service.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 
 class HomeState with ChangeNotifier {
   final LottoApi _lottoApi;
 
+  final DrawService _drawService;
+
   Draw? _draw;
 
   Draw? get draw => _draw;
 
-  HomeState(this._lottoApi);
+  HomeState(this._lottoApi, this._drawService);
 
   void getDrawById({int? id}) async {
     if (id == null) {
@@ -21,6 +24,11 @@ class HomeState with ChangeNotifier {
     }
 
     _draw = await _lottoApi.fetchLottoNumbers(id);
+
+    if (_draw == null) {
+      _draw = await _drawService.getDrawById(id);
+    }
+
     notifyListeners();
   }
 

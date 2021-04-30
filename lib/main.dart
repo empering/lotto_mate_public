@@ -141,7 +141,7 @@ class MyApp extends StatelessWidget {
             value: AppConfigState(appConfigService)..initialize(buildNumer)),
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
-        ChangeNotifierProvider.value(value: HomeState(lottoApi)),
+        ChangeNotifierProvider.value(value: HomeState(lottoApi, drawService)),
         ChangeNotifierProvider.value(value: DrawListState(drawService)),
         ChangeNotifierProvider.value(
             value: BuyState(buyService, drawService, historyState)),

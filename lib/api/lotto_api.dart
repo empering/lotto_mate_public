@@ -6,13 +6,18 @@ import 'package:lotto_mate/models/draw.dart';
 const baseUrl = 'https://www.dhlottery.co.kr/common.do';
 
 class LottoApi extends GetConnect {
-  Future<Draw> fetchLottoNumbers(int id) async {
+  Future<Draw?> fetchLottoNumbers(int id) async {
     final response = await get('$baseUrl?method=getLottoNumber&drwNo=$id');
 
     if (response.statusCode == 200) {
-      return Draw.fromJson(json.decode(response.body));
+      if (response.bodyString!.startsWith('<!DOCTYPE html>')) {
+        return null;
+      } else {
+        return Draw.fromJson(json.decode(response.body));
+      }
     } else {
-      throw Exception('Fail!');
+      // throw Exception('Fail!');
+      return null;
     }
   }
 }
