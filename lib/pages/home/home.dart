@@ -140,10 +140,17 @@ class Home extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            margin: const EdgeInsets.symmetric(horizontal: 10.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13.0),
               color: AppColors.backgroundLight,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 10.0,
+                  offset: Offset.zero,
+                ),
+              ],
             ),
             child: ListTile(
               leading: AppTextButton(

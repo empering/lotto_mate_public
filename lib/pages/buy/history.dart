@@ -33,10 +33,17 @@ class History extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13.0),
                           color: AppColors.backgroundLight,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 10.0,
+                              offset: Offset.zero,
+                            ),
+                          ],
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -80,7 +87,7 @@ class History extends StatelessWidget {
     return Consumer<HistoryState>(builder: (_, historyState, __) {
       var isDraw = historyState.searchType == 'draw';
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: SwitchListTile(
           title: isDraw ? Text('회차 선택') : Text('전체 회차'),
           value: isDraw,
@@ -96,19 +103,21 @@ class History extends StatelessWidget {
   _makeSearchValueArea() {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: _makeSearchChoices(),
-            ),
-            Text('부터'),
-            SizedBox(width: 10),
-            Expanded(
-              child: _makeSearchChoices(isStart: false),
-            ),
-            Text('까지'),
-          ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: _makeSearchChoices(),
+              ),
+              Text('부터'),
+              VerticalDivider(),
+              Expanded(
+                child: _makeSearchChoices(isStart: false),
+              ),
+              Text('까지'),
+            ],
+          ),
         );
       },
     );
