@@ -115,12 +115,18 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       persistentFooterButtons: [
         Container(
           height: 25.0,
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           width: MediaQuery.of(context).copyWith().size.width,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Icon(Icons.add_circle_outline),
-              Text(' 버튼을 눌러서 로또 번호를 등록하세요!'),
+              Row(
+                children: [
+                  Icon(FontAwesomeIcons.plusCircle),
+                  Text(' 버튼을'),
+                ],
+              ),
+              Text('눌러보세요!'),
             ],
           ),
         )
@@ -266,23 +272,18 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   _makeConvexBottomNavigationBar() {
     return ConvexAppBar(
-      // controller: _tabController,
-      style: TabStyle.textIn,
-      backgroundColor: AppColors.primary,
-      activeColor: AppColors.light,
-      color: AppColors.sub,
+      style: TabStyle.fixed,
+      backgroundColor: AppColors.accent,
+      activeColor: AppColors.primary,
+      color: AppColors.primary.withOpacity(0.7),
+      curveSize: 55,
+      top: -15,
       items: [
-        TabItem(icon: Icons.home_outlined, title: '홈'),
-        TabItem(icon: Icons.fact_check_outlined, title: '당첨결과'),
-        TabItem(
-          icon: Icon(
-            Icons.add_circle_outline,
-            color: AppColors.accent,
-          ),
-          title: '등록',
-        ),
-        TabItem(icon: Icons.auto_awesome, title: '번호생성'),
-        TabItem(icon: Icons.analytics_outlined, title: '통계'),
+        TabItem(icon: FontAwesomeIcons.trophy, title: '당첨결과'),
+        TabItem(icon: FontAwesomeIcons.history, title: '당첨이력'),
+        TabItem(icon: FontAwesomeIcons.plusCircle, title: '번호등록'),
+        TabItem(icon: FontAwesomeIcons.solidThumbsUp, title: '추천번호'),
+        TabItem(icon: FontAwesomeIcons.solidChartBar, title: '통계분석'),
       ],
       onTap: (int i) {
         setState(() {
@@ -325,6 +326,13 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                         Navigator.of(context).pop();
                         Get.to(() =>
                             HistoryForm(formType: HistoryFormType.QR_CHECK));
+                      },
+                    ),
+                    ListTile(
+                      leading: FaIcon(FontAwesomeIcons.timesCircle),
+                      title: Text('닫기'),
+                      onTap: () {
+                        Get.back();
                       },
                     ),
                   ],
