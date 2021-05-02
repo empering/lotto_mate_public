@@ -323,7 +323,46 @@ class History extends StatelessWidget {
               ],
             ),
             subtitle: Text(
-              '(1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount / drawHistory.winCount / 100000000).round()}억 원)',
+              '1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount / drawHistory.winCount / 100000000).round()}억',
+            ),
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.light,
+              child: FaIcon(FontAwesomeIcons.thumbsUp),
+            ),
+            title: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('최대 1등 상금'),
+                    Text(
+                      ' ${NumberFormat.decimalPattern().format((drawHistory.maxWinAmount / 100000000).round())}억 ',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text('원'),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('최소 1등 상금'),
+                    Text(
+                      ' ${NumberFormat.decimalPattern().format((drawHistory.minWinAmount / 100000000).round())}억 ',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text('원'),
+                  ],
+                ),
+              ],
             ),
           ),
           ListTile(
@@ -338,14 +377,22 @@ class History extends StatelessWidget {
               foregroundColor: AppColors.light,
               child: FaIcon(FontAwesomeIcons.percentage),
             ),
-            title: Text(
-              drawHistory.buyCount == 0
-                  ? '-'
-                  : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount / drawHistory.buyCount)}',
-              style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold,
-              ),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  drawHistory.buyCount == 0
+                      ? '-'
+                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount / drawHistory.buyCount)}',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '약 ${NumberFormat.decimalPattern().format(drawHistory.buyCount ~/ drawHistory.winCount)} 게임 당 1회 당첨',
+                ),
+              ],
             ),
             subtitle: Text(
               '${drawHistory.winCount} 게임 당첨 /\n${NumberFormat.decimalPattern().format(drawHistory.buyCount)} 게임 구매',

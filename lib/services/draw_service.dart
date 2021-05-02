@@ -81,7 +81,9 @@ class DrawService {
         count(id) as drawCount,
         sum(totalSellAmount) as buyAmount,
         sum(totalFirstPrizeAmount) as winAmount,
-        sum(firstPrizewinnerCount) as winCount
+        sum(firstPrizewinnerCount) as winCount,
+        max(totalFirstPrizeAmount) as maxWinAmount,
+        min(case when totalFirstPrizeAmount = 0 then null else totalFirstPrizeAmount end) as minWinAmount
       from draws
     ''';
     var args = [];
