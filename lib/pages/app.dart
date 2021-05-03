@@ -113,22 +113,22 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       ),
       drawer: _makeDrawer(context),
       persistentFooterButtons: [
-        Container(
-          height: 25.0,
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInToLinear,
+          height: pageIndex == 0 ? 25 : 0,
           width: MediaQuery.of(context).copyWith().size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                children: [
-                  Icon(FontAwesomeIcons.plusCircle),
-                  Text(' 버튼을'),
-                ],
-              ),
-              Text('눌러보세요!'),
-            ],
-          ),
+          child: pageIndex == 0
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.plusCircle),
+                    Text(' 터치!'),
+                    SizedBox(width: 20.0),
+                    Text(' 로또 등록!'),
+                  ],
+                )
+              : Container(),
         )
       ],
       bottomNavigationBar: _makeConvexBottomNavigationBar(),
