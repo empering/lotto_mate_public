@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -11,6 +14,7 @@ import 'package:provider/provider.dart';
 class UnpickNumberStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var adProvider = context.read<BannerAdProvider>();
     context.read<StatState>().getStats(statType: StatType.UNPICK);
 
     return Consumer<StatState>(builder: (_, statState, __) {
@@ -33,7 +37,7 @@ class UnpickNumberStats extends StatelessWidget {
                 },
               ),
               Divider(),
-              _stats(),
+              _stats(adProvider),
             ],
           ),
         ),
@@ -66,9 +70,9 @@ class UnpickNumberStats extends StatelessWidget {
     );
   }
 
-  _stats() {
+  _stats(BannerAdProvider adProvider) {
     return Consumer<StatState>(builder: (_, statState, __) {
-      List<int> stats = List.from(statState.stats);
+      var stats = List.from(statState.stats);
 
       if (stats.length == 0) {
         return Center(child: AppIndicator());
@@ -82,8 +86,22 @@ class UnpickNumberStats extends StatelessWidget {
         child: ListView.separated(
           controller: statState.listViewController,
           separatorBuilder: (context, index) => Divider(),
-          itemCount: 5,
+          itemCount: 6,
           itemBuilder: (context, index) {
+            if (index == 5) {
+              var ad = adProvider.newAd;
+
+              return Container(
+                alignment: Alignment.center,
+                decoration: AppBoxDecoration(
+                  color: Colors.white,
+                  shdowColor: Colors.transparent,
+                ).circular(),
+                child: AdWidget(ad: ad),
+                height: 72.0,
+              );
+            }
+
             var color = LottoColorType.values[index];
             var numbers = stats.where((number) =>
                 LottoColor.getLottoNumberColorType(number) == color);

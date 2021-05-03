@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/search_filter.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
@@ -13,6 +16,7 @@ import 'package:search_choices/search_choices.dart';
 class NumberStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var adProvider = context.read<BannerAdProvider>();
     context.read<StatState>().getStats(statType: StatType.NUMBER);
 
     return Consumer<StatState>(builder: (_, statState, __) {
@@ -54,7 +58,7 @@ class NumberStats extends StatelessWidget {
                 },
               ),
               Divider(),
-              _stats(),
+              _stats(adProvider),
             ],
           ),
         ),
@@ -121,7 +125,7 @@ class NumberStats extends StatelessWidget {
     });
   }
 
-  _stats() {
+  _stats(BannerAdProvider adProvider) {
     return Consumer<StatState>(builder: (_, statState, __) {
       var stats = List.from(statState.stats);
 
@@ -136,6 +140,11 @@ class NumberStats extends StatelessWidget {
             a.count == b.count ? a.statType - b.statType : b.count - a.count);
       }
 
+      stats.insert(40, adProvider.newAd);
+      stats.insert(30, adProvider.newAd);
+      stats.insert(20, adProvider.newAd);
+      stats.insert(10, adProvider.newAd);
+
       return Expanded(
         child: ListView.separated(
           controller: statState.listViewController,
@@ -143,6 +152,20 @@ class NumberStats extends StatelessWidget {
           itemCount: stats.length,
           itemBuilder: (context, index) {
             var stat = stats[index];
+
+            if (stat is BannerAd) {
+              var ad = stat;
+
+              return Container(
+                alignment: Alignment.center,
+                decoration: AppBoxDecoration(
+                  color: Colors.white,
+                  shdowColor: Colors.transparent,
+                ).circular(),
+                child: AdWidget(ad: ad),
+                height: 72.0,
+              );
+            }
 
             return ListTile(
               leading: LottoNumber(number: stat.statType),

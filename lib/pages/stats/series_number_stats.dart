@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/search_filter.dart';
-import 'package:lotto_mate/models/stat.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
@@ -15,6 +17,7 @@ import 'package:search_choices/search_choices.dart';
 class SeriesNumberStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var adProvider = context.read<BannerAdProvider>();
     context.read<StatState>().getStats(statType: StatType.SERIES);
 
     return Consumer<StatState>(builder: (_, statState, __) {
@@ -37,7 +40,7 @@ class SeriesNumberStats extends StatelessWidget {
               ),
               _makeSearchValueArea(),
               Divider(),
-              _stats(),
+              _stats(adProvider),
             ],
           ),
         ),
@@ -104,13 +107,15 @@ class SeriesNumberStats extends StatelessWidget {
     });
   }
 
-  _stats() {
+  _stats(BannerAdProvider adProvider) {
     return Consumer<StatState>(builder: (_, statState, __) {
-      List<SeriesStat> stats = List.from(statState.stats);
+      var stats = List.from(statState.stats);
 
       if (stats.length == 0) {
         return Center(child: AppIndicator());
       }
+
+      stats.insert(3, adProvider.newAd);
 
       return Expanded(
         child: ListView.separated(
@@ -118,7 +123,21 @@ class SeriesNumberStats extends StatelessWidget {
           separatorBuilder: (context, index) => Divider(),
           itemCount: stats.length,
           itemBuilder: (context, index) {
-            SeriesStat stat = stats[index];
+            var stat = stats[index];
+
+            if (stat is BannerAd) {
+              var ad = stat;
+
+              return Container(
+                alignment: Alignment.center,
+                decoration: AppBoxDecoration(
+                  color: Colors.white,
+                  shdowColor: Colors.transparent,
+                ).circular(),
+                child: AdWidget(ad: ad),
+                height: 72.0,
+              );
+            }
 
             return ListTile(
               onTap: () {
