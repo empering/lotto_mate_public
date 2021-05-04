@@ -100,10 +100,12 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             Consumer<BannerAdProvider>(
               builder: (_, bannerAd, __) {
                 var adWidget = AdWidget(ad: bannerAd.newAd);
-                return Container(
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeInToLinear,
                   alignment: Alignment.center,
                   child: adWidget,
-                  height: 72.0,
+                  height: pageIndex == 0 || pageIndex == 4 ? 72 : 0,
                   color: Colors.white,
                 );
               },
@@ -283,7 +285,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         TabItem(icon: FontAwesomeIcons.history, title: '당첨이력'),
         TabItem(icon: FontAwesomeIcons.plusCircle, title: '번호등록'),
         TabItem(icon: FontAwesomeIcons.solidThumbsUp, title: '추천번호'),
-        TabItem(icon: FontAwesomeIcons.solidChartBar, title: '통계분석'),
+        TabItem(icon: FontAwesomeIcons.solidChartBar, title: '확률/통계'),
       ],
       onTap: (int i) {
         setState(() {

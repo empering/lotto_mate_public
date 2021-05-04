@@ -53,12 +53,54 @@ class Home extends StatelessWidget {
             child: Wrap(
               children: [
                 ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.light,
+                    radius: 20,
+                    child: FaIcon(
+                      FontAwesomeIcons.trophy,
+                      size: 20,
+                    ),
+                  ),
                   title: Text(
                     '1등 당첨금',
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...draw.totalSellAmount == 0
+                          ? [
+                              Text(
+                                '당첨금 집계 중입니다',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ]
+                          : [
+                              Text(
+                                '${(draw.totalFirstPrizeAmount / 100000000).round()}억 원',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.copyWith(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              Text(
+                                '(${(draw.eachFirstPrizeAmount / 100000000).round()}억 원 씩 총 ${draw.firstPrizewinnerCount}명)',
+                                style: TextStyle(color: AppColors.sub),
+                              ),
+                            ],
+                    ],
                   ),
                   trailing: AppTextButton(
                     labelText: '당첨결과 상세',
@@ -73,65 +115,24 @@ class Home extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.light,
-                    child: FaIcon(FontAwesomeIcons.trophy),
+                    radius: 20,
+                    child: FaIcon(
+                      FontAwesomeIcons.wonSign,
+                      size: 20,
+                    ),
                   ),
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      ...draw.totalSellAmount == 0
-                          ? [
-                              Text(
-                                '당첨금 집계 중입니다',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ]
-                          : [
-                              Text(
-                                '${(draw.totalFirstPrizeAmount / 100000000).round()}억원',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              SizedBox(width: 10.0),
-                              Text(
-                                '(${(draw.eachFirstPrizeAmount / 100000000).round()}억 원 씩 총 ${draw.firstPrizewinnerCount}명)',
-                                style: TextStyle(color: AppColors.sub),
-                              ),
-                            ],
-                    ],
-                  ),
-                ),
-                ListTile(
                   title: Text(
                     '총 판매금액',
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
                   ),
-                ),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.light,
-                    child: FaIcon(FontAwesomeIcons.wonSign),
-                  ),
-                  title: Text(
+                  subtitle: Text(
                     draw.totalSellAmount == 0
                         ? '-'
                         : '${NumberFormat.decimalPattern().format(draw.totalSellAmount ~/ 100000000)}억 원',
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          fontSize: 25,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
@@ -139,50 +140,52 @@ class Home extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(13.0),
-              color: AppColors.backgroundLight,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black38,
-                  blurRadius: 10.0,
-                  offset: Offset.zero,
-                ),
-              ],
-            ),
-            child: ListTile(
-              leading: AppTextButton(
-                onPressed: () async {
-                  await context.read<HomeState>().getPrevDraw();
-                  context.read<AppConfigState>().requestNotifyPermission();
-                },
-                labelText: '이전',
-                labelIcon: Icons.navigate_before,
-              ),
-              trailing: AppTextButton(
-                onPressed: () async {
-                  await context.read<HomeState>().getNextDraw();
-                  context.read<AppConfigState>().requestNotifyPermission();
-                },
-                labelText: '다음',
-                labelIcon: Icons.navigate_next,
-                isIconFirst: false,
-              ),
-              title: AppTextButton(
-                labelText: '모든회차 보기',
-                labelIcon: Icons.fact_check_outlined,
-                onPressed: () async {
-                  await context
-                      .read<AppConfigState>()
-                      .requestNotifyPermission();
-                  Get.to(() => DrawList());
-                },
-              ),
-            ),
-          )
+          _makeButtons(context),
         ],
+      ),
+    );
+  }
+
+  _makeButtons(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(13.0),
+        color: AppColors.backgroundLight,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 10.0,
+            offset: Offset.zero,
+          ),
+        ],
+      ),
+      child: ListTile(
+        leading: AppTextButton(
+          onPressed: () async {
+            await context.read<HomeState>().getPrevDraw();
+            context.read<AppConfigState>().requestNotifyPermission();
+          },
+          labelText: '이전',
+          labelIcon: Icons.navigate_before,
+        ),
+        trailing: AppTextButton(
+          onPressed: () async {
+            await context.read<HomeState>().getNextDraw();
+            context.read<AppConfigState>().requestNotifyPermission();
+          },
+          labelText: '다음',
+          labelIcon: Icons.navigate_next,
+          isIconFirst: false,
+        ),
+        title: AppTextButton(
+          labelText: '모든회차 보기',
+          labelIcon: Icons.fact_check_outlined,
+          onPressed: () async {
+            await context.read<AppConfigState>().requestNotifyPermission();
+            Get.to(() => DrawList());
+          },
+        ),
       ),
     );
   }

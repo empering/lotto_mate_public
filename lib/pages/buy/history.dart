@@ -23,57 +23,58 @@ class History extends StatelessWidget {
       child: Column(
         children: [
           _makeSearchTypeSwitchListTile(),
-          _makeSearchValueArea(),
+          Consumer<HistoryState>(builder: (_, historyState, __) {
+            return Container(
+              color: AppColors.backgroundAccent,
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.0),
+                  color: AppColors.backgroundLight,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 10.0,
+                      offset: Offset.zero,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    AppTextButton(
+                      labelIcon: historyState.isMyHistory
+                          ? FontAwesomeIcons.checkCircle
+                          : FontAwesomeIcons.circle,
+                      labelText: '나의 히스토리',
+                      onPressed: () {
+                        historyState.isMyHistory = true;
+                      },
+                    ),
+                    AppTextButton(
+                      labelIcon: historyState.isMyHistory
+                          ? FontAwesomeIcons.circle
+                          : FontAwesomeIcons.checkCircle,
+                      labelText: '전체 히스토리',
+                      onPressed: () {
+                        historyState.isMyHistory = false;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
           Expanded(
-            child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              color: AppColors.accent,
               child: Consumer<HistoryState>(builder: (_, historyState, __) {
-                return Container(
-                  color: AppColors.backgroundAccent,
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13.0),
-                          color: AppColors.backgroundLight,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 10.0,
-                              offset: Offset.zero,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            AppTextButton(
-                              labelIcon: historyState.isMyHistory
-                                  ? FontAwesomeIcons.checkCircle
-                                  : FontAwesomeIcons.circle,
-                              labelText: '나의 히스토리',
-                              onPressed: () {
-                                historyState.isMyHistory = true;
-                              },
-                            ),
-                            AppTextButton(
-                              labelIcon: historyState.isMyHistory
-                                  ? FontAwesomeIcons.circle
-                                  : FontAwesomeIcons.checkCircle,
-                              labelText: '전체 히스토리',
-                              onPressed: () {
-                                historyState.isMyHistory = false;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      historyState.isMyHistory
-                          ? _makeMyStatInfo(historyState.myHistory)
-                          : _makeTotalStatInfo(historyState.drawHistory),
-                    ],
-                  ),
+                return SingleChildScrollView(
+                  child: historyState.isMyHistory
+                      ? _makeMyStatInfo(historyState.myHistory)
+                      : _makeTotalStatInfo(historyState.drawHistory),
                 );
               }),
             ),
@@ -87,9 +88,10 @@ class History extends StatelessWidget {
     return Consumer<HistoryState>(builder: (_, historyState, __) {
       var isDraw = historyState.searchType == 'draw';
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
         child: SwitchListTile(
           title: isDraw ? Text('회차 선택') : Text('전체 회차'),
+          subtitle: _makeSearchValueArea(),
           value: isDraw,
           onChanged: (value) {
             historyState.setSearchType(value ? 'draw' : 'all');
@@ -103,21 +105,18 @@ class History extends StatelessWidget {
   _makeSearchValueArea() {
     return Consumer<HistoryState>(
       builder: (_, historyState, __) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: _makeSearchChoices(),
-              ),
-              Text('부터'),
-              VerticalDivider(),
-              Expanded(
-                child: _makeSearchChoices(isStart: false),
-              ),
-              Text('까지'),
-            ],
-          ),
+        return Row(
+          children: [
+            Expanded(
+              child: _makeSearchChoices(),
+            ),
+            Text('부터'),
+            VerticalDivider(),
+            Expanded(
+              child: _makeSearchChoices(isStart: false),
+            ),
+            Text('까지'),
+          ],
         );
       },
     );
@@ -176,7 +175,7 @@ class History extends StatelessWidget {
           ListTile(
             title: Text(
               '총 당첨금',
-              style: TextStyle(fontSize: 25.0),
+              style: TextStyle(fontSize: 20),
             ),
             trailing: AppTextButton(
               onPressed: () {
@@ -191,7 +190,11 @@ class History extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.award),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.award,
+                size: 20,
+              ),
             ),
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -199,7 +202,7 @@ class History extends StatelessWidget {
                 Text(
                   '${NumberFormat.decimalPattern().format(myHistory.winAmount)} ',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -211,14 +214,18 @@ class History extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.percentage),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.percentage,
+                size: 20,
+              ),
             ),
             title: Text(
               myHistory.buyCount == 0
                   ? '-'
                   : '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.winRate)}',
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -228,14 +235,18 @@ class History extends StatelessWidget {
           ListTile(
             title: Text(
               '수익률',
-              style: TextStyle(fontSize: 25.0),
+              style: TextStyle(fontSize: 20),
             ),
           ),
           ListTile(
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.award),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.award,
+                size: 20,
+              ),
             ),
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -243,7 +254,7 @@ class History extends StatelessWidget {
                 Text(
                   '${NumberFormat.decimalPattern().format(myHistory.profitAmount)} ',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: myHistory.isProfit ? AppColors.up : AppColors.down,
                   ),
@@ -259,14 +270,18 @@ class History extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.percentage),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.percentage,
+                size: 20,
+              ),
             ),
             title: Text(
               myHistory.buyAmount == 0
                   ? '-'
                   : '${NumberFormat.decimalPercentPattern(decimalDigits: 2).format(myHistory.profitRate)}',
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: myHistory.isProfit ? AppColors.up : AppColors.down,
               ),
@@ -292,7 +307,7 @@ class History extends StatelessWidget {
           ListTile(
             title: Text(
               '1등 누적 당첨금',
-              style: TextStyle(fontSize: 25.0),
+              style: TextStyle(fontSize: 20),
             ),
             trailing: AppTextButton(
               onPressed: () {
@@ -307,7 +322,11 @@ class History extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.award),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.award,
+                size: 20,
+              ),
             ),
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -315,7 +334,7 @@ class History extends StatelessWidget {
                 Text(
                   '${NumberFormat.decimalPattern().format((drawHistory.winAmount / 100000000).round())}억 ',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -330,7 +349,11 @@ class History extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.thumbsUp),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.thumbsUp,
+                size: 20,
+              ),
             ),
             title: Column(
               children: [
@@ -341,7 +364,7 @@ class History extends StatelessWidget {
                     Text(
                       ' ${NumberFormat.decimalPattern().format((drawHistory.maxWinAmount / 100000000).round())}억 ',
                       style: TextStyle(
-                        fontSize: 25.0,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -355,7 +378,7 @@ class History extends StatelessWidget {
                     Text(
                       ' ${NumberFormat.decimalPattern().format((drawHistory.minWinAmount / 100000000).round())}억 ',
                       style: TextStyle(
-                        fontSize: 25.0,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -368,14 +391,18 @@ class History extends StatelessWidget {
           ListTile(
             title: Text(
               '1등 당첨 확률',
-              style: TextStyle(fontSize: 25.0),
+              style: TextStyle(fontSize: 20),
             ),
           ),
           ListTile(
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.light,
-              child: FaIcon(FontAwesomeIcons.percentage),
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.percentage,
+                size: 20,
+              ),
             ),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +412,7 @@ class History extends StatelessWidget {
                       ? '-'
                       : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount / drawHistory.buyCount)}',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

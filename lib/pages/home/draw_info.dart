@@ -16,21 +16,21 @@ class DrawInfo extends StatelessWidget {
           '${draw.id}회 당첨결과',
           style: Theme.of(context).textTheme.headline1,
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 5),
         Text(
           '${draw.getDrawDateString()} 추첨',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.sub,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+          padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
           child: Column(
             children: [
               Text('당첨 번호'),
-              SizedBox(height: 10),
+              SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
