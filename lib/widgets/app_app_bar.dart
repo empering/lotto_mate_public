@@ -5,8 +5,9 @@ class AppAppBar extends AppBar {
   final String titleStr;
   final Widget? widget;
   final PreferredSizeWidget? bottom;
+  final List<Widget>? buttons;
 
-  AppAppBar(this.titleStr, {this.widget, this.bottom})
+  AppAppBar(this.titleStr, {this.widget, this.bottom, this.buttons})
       : super(
           title: widget == null
               ? Text(
@@ -31,5 +32,6 @@ class AppAppBar extends AppBar {
             color: AppColors.primary,
           ),
           bottom: bottom,
+          actions: buttons,
         );
 }

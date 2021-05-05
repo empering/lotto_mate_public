@@ -48,7 +48,60 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppAppBar('로또메이트'),
+      appBar: AppAppBar(
+        '로또메이트',
+        buttons: [
+          PopupMenuButton(
+            icon: Icon(FontAwesomeIcons.plusCircle),
+            offset: Offset(0, 45),
+            tooltip: '로또 등록',
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: FaIcon(FontAwesomeIcons.handPointer),
+                    title: Text('직접 번호 등록'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Get.to(() => HistoryForm());
+                    },
+                  ),
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: FaIcon(FontAwesomeIcons.qrcode),
+                    title: Text('QR 코드로 등록'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Get.to(() => HistoryForm(formType: HistoryFormType.QR));
+                    },
+                  ),
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: FaIcon(FontAwesomeIcons.grinStars),
+                    title: Text('QR 코드로 확인'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Get.to(() =>
+                          HistoryForm(formType: HistoryFormType.QR_CHECK));
+                    },
+                  ),
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: FaIcon(FontAwesomeIcons.timesCircle),
+                    title: Text('닫기'),
+                    onTap: () {
+                      Get.back();
+                    },
+                  ),
+                ),
+              ];
+            },
+          ),
+        ],
+      ),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           action: SnackBarAction(
@@ -118,16 +171,15 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInToLinear,
-          height: pageIndex == 0 ? 25 : 0,
+          height: pageIndex == 0 ? 35 : 0,
           width: MediaQuery.of(context).copyWith().size.width,
+          padding: const EdgeInsets.only(left: 20, bottom: 10),
           child: pageIndex == 0
               ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(FontAwesomeIcons.plusCircle),
-                    Text(' 터치!'),
-                    SizedBox(width: 20.0),
-                    Text(' 로또 등록!'),
+                    Text(' 버튼으로 로또 등록하세요!'),
                   ],
                 )
               : Container(),
@@ -273,7 +325,13 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   }
 
   _makeConvexBottomNavigationBar() {
-    return ConvexAppBar(
+    return ConvexAppBar.badge(
+      {
+        3: Colors.redAccent,
+        4: Colors.redAccent,
+      },
+      badgeMargin: EdgeInsets.only(left: 35, bottom: 35),
+      badgePadding: EdgeInsets.only(left: 2, right: 2),
       style: TabStyle.fixed,
       backgroundColor: AppColors.accent,
       activeColor: AppColors.primary,

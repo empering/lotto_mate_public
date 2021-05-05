@@ -167,6 +167,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: AppColors.backgroundLight,
           dialogBackgroundColor: AppColors.backgroundAccent,
           canvasColor: AppColors.backgroundLight,
+          cardColor: AppColors.backgroundLight,
           dividerColor: AppColors.accent,
           fontFamily: 'CookieRun',
           appBarTheme: AppBarTheme(

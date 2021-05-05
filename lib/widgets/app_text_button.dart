@@ -28,6 +28,8 @@ class AppTextButton extends StatelessWidget {
         backgroundColor: disabled ? Colors.white : buttonColor,
       ),
       child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 10.0,
         children: _buildButtonLabel(),
       ),

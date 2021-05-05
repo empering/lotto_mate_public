@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/stats/color_stats.dart';
 import 'package:lotto_mate/pages/stats/even_odd_stats.dart';
 import 'package:lotto_mate/pages/stats/number_stats.dart';
@@ -54,6 +55,18 @@ class Stats extends StatelessWidget {
         ListTile(
           title: Text('미출현번호'),
           leading: FaIcon(FontAwesomeIcons.ban),
+          onTap: () {
+            Get.to(() => UnpickNumberStats());
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('등수별 당첨확률'),
+          subtitle: Text(
+            '새로운기능!',
+            style: TextStyle(color: AppColors.up),
+          ),
+          leading: FaIcon(FontAwesomeIcons.percentage),
           onTap: () {
             Get.to(() => UnpickNumberStats());
           },
