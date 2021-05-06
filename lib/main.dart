@@ -156,7 +156,7 @@ class MyApp extends StatelessWidget {
         Provider.value(value: rewardedAdProvider),
       ],
       child: GetMaterialApp(
-        title: 'Lotto Mate',
+        title: '로또메이트',
         defaultTransition: Transition.size,
         transitionDuration: Duration(milliseconds: 500),
         theme: ThemeData(
