@@ -345,6 +345,7 @@ class History extends StatelessWidget {
               '1게임당 평균 ${drawHistory.winCount == 0 ? 0 : (drawHistory.winAmount / drawHistory.winCount / 100000000).round()}억',
             ),
           ),
+          Divider(),
           ListTile(
             leading: CircleAvatar(
               backgroundColor: AppColors.primary,
@@ -360,7 +361,7 @@ class History extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('최대 1등 상금'),
+                    Text('최대 1등 총 상금'),
                     Text(
                       ' ${NumberFormat.decimalPattern().format((drawHistory.maxWinAmount / 100000000).round())}억 ',
                       style: TextStyle(
@@ -374,9 +375,9 @@ class History extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('최소 1등 상금'),
+                    Text('최대 1등 게임별 상금'),
                     Text(
-                      ' ${NumberFormat.decimalPattern().format((drawHistory.minWinAmount / 100000000).round())}억 ',
+                      ' ${NumberFormat.decimalPattern().format((drawHistory.maxEachWinAmount / 100000000).round())}억 ',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -388,6 +389,51 @@ class History extends StatelessWidget {
               ],
             ),
           ),
+          Divider(),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.light,
+              radius: 20,
+              child: FaIcon(
+                FontAwesomeIcons.thumbsDown,
+                size: 20,
+              ),
+            ),
+            title: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('최소 1등 총 상금'),
+                    Text(
+                      ' ${NumberFormat.decimalPattern().format((drawHistory.minWinAmount / 100000000).round())}억 ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text('원'),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('최소 1등 게임별 상금'),
+                    Text(
+                      ' ${NumberFormat.decimalPattern().format((drawHistory.minEachWinAmount / 100000000).round())}억 ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text('원'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Divider(),
           ListTile(
             title: Text(
               '1등 당첨 확률',
@@ -410,14 +456,11 @@ class History extends StatelessWidget {
                 Text(
                   drawHistory.buyCount == 0
                       ? '-'
-                      : '${NumberFormat.decimalPercentPattern(decimalDigits: 10).format(drawHistory.winCount / drawHistory.buyCount)}',
+                      : '1 / ${NumberFormat.decimalPattern().format(drawHistory.buyCount ~/ drawHistory.winCount)}',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                Text(
-                  '약 ${NumberFormat.decimalPattern().format(drawHistory.buyCount ~/ drawHistory.winCount)} 게임 당 1회 당첨',
                 ),
               ],
             ),

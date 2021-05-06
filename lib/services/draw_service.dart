@@ -78,19 +78,32 @@ class DrawService {
   Future<DrawHistory> getDrawsSummary({int? startId, int? endId}) async {
     String sql = '''
       select
-        count(id) as drawCount,
-        sum(totalSellAmount) as buyAmount,
-        sum(totalFirstPrizeAmount) as winAmount,
-        sum(firstPrizewinnerCount) as winCount,
-        max(totalFirstPrizeAmount) as maxWinAmount,
-        min(case when totalFirstPrizeAmount = 0 then null else totalFirstPrizeAmount end) as minWinAmount
-      from draws
+        a.*,
+        (select drawId from prizes where eachAmount = maxWinAmount) as maxWinAmountDrawId,
+        (select drawId from prizes where eachAmount = minWinAmount) as minWinAmountDrawId,
+        (select drawId from prizes where eachAmount = maxEachWinAmount) as maxEachWinAmountDrawId,
+        (select drawId from prizes where eachAmount = minEachWinAmount) as minEachWinAmountDrawId
+      from (
+        select
+          count(a.id) as drawCount,
+          sum(a.totalSellAmount) as buyAmount,
+          sum(b.totalAmount) as winAmount,
+          sum(b.winnerCount) as winCount,
+          max(b.totalAmount) as maxWinAmount,
+          min(case when b.totalAmount = 0 then null else b.totalAmount end) as minWinAmount,
+          max(b.eachAmount) as maxEachWinAmount,
+          min(case when b.winnerCount = 0 then null else b.eachAmount end) as minEachWinAmount
+        from draws a
+        join prizes b
+        on a.id = b.drawId
+        where b.rank = 1
     ''';
     var args = [];
     if (startId != null && endId != null) {
-      sql += 'where id >= ? and id <= ?';
+      sql += 'and a.id >= ? and a.id <= ?';
       args = [startId, endId];
     }
+    sql += ') a';
 
     var list = await _drawRepository.getRawQuery(sql, arguments: args);
     return DrawHistory.fromDb(list.first);
