@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/home/draw_info.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/pages/home/draw_view.dart';
 import 'package:lotto_mate/states/app_config_state.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/home_state.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
@@ -17,20 +19,39 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<HomeState>().getDrawById();
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Consumer<HomeState>(
-        builder: (_, drawState, __) {
-          return drawState.draw == null
-              ? Center(child: AppIndicator())
-              : SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: _makeLottoDrawInfo(context, drawState.draw),
-                  ),
-                );
-        },
-      ),
+    return Column(
+      children: [
+        Expanded(
+          child: Consumer<HomeState>(
+            builder: (_, drawState, __) {
+              return drawState.draw == null
+                  ? Center(child: AppIndicator())
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: _makeLottoDrawInfo(context, drawState.draw),
+                        ),
+                      ),
+                    );
+            },
+          ),
+        ),
+        Consumer<BannerAdProvider>(
+          builder: (_, bannerAd, __) {
+            var adWidget = AdWidget(ad: bannerAd.newAd);
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInToLinear,
+              alignment: Alignment.center,
+              child: adWidget,
+              height: 72,
+              color: Colors.white,
+            );
+          },
+        ),
+      ],
     );
   }
 

@@ -4,7 +4,6 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/buy/history.dart';
@@ -13,7 +12,6 @@ import 'package:lotto_mate/pages/home/home.dart';
 import 'package:lotto_mate/pages/recommend/recommend.dart';
 import 'package:lotto_mate/pages/stats/stats.dart';
 import 'package:lotto_mate/states/app_config_state.dart';
-import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
@@ -150,19 +148,21 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 );
               },
             ),
-            Consumer<BannerAdProvider>(
-              builder: (_, bannerAd, __) {
-                var adWidget = AdWidget(ad: bannerAd.newAd);
-                return AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeInToLinear,
-                  alignment: Alignment.center,
-                  child: adWidget,
-                  height: pageIndex == 0 || pageIndex == 4 ? 72 : 0,
-                  color: Colors.white,
-                );
-              },
-            ),
+            // Consumer<BannerAdProvider>(
+            //   builder: (_, bannerAd, __) {
+            //     var adWidget = pageIndex == 0 || pageIndex == 4
+            //         ? AdWidget(ad: bannerAd.newAd)
+            //         : Container();
+            //     return AnimatedContainer(
+            //       duration: Duration(milliseconds: 500),
+            //       curve: Curves.easeInToLinear,
+            //       alignment: Alignment.center,
+            //       child: adWidget,
+            //       height: pageIndex == 0 || pageIndex == 4 ? 72 : 0,
+            //       color: Colors.white,
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
@@ -327,7 +327,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   _makeConvexBottomNavigationBar() {
     return ConvexAppBar.badge(
       {
-        3: Colors.redAccent,
+        // 3: Colors.redAccent,
         4: Colors.redAccent,
       },
       badgeMargin: EdgeInsets.only(left: 35, bottom: 35),

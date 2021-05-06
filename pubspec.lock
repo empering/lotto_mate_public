@@ -153,13 +153,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_coupang_ad:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "7fdd144b7d63c1868319f7bb5b0d57e811313a0a"
+      url: "https://github.com/empering/flutter-coupang_ad"
+    source: git
+    version: "0.1.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0+3"
+    version: "5.0.0+4"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coupang_ad/flutter_coupang_ad.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
@@ -12,8 +13,22 @@ import 'package:lotto_mate/pages/stats/unpick_number_stats.dart';
 class Stats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _makeSubMenus(),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        children: [
+          Expanded(
+            child: _makeSubMenus(),
+          ),
+          CoupangAdView(
+            CoupangAdConfig(
+              adId: '477283',
+              // width: MediaQuery.of(context).copyWith().size.width,
+              height: 65,
+            ),
+          )
+        ],
+      ),
     );
   }
 
