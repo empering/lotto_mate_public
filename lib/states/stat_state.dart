@@ -8,6 +8,7 @@ enum StatType {
   EVEN_ODD,
   SERIES,
   UNPICK,
+  RANK,
 }
 
 class StatState extends ChangeNotifier {
@@ -54,6 +55,9 @@ class StatState extends ChangeNotifier {
       case StatType.UNPICK:
         getData = getUnpickStats;
         break;
+      case StatType.RANK:
+        getData = getRankStats;
+        break;
       default:
         getData = getNumberStats;
     }
@@ -77,11 +81,13 @@ class StatState extends ChangeNotifier {
       notifyListeners();
     }
 
-    _listViewController.animateTo(
-      0.0,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.ease,
-    );
+    if (_statType != StatType.RANK) {
+      _listViewController.animateTo(
+        0.0,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    }
   }
 
   getStats({StatType? statType}) {
@@ -142,6 +148,18 @@ class StatState extends ChangeNotifier {
   getUnpickStats() async {
     var list = await _statService.getUnpickStat(
       startId: int.parse(_searchFilter.searchEndValue) - _drawIdDiff,
+      endId: int.parse(_searchFilter.searchEndValue),
+      isWithBounsNumber: _searchFilter.isWithBounsNumber,
+    );
+
+    _stats = list;
+
+    notifyListeners();
+  }
+
+  getRankStats() async {
+    var list = await _statService.getRankStat(
+      startId: int.parse(_searchFilter.searchStartValue),
       endId: int.parse(_searchFilter.searchEndValue),
       isWithBounsNumber: _searchFilter.isWithBounsNumber,
     );

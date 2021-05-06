@@ -24,7 +24,7 @@ class EvenOddStats extends StatelessWidget {
     return Consumer<StatState>(builder: (_, statState, __) {
       SearchFilter searchFilter = statState.searchFilter;
       return Scaffold(
-        appBar: AppAppBar('색상별'),
+        appBar: AppAppBar('홀짝'),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
           child: Column(

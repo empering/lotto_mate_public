@@ -156,6 +156,33 @@ class StatService {
     return numberList;
   }
 
+  getRankStat({
+    int? startId,
+    int? endId,
+    bool isWithBounsNumber = false,
+  }) async {
+    String sql = '''
+      select
+        b.rank,
+        sum(winnerCount) as winnerCount,
+        sum(totalSellAmount / 1000) as sellCount
+      from draws a
+      join prizes b
+      on a.id = b.drawId
+    ''';
+
+    var args = [];
+    if (startId != null && endId != null) {
+      sql += 'where a.id >= ? and a.id <= ?';
+      args = [startId, endId];
+    }
+    sql += '\ngroup by rank';
+
+    var result = await _repository.getRawQuery(sql, arguments: args);
+
+    return result;
+  }
+
   Future<List<Map<String, dynamic>>> _getStat(
       {int? startId, int? endId}) async {
     return await _repository

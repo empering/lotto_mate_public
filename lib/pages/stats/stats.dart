@@ -5,6 +5,7 @@ import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/stats/color_stats.dart';
 import 'package:lotto_mate/pages/stats/even_odd_stats.dart';
 import 'package:lotto_mate/pages/stats/number_stats.dart';
+import 'package:lotto_mate/pages/stats/rank_stats.dart';
 import 'package:lotto_mate/pages/stats/series_number_stats.dart';
 import 'package:lotto_mate/pages/stats/unpick_number_stats.dart';
 
@@ -68,7 +69,7 @@ class Stats extends StatelessWidget {
           ),
           leading: FaIcon(FontAwesomeIcons.percentage),
           onTap: () {
-            Get.to(() => UnpickNumberStats());
+            Get.to(() => RankStats());
           },
         ),
         Divider(),
