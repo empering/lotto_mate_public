@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coupang_ad/flutter_coupang_ad.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/search_filter.dart';
@@ -18,7 +19,7 @@ class RankStats extends StatelessWidget {
     return Consumer<StatState>(builder: (_, statState, __) {
       SearchFilter searchFilter = statState.searchFilter;
       return Scaffold(
-        appBar: AppAppBar('순위별 통계'),
+        appBar: AppAppBar('등수별 통계'),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
           child: Column(
@@ -36,6 +37,13 @@ class RankStats extends StatelessWidget {
               _makeSearchValueArea(),
               Divider(),
               _stats(adProvider),
+              CoupangAdView(
+                CoupangAdConfig(
+                  adId: '477283',
+                  // width: MediaQuery.of(context).copyWith().size.width,
+                  height: 65,
+                ),
+              )
             ],
           ),
         ),
@@ -132,10 +140,10 @@ class RankStats extends StatelessWidget {
         TableRow(
           decoration: const BoxDecoration(color: AppColors.backgroundLight),
           children: [
-            _tableCell('순위'),
-            _tableCell('당첨수'),
-            _tableCell('확률'),
-            _tableCell('실제확률'),
+            _tableCell('순위', style: TextStyle(fontWeight: FontWeight.bold)),
+            _tableCell('당첨수', style: TextStyle(fontWeight: FontWeight.bold)),
+            _tableCell('확률', style: TextStyle(fontWeight: FontWeight.bold)),
+            _tableCell('실제확률', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         ...stats
@@ -151,7 +159,7 @@ class RankStats extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Text(
           value,
-          style: style?.copyWith(fontSize: 12.0) ?? TextStyle(fontSize: 12.0),
+          style: style?.copyWith(fontSize: 14.0) ?? TextStyle(fontSize: 14.0),
           textAlign: align ?? TextAlign.center,
         ),
       ),
