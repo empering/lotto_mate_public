@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
+import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
 import 'package:lotto_mate/states/banner_ad_provider.dart';
@@ -142,9 +143,10 @@ class SeriesNumberStats extends StatelessWidget {
             return ListTile(
               onTap: () {
                 if (stat.draws.length > 0) {
+                  var draws = stat.draws as Set<Draw>;
                   Get.to(() => DrawList(
                         type: DrawListType.LIST,
-                        drawsFromParent: stat.draws.toList()
+                        drawsFromParent: (draws).toList()
                           ..sort((a, b) => b.id! - a.id!),
                       ));
                 }
