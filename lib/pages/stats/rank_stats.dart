@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coupang_ad/flutter_coupang_ad.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/search_filter.dart';
@@ -20,12 +21,14 @@ class RankStats extends StatelessWidget {
       SearchFilter searchFilter = statState.searchFilter;
       return Scaffold(
         appBar: AppAppBar('등수별 통계'),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-          child: Column(
-            children: [
-              SwitchListTile(
+        body: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+              child: SwitchListTile(
                 title: searchFilter.isAll ? Text('전체 회차') : Text('회차 선택'),
+                subtitle: _makeSearchValueArea(),
                 value: searchFilter.isAll,
                 onChanged: (value) {
                   searchFilter
@@ -34,18 +37,28 @@ class RankStats extends StatelessWidget {
                   statState.notify();
                 },
               ),
-              _makeSearchValueArea(),
-              Divider(),
-              _stats(adProvider),
-              CoupangAdView(
-                CoupangAdConfig(
-                  adId: '477283',
-                  // width: MediaQuery.of(context).copyWith().size.width,
+            ),
+            _stats(adProvider),
+            Consumer<BannerAdProvider>(
+              builder: (_, bannerAd, __) {
+                var ad = bannerAd.newAd;
+                var adWidget;
+                if (ad is BannerAd) {
+                  adWidget = AdWidget(ad: ad);
+                } else {
+                  adWidget = ad;
+                }
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeInToLinear,
+                  alignment: Alignment.center,
+                  child: adWidget,
                   height: 65,
-                ),
-              )
-            ],
-          ),
+                  color: Colors.white,
+                );
+              },
+            ),
+          ],
         ),
       );
     });
@@ -121,7 +134,38 @@ class RankStats extends StatelessWidget {
       // stats.add(adProvider.newAd);
 
       return Expanded(
-        child: _makeTable(stats),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundAccent,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(width: 10),
+                  FaIcon(FontAwesomeIcons.infoCircle),
+                  SizedBox(width: 10),
+                  Text(
+                    '총 게임 수',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                      '${NumberFormat.decimalPattern().format(stats[0]['sellCount'])} 회 도전'),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              _makeTable(stats),
+            ],
+          ),
+        ),
       );
     });
   }
