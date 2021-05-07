@@ -258,9 +258,9 @@ class RecommendState with ChangeNotifier {
 
   adShow() async {
     if (viewCount < 5) {
-      await _interstitialAdProvider.interstitialAd.show();
+      await _interstitialAdProvider.showAd();
     } else {
-      await _rewardedAdProvider.rewardedAd.show();
+      await _rewardedAdProvider.showAd();
       viewCount = 0;
     }
   }
