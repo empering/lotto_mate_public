@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coupang_ad/flutter_coupang_ad.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/pages/stats/color_stats.dart';
 import 'package:lotto_mate/pages/stats/even_odd_stats.dart';
@@ -9,6 +9,8 @@ import 'package:lotto_mate/pages/stats/number_stats.dart';
 import 'package:lotto_mate/pages/stats/rank_stats.dart';
 import 'package:lotto_mate/pages/stats/series_number_stats.dart';
 import 'package:lotto_mate/pages/stats/unpick_number_stats.dart';
+import 'package:lotto_mate/states/banner_ad_provider.dart';
+import 'package:provider/provider.dart';
 
 class Stats extends StatelessWidget {
   @override
@@ -20,13 +22,25 @@ class Stats extends StatelessWidget {
           Expanded(
             child: _makeSubMenus(),
           ),
-          CoupangAdView(
-            CoupangAdConfig(
-              adId: '477283',
-              // width: MediaQuery.of(context).copyWith().size.width,
-              height: 65,
-            ),
-          )
+          Consumer<BannerAdProvider>(
+            builder: (_, bannerAd, __) {
+              var ad = bannerAd.newAd;
+              var adWidget;
+              if (ad is BannerAd) {
+                adWidget = AdWidget(ad: ad);
+              } else {
+                adWidget = ad;
+              }
+              return AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInToLinear,
+                alignment: Alignment.center,
+                child: adWidget,
+                height: 65,
+                color: Colors.white,
+              );
+            },
+          ),
         ],
       ),
     );

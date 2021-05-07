@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coupang_ad/flutter_coupang_ad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
@@ -153,8 +154,14 @@ class NumberStats extends StatelessWidget {
           itemBuilder: (context, index) {
             var stat = stats[index];
 
-            if (stat is BannerAd) {
+            if (stat is BannerAd || stat is CoupangAdView) {
               var ad = stat;
+              var adWidget;
+              if (ad is BannerAd) {
+                adWidget = AdWidget(ad: ad);
+              } else {
+                adWidget = ad;
+              }
 
               return Container(
                 alignment: Alignment.center,
@@ -162,7 +169,7 @@ class NumberStats extends StatelessWidget {
                   color: Colors.white,
                   shdowColor: Colors.transparent,
                 ).circular(),
-                child: AdWidget(ad: ad),
+                child: adWidget,
                 height: 72.0,
               );
             }

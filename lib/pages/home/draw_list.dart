@@ -55,6 +55,12 @@ class DrawList extends StatelessWidget {
               }
 
               var ad = drawListState.ads[(index / 10).floor()];
+              var adWidget;
+              if (ad is BannerAd) {
+                adWidget = AdWidget(ad: ad);
+              } else {
+                adWidget = ad;
+              }
 
               return Container(
                 alignment: Alignment.center,
@@ -62,7 +68,7 @@ class DrawList extends StatelessWidget {
                   color: Colors.white,
                   shdowColor: Colors.transparent,
                 ).circular(),
-                child: AdWidget(ad: ad),
+                child: adWidget,
                 height: 72.0,
               );
             }

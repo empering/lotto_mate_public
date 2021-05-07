@@ -90,6 +90,12 @@ class UnpickNumberStats extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 5) {
               var ad = adProvider.newAd;
+              var adWidget;
+              if (ad is BannerAd) {
+                adWidget = AdWidget(ad: ad);
+              } else {
+                adWidget = ad;
+              }
 
               return Container(
                 alignment: Alignment.center,
@@ -97,7 +103,7 @@ class UnpickNumberStats extends StatelessWidget {
                   color: Colors.white,
                   shdowColor: Colors.transparent,
                 ).circular(),
-                child: AdWidget(ad: ad),
+                child: adWidget,
                 height: 72.0,
               );
             }

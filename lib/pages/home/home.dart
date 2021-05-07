@@ -26,11 +26,9 @@ class Home extends StatelessWidget {
             builder: (_, drawState, __) {
               return drawState.draw == null
                   ? Center(child: AppIndicator())
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                  : Center(
+                      child: SingleChildScrollView(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: _makeLottoDrawInfo(context, drawState.draw),
                         ),
                       ),
@@ -40,13 +38,20 @@ class Home extends StatelessWidget {
         ),
         Consumer<BannerAdProvider>(
           builder: (_, bannerAd, __) {
-            var adWidget = AdWidget(ad: bannerAd.newAd);
+            var ad = bannerAd.ad;
+            var adWidget;
+            print(ad);
+            if (ad is BannerAd) {
+              adWidget = AdWidget(ad: ad);
+            } else {
+              adWidget = ad;
+            }
             return AnimatedContainer(
               duration: Duration(milliseconds: 500),
               curve: Curves.easeInToLinear,
               alignment: Alignment.center,
               child: adWidget,
-              height: 72,
+              height: 65,
               color: Colors.white,
             );
           },

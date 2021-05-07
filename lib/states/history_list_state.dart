@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/models/buy.dart';
 import 'package:lotto_mate/services/buy_service.dart';
 
@@ -17,9 +16,9 @@ class HistoryListState with ChangeNotifier {
 
   set setBuys(List<Buy> buys) => _buys = buys;
 
-  List<BannerAd> _ads = [];
+  List<dynamic> _ads = [];
 
-  List<BannerAd> get ads => _ads;
+  List<dynamic> get ads => _ads;
 
   final int limit = 10;
   int offset = 0;
