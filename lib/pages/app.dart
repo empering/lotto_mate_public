@@ -15,8 +15,8 @@ import 'package:lotto_mate/states/app_config_state.dart';
 import 'package:lotto_mate/states/buy_state.dart';
 import 'package:lotto_mate/states/data_sync_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
+import 'package:lotto_mate/widgets/app_coupang_ad.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
-import 'package:lotto_mate/widgets/app_rewarded_ad.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -276,9 +276,9 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       ),
       ListTile(
         leading: FaIcon(FontAwesomeIcons.ad),
-        title: Text('광고보기 후원'),
+        title: Text('쿠팡파트너스 후원'),
         onTap: () {
-          Get.to(() => AppRewardedAd());
+          Get.to(() => AppCoupangAd());
         },
       ),
     ];

@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
-import 'package:lotto_mate/states/rewarded_ad_provider.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
-import 'package:provider/provider.dart';
+import 'package:lotto_mate/widgets/coupang_ad.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AppRewardedAd extends StatelessWidget {
+class AppCoupangAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var rewardedAdProvider = context.watch<RewardedAdProvider>();
-
     return Scaffold(
-        appBar: AppAppBar('광고보기 후원'),
+        appBar: AppAppBar('쿠팡파트너스 후원'),
         body: FutureBuilder(
-          future: Future.wait([
-            rewardedAdProvider.rewardedAd.load(),
-            rewardedAdProvider.waitLoaded(),
-          ]),
+          future: Future.delayed(Duration(milliseconds: 500)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              rewardedAdProvider.showAd();
+              showCoupangDialog();
             } else {
               return Center(child: AppIndicator());
             }
@@ -58,5 +53,48 @@ class AppRewardedAd extends StatelessWidget {
             );
           },
         ));
+  }
+
+  showCoupangDialog() async {
+    await Future.delayed(Duration(milliseconds: 10));
+    Get.dialog(
+      Center(
+        child: Container(
+          color: AppColors.backgroundAccent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CoupangHtmlAdView(
+                CoupangHtmlAdConfig(
+                  html: '''
+                  <a href="https://coupa.ng/bY8bq0" target="_blank" referrerpolicy="unsafe-url"><img src="https://ads-partners.coupang.com/banners/477286?subId=lottomate&traceId=V0-301-879dd1202e5c73b2-I477286&w=320&h=480" alt=""></a>
+                  ''',
+                  width: 335,
+                  height: 495,
+                ),
+              ),
+              ButtonTheme(
+                minWidth: 78.0,
+                height: 34.0,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    AppTextButton(
+                      labelIcon: Icons.cancel_outlined,
+                      labelText: '닫기',
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
