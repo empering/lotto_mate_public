@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +30,6 @@ import 'package:lotto_mate/states/rewarded_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:provider/provider.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-}
-
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
@@ -44,48 +39,6 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-
-fcmInit() async {
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  var firebaseMessaging = FirebaseMessaging.instance;
-
-  await firebaseMessaging.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    var notification = message.notification;
-
-    if (notification != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channel.description,
-            // icon: 'ic_launcher',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false,
-            ticker: 'ticker',
-            // other properties...
-          ),
-        ),
-      );
-    }
-  });
-}
 
 getBuildNumber() async {
   RemoteConfig remoteConfig = RemoteConfig.instance;
@@ -101,9 +54,6 @@ void main() async {
   await DbHelper.initDatabase();
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
-
-  // firebase cloud message
-  // await fcmInit();
 
   await AppNotification.initialize();
 
