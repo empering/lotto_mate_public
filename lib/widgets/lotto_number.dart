@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 
@@ -36,21 +37,30 @@ class LottoNumber extends StatelessWidget {
       return LottoColor.none;
     }
 
-    if (winNumbers != null && winNumbers!.length == 7) {
-      var indexOfNumber = winNumbers!.indexOf(number);
-      if (indexOfNumber < 0 || indexOfNumber == 6) {
-        return LottoColor.notMatched;
-      }
-    }
-
     return LottoColor.getLottoNumberColor(number!);
   }
 
-  _makeNumber() {
-    return this.isFixedNumber ? _makeStackNumberWidget() : _makeNumberWidget();
+  _isNotMatched() {
+    if (number != null && winNumbers != null && winNumbers!.length == 7) {
+      return !winNumbers!.take(6).contains(number);
+    }
+
+    return false;
   }
 
-  _makeStackNumberWidget() {
+  _makeNumber() {
+    if (this.isFixedNumber) {
+      return _makeFixedNumberWidget();
+    }
+
+    if (_isNotMatched()) {
+      return _makeNotMatchedNumberWidget();
+    }
+
+    return _makeNumberWidget();
+  }
+
+  _makeFixedNumberWidget() {
     return Stack(
       alignment: Alignment.bottomRight,
       clipBehavior: Clip.none,
@@ -64,6 +74,21 @@ class LottoNumber extends StatelessWidget {
             fontSize: this.fontSize * 0.6,
             backgroundColor: Colors.white38,
           ),
+        ),
+      ],
+    );
+  }
+
+  _makeNotMatchedNumberWidget() {
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: [
+        _makeNumberWidget(),
+        FaIcon(
+          FontAwesomeIcons.slash,
+          color: Colors.black.withOpacity(0.4),
+          size: this.fontSize * 1.3,
         ),
       ],
     );
