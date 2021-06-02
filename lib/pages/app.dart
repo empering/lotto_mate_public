@@ -29,11 +29,11 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int pageIndex = 0;
+  int pageIndex = 2;
   var pages = [
-    Home(),
-    History(),
     HistoryForm(),
+    History(),
+    Home(),
     Recommend(),
     Stats(),
   ];
@@ -171,15 +171,15 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInToLinear,
-          height: pageIndex == 0 ? 35 : 0,
+          height: pageIndex == 2 ? 35 : 0,
           width: MediaQuery.of(context).copyWith().size.width,
           padding: const EdgeInsets.only(left: 20, bottom: 10),
-          child: pageIndex == 0
+          child: pageIndex == 2
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(FontAwesomeIcons.plusCircle),
-                    Text(' 버튼으로 로또 등록하세요!'),
+                    Text(' 버튼으로 로또등록!'),
                   ],
                 )
               : Container(),
@@ -330,18 +330,19 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         // 3: Colors.redAccent,
         4: Colors.redAccent,
       },
+      initialActiveIndex: 2,
       badgeMargin: EdgeInsets.only(left: 35, bottom: 35),
       badgePadding: EdgeInsets.only(left: 2, right: 2),
       style: TabStyle.fixed,
       backgroundColor: AppColors.accent,
       activeColor: AppColors.primary,
       color: AppColors.primary.withOpacity(0.7),
-      curveSize: 55,
-      top: -15,
+      curveSize: 60,
+      top: -20,
       items: [
-        TabItem(icon: FontAwesomeIcons.trophy, title: '당첨결과'),
-        TabItem(icon: FontAwesomeIcons.history, title: '당첨이력'),
         TabItem(icon: FontAwesomeIcons.plusCircle, title: '번호등록'),
+        TabItem(icon: FontAwesomeIcons.history, title: '당첨이력'),
+        TabItem(icon: FontAwesomeIcons.trophy, title: '당첨결과'),
         TabItem(icon: FontAwesomeIcons.solidThumbsUp, title: '추천번호'),
         TabItem(icon: FontAwesomeIcons.solidChartBar, title: '확률/통계'),
       ],
@@ -351,7 +352,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         });
       },
       onTabNotify: (index) {
-        var intercept = index == 2;
+        var intercept = index == 0;
         if (intercept) {
           showModalBottomSheet(
             context: context,
