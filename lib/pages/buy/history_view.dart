@@ -175,12 +175,36 @@ class HistoryView extends StatelessWidget {
                   ),
                 ),
               ),
-              LottoNumber(number: pick.numbers![0], winNumbers: winNumbers),
-              LottoNumber(number: pick.numbers![1], winNumbers: winNumbers),
-              LottoNumber(number: pick.numbers![2], winNumbers: winNumbers),
-              LottoNumber(number: pick.numbers![3], winNumbers: winNumbers),
-              LottoNumber(number: pick.numbers![4], winNumbers: winNumbers),
-              LottoNumber(number: pick.numbers![5], winNumbers: winNumbers),
+              LottoNumber(
+                number: pick.numbers![0],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
+              LottoNumber(
+                number: pick.numbers![1],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
+              LottoNumber(
+                number: pick.numbers![2],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
+              LottoNumber(
+                number: pick.numbers![3],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
+              LottoNumber(
+                number: pick.numbers![4],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
+              LottoNumber(
+                number: pick.numbers![5],
+                winNumbers: winNumbers,
+                fontSize: 22,
+              ),
             ],
           ),
         );

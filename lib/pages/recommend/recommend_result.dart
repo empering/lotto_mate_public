@@ -209,6 +209,7 @@ class RecommendResult extends StatelessWidget {
           .map((n) => LottoNumber(
                 number: n,
                 isFixedNumber: fixedNumbers.contains(n),
+                fontSize: 22,
               ))
           .toList(),
     );

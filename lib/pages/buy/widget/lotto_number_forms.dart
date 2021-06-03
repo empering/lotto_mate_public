@@ -105,7 +105,10 @@ class LottoNumberForms extends StatelessWidget {
                           onTap: () {
                             buyState.popNumber(pick, value);
                           },
-                          child: LottoNumber(number: value),
+                          child: LottoNumber(
+                            number: value,
+                            fontSize: 20,
+                          ),
                         ),
                       ))
                   .toList(),

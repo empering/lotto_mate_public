@@ -14,7 +14,7 @@ class LottoNumber extends StatelessWidget {
     this.number,
     this.winNumbers,
     this.isFixedNumber = false,
-    this.fontSize = 20,
+    this.fontSize = 24,
     this.numberPicked,
   });
 

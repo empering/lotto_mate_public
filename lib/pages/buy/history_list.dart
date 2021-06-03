@@ -138,7 +138,10 @@ class HistoryList extends StatelessWidget {
                   title: _makeBuyListViewTitle(buy),
                   dense: true,
                   onTap: () {
-                    Get.to(() => HistoryView(buy));
+                    Get.to(
+                      () => HistoryView(buy),
+                      transition: Transition.fade,
+                    );
                   },
                 ),
               ),
@@ -189,7 +192,7 @@ class HistoryList extends StatelessWidget {
                   .map(
                     (n) => LottoNumber(
                       number: n,
-                      fontSize: 16,
+                      fontSize: 19,
                     ),
                   )
                   .toList(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lotto_mate/commons/app_box_decoration.dart';
@@ -84,7 +85,10 @@ class DrawList extends StatelessWidget {
                 dense: true,
                 isThreeLine: true,
                 onTap: () {
-                  Get.to(() => DrawView(draw.id!));
+                  Get.to(
+                    () => DrawView(draw.id!),
+                    transition: Transition.fade,
+                  );
                 },
               ),
             );
@@ -116,24 +120,27 @@ class DrawList extends StatelessWidget {
   }
 
   _makeDrawListViewTitle(Draw draw) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ...draw.numbers!
-            .take(6)
-            .map(
-              (n) => LottoNumber(
-                number: n,
-                fontSize: 16,
-              ),
-            )
-            .toList(),
-        Icon(Icons.add),
-        LottoNumber(
-          number: draw.numbers!.last,
-          fontSize: 16,
-        ),
-      ],
+    return Hero(
+      tag: draw.id!,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ...draw.numbers!
+              .take(6)
+              .map(
+                (n) => LottoNumber(
+                  number: n,
+                  fontSize: 19,
+                ),
+              )
+              .toList(),
+          FaIcon(FontAwesomeIcons.plus, size: 13),
+          LottoNumber(
+            number: draw.numbers!.last,
+            fontSize: 16,
+          ),
+        ],
+      ),
     );
   }
 
