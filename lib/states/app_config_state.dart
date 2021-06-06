@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotto_mate/commons/app_notification.dart';
+import 'package:lotto_mate/main.dart';
 import 'package:lotto_mate/models/app_config.dart';
 import 'package:lotto_mate/services/app_config_service.dart';
 import 'package:lotto_mate/widgets/app_text_button.dart';
@@ -10,8 +11,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AppConfigState with ChangeNotifier {
   final AppConfigService _configService;
+  final StoreType _storeType;
 
-  AppConfigState(this._configService);
+  AppConfigState(this._configService, this._storeType);
 
   String configId = 'NOTI';
 
@@ -84,8 +86,9 @@ class AppConfigState with ChangeNotifier {
   }
 
   goMarket() async {
-    await launch(
-        'https://play.google.com/store/apps/details?id=com.lotto_mate');
+    await launch(_storeType == StoreType.ONE_STORE
+        ? 'onestore://common/product/0000756051'
+        : 'market://details?id=com.lotto_mate');
   }
 
   requestNotifyPermission() async {

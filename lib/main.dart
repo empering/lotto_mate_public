@@ -30,6 +30,11 @@ import 'package:lotto_mate/states/rewarded_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:provider/provider.dart';
 
+enum StoreType {
+  PLAY_STORE,
+  ONE_STORE,
+}
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
@@ -47,6 +52,17 @@ getBuildNumber() async {
   await remoteConfig.fetchAndActivate();
 
   return remoteConfig.getString('build_number');
+}
+
+Future<dynamic> mainCommon() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DbHelper.initDatabase();
+  await Firebase.initializeApp();
+  MobileAds.instance.initialize();
+
+  await AppNotification.initialize();
+
+  return await getBuildNumber();
 }
 
 void main() async {
@@ -68,8 +84,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   final isReleases;
   final buildNumer;
+  final StoreType storeType;
 
-  MyApp({required this.isReleases, this.buildNumer});
+  MyApp({
+    required this.isReleases,
+    this.buildNumer,
+    this.storeType = StoreType.PLAY_STORE,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +109,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-            value: AppConfigState(appConfigService)..initialize(buildNumer)),
+            value: AppConfigState(appConfigService, storeType)
+              ..initialize(buildNumer)),
         ChangeNotifierProvider.value(
             value: DataSyncState(drawService, buyService)),
         ChangeNotifierProvider.value(value: HomeState(lottoApi, drawService)),

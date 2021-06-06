@@ -35,6 +35,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        checkReleaseBuilds false
     }
 
     defaultConfig {
@@ -52,6 +53,17 @@ android {
             storePassword file('../keystore/store.password').text.trim()
             keyPassword file('../keystore/key.password').text.trim()
             keyAlias 'appKey'
+        }
+    }
+
+    flavorDimensions "build-type"
+
+    productFlavors {
+        onestore {
+            dimension "build-type"
+        }
+        playstore {
+            dimension "build-type"
         }
     }
 
