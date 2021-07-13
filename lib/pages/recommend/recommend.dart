@@ -50,43 +50,91 @@ class Recommend extends StatelessWidget {
       ),
       ListTile(
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 0, 5),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
           child: Row(
-            children: recommendState.numbers.length == 0
-                ? [Text('선택된 번호가 없어요.')]
-                : recommendState.numbers
-                    .map((number) => Container(
-                          padding: const EdgeInsets.all(2.0),
-                          child: LottoNumber(
-                            number: number,
-                            fontSize: 14,
-                            numberPicked: (int number) {
-                              recommendState.removeNumber(number);
-                            },
-                          ),
-                        ))
-                    .toList(),
-          ),
-        ),
-        subtitle: LottoNumberPad(
-          fontSize: 14.0,
-          numberPicked: (number) {
-            if (number == null) return;
+            children: [
+              Expanded(
+                child: Wrap(
+                  children: recommendState.numbers.length == 0
+                      ? [Text('선택된 번호가 없어요.')]
+                      : recommendState.numbers.map(
+                          (number) {
+                            return Container(
+                              padding: const EdgeInsets.all(2.0),
+                              child: LottoNumber(
+                                number: number,
+                                fontSize: 14,
+                                numberPicked: (int number) {
+                                  recommendState.removeNumber(number);
+                                },
+                              ),
+                            );
+                          },
+                        ).toList(),
+                ),
+              ),
+              AppTextButton(
+                labelText: '번호선택',
+                buttonColor: AppColors.primary,
+                labelColor: AppColors.light,
+                onPressed: () {
+                  Get.dialog(
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        color: AppColors.light,
+                        height: 280,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: LottoNumberPad(
+                                fontSize: 14.0,
+                                numberPicked: (number) {
+                                  if (number == null) return;
 
-            if (recommendState.isContains(number)) {
-              recommendState.removeNumber(number);
-            } else {
-              if (!recommendState.numberAddable) {
-                Get.defaultDialog(
-                  title: '이런...',
-                  middleText:
-                      '번호는 최대 ${recommendState.numbersLimitSize}개 까지만 설정 가능 해요.',
-                );
-              } else {
-                recommendState.addNumber(number);
-              }
-            }
-          },
+                                  if (recommendState.isContains(number)) {
+                                    recommendState.removeNumber(number);
+                                  } else {
+                                    if (!recommendState.numberAddable) {
+                                      Get.defaultDialog(
+                                        title: '이런...',
+                                        middleText:
+                                            '번호는 최대 ${recommendState.numbersLimitSize}개 까지만 설정 가능 해요.',
+                                      );
+                                    } else {
+                                      recommendState.addNumber(number);
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 78.0,
+                              height: 34.0,
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  AppTextButton(
+                                    labelIcon: Icons.cancel_outlined,
+                                    labelText: '닫기',
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       ExpansionPanelList(

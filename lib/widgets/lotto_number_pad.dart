@@ -15,8 +15,8 @@ class LottoNumberPad extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: (this.fontSize + 20) * 6,
-      padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+      padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+      // margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
       decoration: BoxDecoration(
         border: Border.all(
           color: AppColors.primary,
