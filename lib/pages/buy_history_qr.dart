@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lotto_mate/commons/number_range_text_input_formatter.dart';
@@ -61,72 +62,73 @@ class _BuyHistoryQrState extends State<BuyHistoryQr> {
   }
 
   _makeDrawIdDropDownButton() => DropdownButtonFormField<String>(
-    value: '${buy.drawId}',
-    items: <String>['937', '936', '935', '934', '933']
-        .map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text('$value회'),
+        value: '${buy.drawId}',
+        items: <String>['937', '936', '935', '934', '933']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text('$value회'),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {},
+        onSaved: (String? value) {
+          buy.drawId = int.parse(value!);
+        },
       );
-    }).toList(),
-    onChanged: (String? newValue) {},
-    onSaved: (String? value) {
-      buy.drawId = int.parse(value!);
-    },
-  );
 
   _makeLottoNumberForms(List<Pick> picks) => picks.map((e) {
-    print(e.type);
-    print(e.numbers);
-    return _makeLottoNumberForm(e);
-  }).toList();
+        print(e.type);
+        print(e.numbers);
+        return _makeLottoNumberForm(e);
+      }).toList();
 
   _makeLottoNumberForm(Pick pick) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Checkbox(
-        value: pick.type == 'q',
-        onChanged: (value) {
-          setState(() {
-            pick.type = value! ? 'q' : 'm';
-          });
-        },
-      ),
-      Text(pick.type == 'q' ? '자동' : '수동'),
-      SizedBox(
-        width: 20,
-      ),
-      ...List<Widget>.generate(6, (index) {
-        return Padding(
-          padding: EdgeInsets.all(5.0),
-          child: SizedBox(
-            width: 25,
-            child: TextFormField(
-              initialValue:
-              pick.numbers![index] != null ? pick.numbers![index].toString() : '',
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                NumberRangeTextInputFormatter(45),
-                LengthLimitingTextInputFormatter(2),
-              ],
-              onSaved: (String? value) {
-                // print('$index value is $value saved!');
-              },
-            ),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Checkbox(
+            value: pick.type == 'q',
+            onChanged: (value) {
+              setState(() {
+                pick.type = value! ? 'q' : 'm';
+              });
+            },
           ),
-        );
-      }),
-    ],
-  );
+          Text(pick.type == 'q' ? '자동' : '수동'),
+          SizedBox(
+            width: 20,
+          ),
+          ...List<Widget>.generate(6, (index) {
+            return Padding(
+              padding: EdgeInsets.all(5.0),
+              child: SizedBox(
+                width: 25,
+                child: TextFormField(
+                  initialValue: pick.numbers![index] != null
+                      ? pick.numbers![index].toString()
+                      : '',
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    NumberRangeTextInputFormatter(45),
+                    LengthLimitingTextInputFormatter(2),
+                  ],
+                  onSaved: (String? value) {
+                    // print('$index value is $value saved!');
+                  },
+                ),
+              ),
+            );
+          }),
+        ],
+      );
 
   Future _scan() async {
-    String qrCodeData = await scanner.scan();
+    String? qrCodeData = await scanner.scan();
     // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
     // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
-    String param = qrCodeData.split('v=')[1];
+    String param = qrCodeData!.split('v=')[1];
     print('param is $param');
     String id = param.substring(0, 4);
     String gameAType = param.substring(4, 5);

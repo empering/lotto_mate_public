@@ -202,11 +202,12 @@ class BuyState with ChangeNotifier {
     _okQr = false;
     _cameraPermissionStatus = await _checkPermission();
     if (_cameraPermissionStatus.isGranted) {
-      String qrCodeData = await scanner.scan();
+      String? qrCodeData = await scanner.scan();
       print(qrCodeData);
       // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
       // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
-      if (qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') >= 0) {
+      if (qrCodeData != null &&
+          qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') >= 0) {
         _okQr = true;
         String qrData = qrCodeData.split('v=')[1];
         this.setBuy = Buy.fromQr(qrData);

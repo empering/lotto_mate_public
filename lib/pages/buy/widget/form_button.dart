@@ -66,10 +66,10 @@ class FormButton extends StatelessWidget {
   }
 
   Future _getQrData(BuildContext context, BuyState buyState) async {
-    String qrCodeData = await scanner.scan();
+    String? qrCodeData = await scanner.scan();
     // http://m.dhlottery.co.kr/?v=0933m020719324142m091819354144m091116264145m161921253233m0708161935431964500808
     // http://m.dhlottery.co.kr/?v=0937q030416354143q131417182435q101619212428n000000000000n0000000000001053764487
-    if (qrCodeData.indexOf('http://m.dhlottery.co.kr/?v=') < 0) {
+    if (qrCodeData!.indexOf('http://m.dhlottery.co.kr/?v=') < 0) {
       return false;
     } else {
       String qrData = qrCodeData.split('v=')[1];
