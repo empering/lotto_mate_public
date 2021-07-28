@@ -8,11 +8,11 @@ import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/models/draw.dart';
 import 'package:lotto_mate/models/search_filter.dart';
 import 'package:lotto_mate/pages/home/draw_list.dart';
-import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/draw_list_state.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
+import 'package:lotto_mate/widgets/banner_ad_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
 

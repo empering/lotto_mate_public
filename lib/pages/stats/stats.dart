@@ -9,7 +9,7 @@ import 'package:lotto_mate/pages/stats/number_stats.dart';
 import 'package:lotto_mate/pages/stats/rank_stats.dart';
 import 'package:lotto_mate/pages/stats/series_number_stats.dart';
 import 'package:lotto_mate/pages/stats/unpick_number_stats.dart';
-import 'package:lotto_mate/states/banner_ad_provider.dart';
+import 'package:lotto_mate/widgets/banner_ad_provider.dart';
 import 'package:provider/provider.dart';
 
 class Stats extends StatelessWidget {

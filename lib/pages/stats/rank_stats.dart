@@ -4,10 +4,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto_mate/commons/app_colors.dart';
 import 'package:lotto_mate/models/search_filter.dart';
-import 'package:lotto_mate/states/banner_ad_provider.dart';
 import 'package:lotto_mate/states/stat_state.dart';
 import 'package:lotto_mate/widgets/app_app_bar.dart';
 import 'package:lotto_mate/widgets/app_indicator.dart';
+import 'package:lotto_mate/widgets/banner_ad_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:search_choices/search_choices.dart';
 

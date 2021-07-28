@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:lotto_mate/commons/lotto_color.dart';
 import 'package:lotto_mate/commons/lotto_even_odd.dart';
-import 'package:lotto_mate/states/interstitial_ad_provider.dart';
-import 'package:lotto_mate/states/rewarded_ad_provider.dart';
+import 'package:lotto_mate/widgets/interstitial_ad_provider.dart';
+import 'package:lotto_mate/widgets/rewarded_ad_provider.dart';
 
 class RecommendState with ChangeNotifier {
   final int numbersLimitSize = 4;
